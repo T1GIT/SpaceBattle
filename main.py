@@ -1,5 +1,6 @@
 
 
+
 class SpaceBattle:
     def __init__(self):
         pass  # Window initialisation
