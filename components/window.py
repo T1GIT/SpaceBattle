@@ -68,9 +68,9 @@ class Window:
             self.clock.tick(Conf.Window.FPS)
             for event in pg.event.get():
                 self.event_handler(event.type)
-            self.sprites.draw(self.screen)
             self.comp_game.loop()
             self.list_keyboard.erase()
             self.list_gamepad.erase()
+            self.sprites.draw(self.screen)
             pg.display.flip()
         self.exit()
