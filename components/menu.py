@@ -17,9 +17,8 @@ class Menu:
         """
         # TODO: Damir
 
-    def start(self):
+    def hide(self):
         """
-        Hiding menu and runs the game
+        Hides menu from the window
         """
-        self.window.start()
         # TODO: Damir

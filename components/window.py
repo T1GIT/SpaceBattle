@@ -29,13 +29,16 @@ class Window:
         """
         Reloads the game and opens the menu
         """
-        # TODO: Dima
+        self.comp_game.reset()
+        self.comp_menu.reset()
+        self.sprites = pg.sprite.Group()
 
     def start(self):
         """
         Starts the game
         """
-        # TODO: Dima
+        self.comp_game.start()
+        self.comp_menu.hide()
 
     def keyboard_listener(self, event: pg.event.Event):
         """
