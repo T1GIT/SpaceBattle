@@ -1,5 +1,6 @@
 import pygame as pg
 
+from config import Configuration as Conf
 from managers.image import Image as Img
 
 
@@ -13,7 +14,8 @@ class Ship(pg.sprite.Sprite):
     def __init__(self):
         pg.sprite.Sprite.__init__(self)
         raw_image = Img.SHIP
-        self.image = 
+        scale = Conf.
+        self.image = pg.
 
     def locate(self, x, y):
         self.rect = self.image.get_rect(
