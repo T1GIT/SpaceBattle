@@ -1,14 +1,11 @@
-import pygame as pg
-
 from components.overlay import Overlay
-from components.window import Window
-from managers.config import Configuration as Conf
 
 
 class Game:
-    def __init__(self, window: Window):
+    def __init__(self, window):
         # Environment
         self.window = window
+        self.events = []
         # Initialisation
 
         # Components
@@ -26,6 +23,16 @@ class Game:
         Starts the game
         """
         # TODO: Artem
+
+    def event_handler(self, eventName: str):
+        """
+        Does action from event name
+        :param eventName: event name
+        """
+        # TODO: Artem
+
+    def add_event(self, eventName: str):
+        self.events.append(eventName)
 
     def loop(self):
         """
