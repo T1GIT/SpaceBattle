@@ -1,7 +1,9 @@
 import pygame as pg
 
+from managers.image import Image as Img
 
-class Ship(pg.Sprite):
+
+class Ship(pg.sprite.Sprite):
     """
     Class of the player's mob
     Can shooting rockets
@@ -9,8 +11,13 @@ class Ship(pg.Sprite):
     """
     # TODO: Dima
     def __init__(self):
-        super.__init__()
+        pg.sprite.Sprite.__init__(self)
+        raw_image = Img.SHIP
+        self.image = 
 
+    def locate(self, x, y):
+        self.rect = self.image.get_rect(
+            center=(x, y))
 
     def update(self):
         pass

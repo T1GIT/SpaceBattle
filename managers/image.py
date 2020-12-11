@@ -15,4 +15,3 @@ class Image:
             range(*Conf.Images.METEOR)
         )
     )
-
