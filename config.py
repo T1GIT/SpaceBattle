@@ -6,6 +6,10 @@ class Configuration:
     Class containing settings of the components
     Don't require creating object
     """
+    class Font:
+        name = "georgia font"
+        size = 36
+
     class Window:
         TITLE = "Space Battle"
         HEIGHT = 700
@@ -22,6 +26,9 @@ class Configuration:
     class Menu:
         HEIGHT = 350
         WIDTH = 700
+        GAME_VERSION = "v0.1"
+        AUTHORS = "Damir", "Artem", "Dmitriy"
+        CONTACTS = ""
         OPACITY = 0
 
     class Meteor:
