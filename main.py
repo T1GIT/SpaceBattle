@@ -1,14 +1,14 @@
-
+from components.window import Window
 
 
 class SpaceBattle:
     def __init__(self):
-        pass  # Window initialisation
+        self.window = Window()
 
-    def start(self):
-        pass  # Starting the game
+    def show(self):
+        self.window.show()
 
 
 if __name__ == "__main__":
     game = SpaceBattle()
-    game.start()
+    game.show()
