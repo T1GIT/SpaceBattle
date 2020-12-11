@@ -17,12 +17,11 @@ class Window:
         self.running = True
         # Initialisation
         pg.init()
-        pg.mixer.init()
         pg.display.set_caption(Conf.Window.TITLE)
         self.screen = pg.display.set_mode((Conf.Window.WIDTH, Conf.Window.HEIGHT))
         # Managers
-        self.mngr_sound = Sound(self)
-        self.mngr_image = Image(self)
+        self.mng_sound = Sound()
+        self.mng_image = Image()
         # Components
         self.comp_game = Game(self)
         self.comp_menu = Menu(self)
@@ -45,33 +44,33 @@ class Window:
         self.comp_game.start()
         self.comp_menu.hide()
 
-    def event_handler(self, eventName: str):
+    def event_handler(self, eventType):
         """
         Does action from event name
-        :param eventName: event name
+        :param eventType: event name
         """
-        if eventName == "quit":
+        if eventType == pg.QUIT:
             self.running = False
-        # TODO: Dima
 
     def exit(self):
+        self.running = False
         self.list_keyboard.stop()
         self.list_gamepad.stop()
         pg.quit()
 
     def show(self):
         self.list_keyboard.start()
-        # self.list_gamepad.start()
+        # self.list_gamepad.start()  # TODO: Uncomment when gamepad_listener will be ready
         self.process()
 
     def process(self):
         while self.running:
             self.clock.tick(Conf.Window.FPS)
             for event in pg.event.get():
-                if event.type == pg.QUIT:
-                    self.event_handler("quit")
+                self.event_handler(event.type)
             self.sprites.draw(self.screen)
             self.comp_game.loop()
+            self.list_keyboard.erase()
+            self.list_gamepad.erase()
             pg.display.flip()
         self.exit()
-        # TODO: Dima

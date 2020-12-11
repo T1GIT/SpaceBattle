@@ -4,7 +4,7 @@ from threading import Thread
 from config import Configuration as Conf
 
 
-class GamepadListener:
+class KeyboardListener:
     def __init__(self):
         self.events = []
         self._clock = pg.time.Clock()
