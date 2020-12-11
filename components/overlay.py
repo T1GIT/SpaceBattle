@@ -1,11 +1,5 @@
-import pygame as pg
-
-from components.game import Game
-from managers.config import Configuration as Conf
-
-
 class Overlay:
-    def __init__(self, game: Game):
+    def __init__(self, game):
         self.game = game
         pass
 

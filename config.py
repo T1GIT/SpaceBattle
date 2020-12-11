@@ -1,3 +1,6 @@
+import pygame as pg
+
+
 class Configuration:
     """
     Class containing settings of the components
@@ -8,6 +11,7 @@ class Configuration:
         HEIGHT = 700
         WIDTH = 700
         FPS = 60
+        POLLING_RATE = 100
 
     class Game:
         pass
@@ -35,3 +39,4 @@ class Configuration:
 
     class Rules:
         LIFES = 0
+        EVENT_TYPES = [pg.K_w, pg.K_a, pg.K_s, pg.K_d, pg.K_UP, pg.K_DOWN, pg.K_LEFT, pg.K_RIGHT, pg.K_SPACE, pg.K_RETURN]

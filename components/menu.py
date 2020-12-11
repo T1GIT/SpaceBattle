@@ -1,11 +1,5 @@
-import pygame as pg
-
-from components.window import Window
-from managers.config import Configuration as Conf
-
-
 class Menu:
-    def __init__(self, window: Window):
+    def __init__(self, window):
         # Environment
         self.window = window
         # Initialisation

@@ -1,10 +1,12 @@
 import pygame as pg
 
+from listeners.gamepad import GamepadListener
+from listeners.keyboard import KeyboardListener
 from managers.sound import Sound
 from managers.image import Image
 from components.game import Game
 from components.menu import Menu
-from managers.config import Configuration as Conf
+from config import Configuration as Conf
 
 
 class Window:
@@ -24,6 +26,9 @@ class Window:
         # Components
         self.comp_game = Game(self)
         self.comp_menu = Menu(self)
+        # Listeners
+        self.list_gamepad = GamepadListener()
+        self.list_keyboard = KeyboardListener()
 
     def reset(self):
         """
@@ -40,22 +45,6 @@ class Window:
         self.comp_game.start()
         self.comp_menu.hide()
 
-    def keyboard_listener(self, event: pg.event.Event):
-        """
-        Check keyboard events and calls event handler for doing
-        supporting actions.
-        :param event: PyGame's object containing event
-        """
-        # TODO: Dima
-
-    def gamepad_listener(self, event):
-        """
-        Check gamepad events and calls event handler for doing
-        supporting actions.
-        :param event:
-        """
-        # TODO: Dima
-
     def event_handler(self, eventName: str):
         """
         Does action from event name
@@ -65,15 +54,24 @@ class Window:
             self.running = False
         # TODO: Dima
 
+    def exit(self):
+        self.list_keyboard.stop()
+        self.list_gamepad.stop()
+        pg.quit()
+
     def show(self):
+        self.list_keyboard.start()
+        # self.list_gamepad.start()
+        self.process()
+
+    def process(self):
         while self.running:
             self.clock.tick(Conf.Window.FPS)
             for event in pg.event.get():
                 if event.type == pg.QUIT:
                     self.event_handler("quit")
-                else:
-                    self.keyboard_listener(event)
             self.sprites.draw(self.screen)
+            self.comp_game.loop()
             pg.display.flip()
-        pg.quit()
+        self.exit()
         # TODO: Dima
