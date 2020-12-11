@@ -7,8 +7,7 @@ class Configuration:
     Don't require creating object
     """
     class Font:
-        name = "georgia font"
-        size = 36
+        name = "opensans"
 
     class Window:
         TITLE = "Space Battle"

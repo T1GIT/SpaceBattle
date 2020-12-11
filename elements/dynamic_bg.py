@@ -1,4 +1,4 @@
-import pygame
+import pygame as pg
 
 
 class DynamicBG:
@@ -7,4 +7,3 @@ class DynamicBG:
     Moves all the time
     """
     # TODO: Damir
-    bg = pygame.image.load("./")

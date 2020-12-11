@@ -1,6 +1,6 @@
-import pygame
+import pygame as pg
 import pygame_menu
-import os.path as path
+
 from config import Configuration as Conf
 
 
@@ -11,7 +11,6 @@ class Menu:
 
         # Initialisation
         # TODO: Damir
-        # self.font = pygame_menu.font.FONT_OPEN_SANS
         pygame_menu.themes.THEME_DEFAULT.widget_font = pygame_menu.font.FONT_OPEN_SANS
         self.create_about()
         self.create_menu()
@@ -26,7 +25,6 @@ class Menu:
                  'Ideas and suggestions: SpaceBattle@ya.com']
 
         about_theme = pygame_menu.themes.THEME_DEFAULT.copy()
-        # about_theme.widget_font = self.font
         about_theme.widget_margin = (0, 0)
         about_theme.widget_offset = (0, 0.05)
 
