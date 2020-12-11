@@ -23,7 +23,7 @@ class Configuration:
         pass
 
     class Menu:
-        HEIGHT = 350
+        HEIGHT = 700
         WIDTH = 700
         GAME_VERSION = "v0.1"
         AUTHORS = "Damir", "Artem", "Dmitriy"

@@ -27,31 +27,50 @@ class Menu:
         about_theme = pygame_menu.themes.THEME_DEFAULT.copy()
         about_theme.widget_margin = (0, 0)
         about_theme.widget_offset = (0, 0.05)
+        about_theme.title_font_size = 56
 
         self.about_menu = pygame_menu.Menu(
             height=Conf.Menu.HEIGHT,
             onclose=pygame_menu.events.DISABLE_CLOSE,
             theme=about_theme,
             title='About',
-            width=Conf.Menu.WIDTH,
+            width=Conf.Menu.WIDTH
         )
         for m in ABOUT:
-            self.about_menu.add_label(m, align=pygame_menu.locals.ALIGN_LEFT, font_size=20)
+            self.about_menu.add_label(m, align=pygame_menu.locals.ALIGN_LEFT, font_size=30)
         self.about_menu.add_label('')
-        self.about_menu.add_button('Return to menu', pygame_menu.events.BACK)
+        self.about_menu.add_button('Return to menu', pygame_menu.events.BACK, selection_color=(0, 0, 0), offset=(0, 300))
 
     def create_menu(self):
         """
         Create menus: Main
         """
 
-        my_theme = pygame_menu.themes.Theme()
+        # TODO : добавить в менеджер картинок
+        myimage = pygame_menu.baseimage.BaseImage(
+            image_path="./resources/textures/menu_bg.jpg",
+        )
+
+        my_theme = pygame_menu.themes.Theme(
+            selection_color=(0, 250, 0),
+            title_bar_style=pygame_menu.widgets.MENUBAR_STYLE_NONE,
+            title_offset=(Conf.Window.WIDTH/5, 0),
+            title_font_color=(255, 255, 255),
+            title_font_size=64,
+            background_color=myimage,
+            widget_font_color=(255, 255, 255),
+            widget_font_size=40,
+            widget_margin=(0, 40),
+            menubar_close_button=False
+        )
+
         self.menu = pygame_menu.Menu(
             Conf.Menu.HEIGHT,
             Conf.Menu.WIDTH,
-            'SPACE BATTLE',
+            title='SPACE BATTLE',
             theme=my_theme,
-            onclose=pygame_menu.events.DISABLE_CLOSE
+            onclose=pygame_menu.events.DISABLE_CLOSE,
+            mouse_motion_selection=True
         )
 
         self.menu.add_text_input('Type name: ')
