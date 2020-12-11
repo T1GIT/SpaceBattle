@@ -37,6 +37,12 @@ class Configuration:
     class Colors:
         OVERLAY_TXT = "#000000"
 
+    class Images:
+        SHIP_TEXTURE = 0
+        ROCKET_TEXTURE = 0
+        METEOR_TEXTURE = 0
+        TEXTURE_FORMAT = "png"
+
     class Rules:
         LIFES = 0
         EVENT_TYPES = [pg.K_w, pg.K_a, pg.K_s, pg.K_d, pg.K_UP, pg.K_DOWN, pg.K_LEFT, pg.K_RIGHT, pg.K_SPACE, pg.K_RETURN]
