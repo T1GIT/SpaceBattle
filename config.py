@@ -20,8 +20,8 @@ class Configuration:
         pass
 
     class Menu:
-        WIDTH = 0
-        HEIGHT = 0
+        HEIGHT = 350
+        WIDTH = 700
         OPACITY = 0
 
     class Meteor:

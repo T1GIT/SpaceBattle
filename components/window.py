@@ -63,6 +63,9 @@ class Window:
         # self.list_gamepad.start()  # TODO: Uncomment when gamepad_listener will be ready
         self.process()
 
+    def show_menu(self):
+        self.comp_menu.reset()
+
     def process(self):
         while self.running:
             self.clock.tick(Conf.Window.FPS)

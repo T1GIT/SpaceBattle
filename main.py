@@ -1,3 +1,4 @@
+# from components.menu import Menu
 from components.window import Window
 
 
@@ -6,7 +7,7 @@ class SpaceBattle:
         self.window = Window()
 
     def show(self):
-        self.window.show()
+        self.window.show_menu()
 
 
 if __name__ == "__main__":
