@@ -1,4 +1,4 @@
-
+import pygame as pg
 
 
 class Sound:
@@ -6,5 +6,6 @@ class Sound:
     Class playing sounds of the game
     """
     # TODO: Damir
-    def __init__(self, window):
+    def __init__(self):
+        pg.mixer.init()
         pass
