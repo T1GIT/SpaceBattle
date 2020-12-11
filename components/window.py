@@ -9,16 +9,19 @@ from components.menu import Menu
 from config import Configuration as Conf
 
 
+from elements.ship import Ship
+
+
 class Window:
     def __init__(self):
-        # Environment
-        self.clock = pg.time.Clock()
-        self.sprites = pg.sprite.Group()
-        self.running = True
         # Initialisation
         pg.init()
         pg.display.set_caption(Conf.Window.TITLE)
         self.screen = pg.display.set_mode((Conf.Window.WIDTH, Conf.Window.HEIGHT))
+        # Environment
+        self.clock = pg.time.Clock()
+        self.sprites = pg.sprite.Group()
+        self.running = True
         # Managers
         self.mng_sound = Sound()
         self.mng_image = Image()
@@ -43,6 +46,11 @@ class Window:
         """
         self.comp_game.start()
         self.comp_menu.hide()
+
+        self.player = Ship()
+        self.player.locate(20, 20)
+        self.sprites.add(self.player)
+
 
     def event_handler(self, eventType):
         """
