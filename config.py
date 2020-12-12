@@ -25,11 +25,13 @@ class Configuration:
         OPACITY = 0
 
     class Meteor:
-        MAX_SIZE = 0
-        MIN_SIZE = 0
+        MAX_SIZE = 60
+        MIN_SIZE = 30
+        MIN_SPEED = 1
+        MAX_SPEED = 3
 
     class Rocket:
-        SIZE = 0
+        SIZE = 8
 
     class Ship:
         SIZE = 0

@@ -73,4 +73,5 @@ class Window:
             self.list_gamepad.erase()
             self.sprites.draw(self.screen)
             pg.display.flip()
+            self.screen.fill((0, 0, 0))
         self.exit()
