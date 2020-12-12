@@ -1,11 +1,23 @@
-from components.overlay import Overlay
 from event_listener.events import Event
+from components.overlay import Overlay
+from config import Configuration as Conf
+from elements.meteor import Meteor
+from elements.rocket import Rocket
+from elements.ship import Ship
+import pygame as pg
+
+
+def rotate(image, rect, angle):
+    rot_image = pg.transform.rotate(image, angle)
+    rot_rect = rot_image.get_rect(center=rect.center)
+    return rot_image, rot_rect
 
 
 class Game:
     def __init__(self, window):
         # Environment
         self.window = window
+        self.counter_meteors = 0
         self.events = []
         # Initialisation
 
@@ -17,12 +29,14 @@ class Game:
         """
         Erases all mobs and objects
         """
-        # TODO: Artem
+        self.window.sprites.empty()
 
     def start(self):
         """
         Starts the game
         """
+        self.window.sprites.add(Meteor(self))
+        self.window.sprites.add(Ship())
         # TODO: Artem
 
     def event_handler(self, eventName: str):
@@ -36,4 +50,12 @@ class Game:
         """
         Do all actions per one frame
         """
+        self.counter_meteors += 1
+        if self.counter_meteors == Conf.Window.FPS * 5:
+            self.counter_meteors = 0
+            self.window.sprites.add(Meteor(self))
+            self.window.sprites.add(Rocket(self))
+        # surf, r = rotate(self.window.sprites, self.rect, 1)
+        # self.game.window.screen.blit(surf, r)
+        self.window.sprites.update()
         # TODO: Artem

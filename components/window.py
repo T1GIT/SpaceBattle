@@ -14,6 +14,7 @@ from elements.ship import Ship
 class Window:
     def __init__(self):
         # Initialisation
+        self.player = Ship()
         pg.init()
         pg.display.set_caption(Conf.Window.TITLE)
         self.screen = pg.display.set_mode((Conf.Window.WIDTH, Conf.Window.HEIGHT))
@@ -62,14 +63,12 @@ class Window:
         self.process()
 
     def process(self):
-
-        self.player = Ship()
         self.player.locate(20, 20)
         self.sprites.add(self.player)
-
         while self.running:
             self.clock.tick(Conf.Window.FPS)
-            if pg.event.peek(pg.QUIT): self.exit()
+            if pg.event.peek(pg.QUIT):
+                self.exit()
             self.comp_game.loop(self.event_listener.pop_events())
             self.sprites.update()
             self.sprites.draw(self.screen)
