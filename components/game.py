@@ -1,4 +1,5 @@
 from components.overlay import Overlay
+from managers.listener import Event
 
 
 class Game:
@@ -31,11 +32,9 @@ class Game:
         """
         # TODO: Artem
 
-    def add_event(self, eventName: str):
-        self.events.append(eventName)
-
-    def loop(self):
+    def loop(self, events: list[Event]):
         """
         Do all actions per one frame
         """
+        print(list(map(lambda x: x.get_type(), events)))
         # TODO: Artem

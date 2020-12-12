@@ -11,7 +11,7 @@ class Configuration:
         HEIGHT = 700
         WIDTH = 700
         FPS = 60
-        POLLING_RATE = 100
+        POLLING_RATE = 20
 
     class Game:
         pass
@@ -32,7 +32,7 @@ class Configuration:
         SIZE = 0
 
     class Ship:
-        SIZE = 0
+        SIZE = 100
 
     class Colors:
         OVERLAY_TXT = "#000000"
@@ -45,4 +45,3 @@ class Configuration:
 
     class Rules:
         LIFES = 0
-        EVENT_TYPES = [pg.K_w, pg.K_a, pg.K_s, pg.K_d, pg.K_UP, pg.K_DOWN, pg.K_LEFT, pg.K_RIGHT, pg.K_SPACE, pg.K_RETURN]
