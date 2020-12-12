@@ -1,7 +1,6 @@
 import pygame as pg
 
-from listeners.gamepad import GamepadListener
-from listeners.keyboard import KeyboardListener
+from event_listener.listener import EventListener
 from managers.sound import Sound
 from managers.image import Image
 from components.game import Game
@@ -9,16 +8,19 @@ from components.menu import Menu
 from config import Configuration as Conf
 
 
+from elements.ship import Ship
+
+
 class Window:
     def __init__(self):
-        # Environment
-        self.clock = pg.time.Clock()
-        self.sprites = pg.sprite.Group()
-        self.running = True
         # Initialisation
         pg.init()
         pg.display.set_caption(Conf.Window.TITLE)
         self.screen = pg.display.set_mode((Conf.Window.WIDTH, Conf.Window.HEIGHT))
+        # Environment
+        self.clock = pg.time.Clock()
+        self.sprites = pg.sprite.Group()
+        self.running = True
         # Managers
         self.mng_sound = Sound()
         self.mng_image = Image()
@@ -26,8 +28,7 @@ class Window:
         self.comp_game = Game(self)
         self.comp_menu = Menu(self)
         # Listeners
-        self.list_gamepad = GamepadListener()
-        self.list_keyboard = KeyboardListener()
+        self.event_listener = EventListener()
 
     def reset(self):
         """
@@ -53,24 +54,27 @@ class Window:
             self.running = False
 
     def exit(self):
+        self.event_listener.interrupt()
         self.running = False
-        self.list_keyboard.stop()
-        self.list_gamepad.stop()
-        pg.quit()
 
     def show(self):
-        self.list_keyboard.start()
-        # self.list_gamepad.start()  # TODO: Uncomment when gamepad_listener will be ready
+        self.event_listener.start()
         self.process()
 
     def process(self):
+
+        self.player = Ship()
+        self.player.locate(20, 20)
+        self.sprites.add(self.player)
+
         while self.running:
             self.clock.tick(Conf.Window.FPS)
-            for event in pg.event.get():
-                self.event_handler(event.type)
+            if pg.event.peek(pg.QUIT): self.exit()
+            self.comp_game.loop(self.event_listener.pop_events())
+            self.sprites.update()
             self.sprites.draw(self.screen)
-            self.comp_game.loop()
-            self.list_keyboard.erase()
-            self.list_gamepad.erase()
             pg.display.flip()
-        self.exit()
+            self.screen.fill((0, 0, 0))
+        while self.event_listener.is_running():
+            pass
+        pg.quit()
