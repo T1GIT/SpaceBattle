@@ -1,10 +1,14 @@
 from components.overlay import Overlay
+from config import Configuration as Conf
+from elements.meteor import Meteor
+from elements.rocket import Rocket
 
 
 class Game:
     def __init__(self, window):
         # Environment
         self.window = window
+        self.counter_meteors = 0
         self.events = []
         # Initialisation
 
@@ -16,26 +20,22 @@ class Game:
         """
         Erases all mobs and objects
         """
-        # TODO: Artem
+        self.window.sprites.empty()
 
     def start(self):
         """
         Starts the game
         """
+        self.window.sprites.add(Meteor(self))
         # TODO: Artem
-
-    def event_handler(self, eventName: str):
-        """
-        Does action from event name
-        :param eventName: event name
-        """
-        # TODO: Artem
-
-    def add_event(self, eventName: str):
-        self.events.append(eventName)
 
     def loop(self):
         """
         Do all actions per one frame
         """
+        self.counter_meteors += 1
+        if self.counter_meteors == Conf.Window.FPS * 5:
+            self.counter_meteors = 0
+            self.window.sprites.add(Meteor(self))
+        self.window.sprites.update()
         # TODO: Artem
