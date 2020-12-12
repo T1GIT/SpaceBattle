@@ -1,5 +1,4 @@
 import pygame as pg
-from typing import List
 
 from config import Configuration as Conf
 
@@ -20,18 +19,15 @@ class Image:
         return Image.__SHIP
 
     @staticmethod
-    def get_rocket() -> [pg.image]:
+    def get_rocket() -> pg.image:
         if Image.__ROCKET is None:
-            Image.__ROCKET = []
-            for x in range(*Conf.Images.ROCKET):
-                Image.__ROCKET.append(pg.image.load(f"{Image.__ROOT}/rocket/{x}.{Conf.Images.FORMAT}").convert_alpha())
+            Image.__ROCKET = pg.image.load(f"{Image.__ROOT}/rocket/{Conf.Images.ROCKET}.{Conf.Images.FORMAT}").convert_alpha()
         return Image.__ROCKET
 
     @staticmethod
-    def get_meteor() -> [pg.image]:  # TODO фотка без альфа-канала
+    def get_meteor() -> list[pg.image]:
         if Image.__METEOR is None:
             Image.__METEOR = []
             for x in range(*Conf.Images.METEOR):
                 Image.__METEOR.append(pg.image.load(f"{Image.__ROOT}/meteor/{x}.{Conf.Images.FORMAT}").convert_alpha())
         return Image.__METEOR
-

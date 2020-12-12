@@ -11,7 +11,7 @@ class Configuration:
         HEIGHT = 700
         WIDTH = 700
         FPS = 60
-        POLLING_RATE = 100
+        POLLING_RATE = 20
 
     class Game:
         pass
@@ -45,6 +45,11 @@ class Configuration:
         METEOR = (0, 5)
         FORMAT = "png"
 
+    class EventListener:
+        ACCURACY = 1
+        MOUSE_BUTTONS = 3
+        STICK_DEAD_ZONE = 0.2
+        TRIGGER_DEAD_ZONE = 0.5
+
     class Rules:
         LIFES = 0
-        EVENT_TYPES = [pg.K_w, pg.K_a, pg.K_s, pg.K_d, pg.K_UP, pg.K_DOWN, pg.K_LEFT, pg.K_RIGHT, pg.K_SPACE, pg.K_RETURN]
