@@ -43,5 +43,11 @@ class Configuration:
         METEOR = (0, 5)
         FORMAT = "png"
 
+    class EventListener:
+        ACCURACY = 1
+        MOUSE_BUTTONS = 3
+        STICK_DEAD_ZONE = 0.2
+        TRIGGER_DEAD_ZONE = 0.5
+
     class Rules:
         LIFES = 0

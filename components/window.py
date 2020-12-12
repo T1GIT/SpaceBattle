@@ -1,6 +1,6 @@
 import pygame as pg
 
-from managers.listener import EventListener
+from event_listener.listener import EventListener
 from managers.sound import Sound
 from managers.image import Image
 from components.game import Game
@@ -54,7 +54,7 @@ class Window:
             self.running = False
 
     def exit(self):
-        self.event_listener.stop()
+        self.event_listener.interrupt()
         self.running = False
 
     def show(self):
@@ -77,4 +77,4 @@ class Window:
             self.screen.fill((0, 0, 0))
         while self.event_listener.is_running():
             pass
-        self.exit()
+        pg.quit()

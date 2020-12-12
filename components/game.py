@@ -1,5 +1,5 @@
 from components.overlay import Overlay
-from managers.listener import Event
+from event_listener.events import Event
 
 
 class Game:
@@ -36,5 +36,4 @@ class Game:
         """
         Do all actions per one frame
         """
-        print(list(map(lambda x: x.get_type(), events)))
         # TODO: Artem
