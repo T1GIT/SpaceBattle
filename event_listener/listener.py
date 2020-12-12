@@ -18,28 +18,48 @@ class EventListener:
 
     def __init__(self):
         self.__events: list[Event] = []
-        self._clock = pg.time.Clock()
         self._thread: Thread = Thread(target=self.listener)
+        self._clock = pg.time.Clock()
         self._gamepad = None
         self._running: bool = False
         self._interrupted: bool = False
 
     def start(self):
+        """
+        Starts the thread
+        """
         self._running = True
         self._thread.start()
 
-    def is_running(self):
+    def is_running(self) -> bool:
+        """
+        Checks if the thread is working
+        :return: True if the thread isn't finished
+        """
         return self._running or not self._interrupted
 
     def interrupt(self):
+        """
+        Turn on flag for the thread to finish
+        """
         self._interrupted = True
 
-    def pop_events(self):
+    def pop_events(self) -> list[Event]:
+        """
+        Returns events list collected in for the current time
+        and erases itself
+        :return: events list
+        """
         events = self.__events
         self.__events = []
         return events
 
     def listener(self):
+        """
+        Main thread's cycle.
+        Checks devices state, writes events if it has them
+        Can be safely closed by calling <EventListener.object>.interrupt()
+        """
         while self._running:
             try:
                 self._clock.tick(Conf.Window.POLLING_RATE)
@@ -53,12 +73,16 @@ class EventListener:
                 if self._interrupted:
                     self._running = False
             except Exception:
-                print("Exception")
+                print("Was catch in the EventListener cycle")
 
     def _check_mouse(self):
+        """
+        Checks mouse buttons' state, mouse motion
+        and collects it.
+        """
         for key in self.__ms_keys:
             if pg.mouse.get_pressed(num_buttons=Conf.EventListener.MOUSE_BUTTONS)[key]:
-                event = Event(Mouse.Events.BTN, key)
+                event = Event(Mouse.Events.KEY, key)
                 self.__events.append(event)
         rel = pg.mouse.get_rel()
         if rel != (0, 0):
@@ -68,6 +92,10 @@ class EventListener:
             self.__events.append(event)
 
     def _check_keyboard(self):
+        """
+        Checks keyboard buttons' state
+        and collects pressed keys.
+        """
         pressed = pg.key.get_pressed()
         for key in self.__kb_keys:
             if pressed[key]:
@@ -75,6 +103,10 @@ class EventListener:
                 self.__events.append(event)
 
     def _check_gamepad(self):
+        """
+        Checks gamepad buttons' and sticks' state
+        and collects it.
+        """
         if pg.joystick.get_count() == 0:
             self._gamepad = None
         else:
@@ -87,12 +119,12 @@ class EventListener:
             ls_axis = (self._gamepad.get_axis(0), self._gamepad.get_axis(1))
             if any(filter(lambda x: abs(x) > Conf.EventListener.STICK_DEAD_ZONE, ls_axis)):
                 data = tuple(map(lambda x: round(x, Conf.EventListener.ACCURACY), ls_axis))
-                event = Event(Gamepad.Events.L_AXIS, data)
+                event = Event(Gamepad.Events.LS, data)
                 self.__events.append(event)
             rs_axis = (self._gamepad.get_axis(3), self._gamepad.get_axis(4))
             if any(filter(lambda x: abs(x) > Conf.EventListener.STICK_DEAD_ZONE, rs_axis)):
                 data = tuple(map(lambda x: round(x, Conf.EventListener.ACCURACY), rs_axis))
-                event = Event(Gamepad.Events.R_AXIS, data)
+                event = Event(Gamepad.Events.RS, data)
                 self.__events.append(event)
             z_axis = self._gamepad.get_axis(5)
             if (z_axis + 1) / 2 > Conf.EventListener.TRIGGER_DEAD_ZONE:
