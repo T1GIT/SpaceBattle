@@ -1,7 +1,7 @@
 import pygame as pg
 from config import Configuration as Conf
 import random as rd
-import os
+from managers.image import Image as Img
 
 
 class Meteor(pg.sprite.Sprite):
@@ -11,15 +11,16 @@ class Meteor(pg.sprite.Sprite):
     Can be destroyed by rockets
     """
     def __init__(self, game):
-        pg.sprite.Sprite.__init__(self)
         self.game = game
-        self.textures_folder = os.path.join(os.path.dirname("./resources/textures/"), 'meteor')
+        pg.sprite.Sprite.__init__(self)
         self.size = rd.randint(Conf.Meteor.MIN_SIZE, Conf.Meteor.MAX_SIZE)
-        # self.image = pg.Surface((self.size, self.size))
-        self.image = pg.image.load(os.path.join(self.textures_folder, f'{rd.randint(0, 4)}.png')).convert()
-        # self.image.set_colorkey((255, 255, 255))
-        self.rect = pg.transform.scale(self.image, (self.size, self.size)).get_rect()
-        self.game.window.screen.blit(self.image, self.rect)
+        self.raw_image = Img.get_meteor()
+        self.count_of_meteor = rd.randint(0, Conf.Images.METEOR[1] - 1)
+        w0, h0 = self.raw_image[self.count_of_meteor].get_size()
+        scale = self.size / h0
+        w1, h1 = map(lambda x: round(x * scale), [w0, h0])
+        self.image = pg.transform.scale(self.raw_image[self.count_of_meteor], (w1, h1))
+        self.rect = self.image.get_rect()
         self.spawn_hor = Conf.Window.WIDTH // 2
         self.spawn_vert = Conf.Window.HEIGHT // 2
         self.move_hor = rd.choice((-1, 1)) * rd.randint(Conf.Meteor.MIN_SPEED, Conf.Meteor.MAX_SPEED)

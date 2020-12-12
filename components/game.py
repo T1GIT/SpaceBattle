@@ -2,6 +2,13 @@ from components.overlay import Overlay
 from config import Configuration as Conf
 from elements.meteor import Meteor
 from elements.rocket import Rocket
+import pygame as pg
+
+
+def rotate(image, rect, angle):
+    rot_image = pg.transform.rotate(image, angle)
+    rot_rect = rot_image.get_rect(center=rect.center)
+    return rot_image, rot_rect
 
 
 class Game:
@@ -37,5 +44,8 @@ class Game:
         if self.counter_meteors == Conf.Window.FPS * 5:
             self.counter_meteors = 0
             self.window.sprites.add(Meteor(self))
+            self.window.sprites.add(Rocket(self))
+        # surf, r = rotate(self.window.sprites, self.rect, 1)
+        # self.game.window.screen.blit(surf, r)
         self.window.sprites.update()
         # TODO: Artem

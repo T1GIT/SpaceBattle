@@ -28,20 +28,20 @@ class Configuration:
         MAX_SIZE = 60
         MIN_SIZE = 30
         MIN_SPEED = 1
-        MAX_SPEED = 3
+        MAX_SPEED = 2
 
     class Rocket:
-        SIZE = 8
+        SIZE = 10
 
     class Ship:
-        SIZE = 0
+        SIZE = 100
 
     class Colors:
         OVERLAY_TXT = "#000000"
 
     class Images:
         SHIP = 0
-        ROCKET = 0
+        ROCKET = (0, 4)
         METEOR = (0, 5)
         FORMAT = "png"
 
