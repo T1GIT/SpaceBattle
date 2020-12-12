@@ -1,10 +1,18 @@
+import pygame as pg
 
+from config import Configuration as Conf
 
 
 class Image:
     """
-    Class containing image objects, already prepearing for using
+    Class containing objects' textures, already preparing for using
     """
-    # TODO: Artem
-    def __init__(self):
-        pass
+    SHIP = pg.image.load(f"./resources/textures/ship/{Conf.Images.SHIP}.{Conf.Images.FORMAT}").convert_alpha()
+    ROCKET = pg.image.load(f"./resources/textures/rocket/{Conf.Images.ROCKET}.{Conf.Images.FORMAT}").convert_alpha()
+    METEOR = list(
+        map(
+            lambda x: pg.image.load(f"./resources/textures/meteor/{x}.{Conf.Images.FORMAT}").convert_alpha(),
+            range(*Conf.Images.METEOR)
+        )
+    )
+

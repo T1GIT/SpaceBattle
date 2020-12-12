@@ -40,10 +40,10 @@ class Configuration:
         OVERLAY_TXT = "#000000"
 
     class Images:
-        SHIP_TEXTURE = 0
-        ROCKET_TEXTURE = 0
-        METEOR_TEXTURE = 0
-        TEXTURE_FORMAT = "png"
+        SHIP = 0
+        ROCKET = 0
+        METEOR = (0, 5)
+        FORMAT = "png"
 
     class Rules:
         LIFES = 0
