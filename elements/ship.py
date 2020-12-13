@@ -82,7 +82,6 @@ class Ship(pg.sprite.Sprite):
         self.x_speed -= r[0] / Conf.Ship.WEIGHT
         self.y_speed -= r[1] / Conf.Ship.WEIGHT
 
-
     def rotate(self, x, y, smooth):
         """
         Rotates player's sprite in the direction of the vector.
