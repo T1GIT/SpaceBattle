@@ -13,7 +13,7 @@ class Meteor(pg.sprite.Sprite):
     def __init__(self, game):
         self.game = game
         pg.sprite.Sprite.__init__(self)
-        raw_image = Img.get_meteor()
+        raw_image = Img.get_meteors()
         self.count_rotate = 0
         self.count_of_meteor = rd.randint(0, len(raw_image) - 1)
         w0, h0 = raw_image[self.count_of_meteor].get_size()
@@ -24,7 +24,7 @@ class Meteor(pg.sprite.Sprite):
         self.move_hor = rd.choice((-1, 1)) * rd.randint(Conf.Meteor.MIN_SPEED, Conf.Meteor.MAX_SPEED)
         self.move_vert = rd.choice((-1, 1)) * rd.randint(Conf.Meteor.MIN_SPEED, Conf.Meteor.MAX_SPEED)
         self.angle = 0
-        self.angle_speed = rd.choice((-5, -4, -3, -2, -1, 1, 2, 3, 4, 5))
+        self.angle_speed = rd.randint(1, Conf.Meteor.MAX_ROTATE_SPEED) * rd.choice((-1, 1))
 
     def rotate(self):
         """
