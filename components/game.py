@@ -80,8 +80,3 @@ class Game:
                 meteor.locate(*get_coords_for_meteor())
                 self.window.sprites.add(meteor)
                 self.sprites_meteors.add(meteor)
-        for roc in self.sprites_rockets:
-            if not roc.isLive:
-                self.window.sprites.remove(roc)
-                self.sprites_rockets.remove(roc)
-                break

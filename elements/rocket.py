@@ -21,7 +21,6 @@ class Rocket(pg.sprite.Sprite):
         self.x, self.y = 0, 0
         self.a_x, self.a_y = 0, 0
         self.angle = 0
-        self.isLive = True
 
     def locate(self, x, y, deg):
         """
@@ -44,4 +43,4 @@ class Rocket(pg.sprite.Sprite):
             self.rect.x += self.a_x
             self.rect.y += self.a_y
         else:
-            self.isLive = False
+            self.kill()
