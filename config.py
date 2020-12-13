@@ -3,14 +3,11 @@ class Configuration:
     Class containing settings of the components
     Don't require creating object
     """
-    class Font:
-        name = "opensans"
-
     class Window:
         TITLE = "Space Battle"
-        FULLSCREEN = True
-        HEIGHT = 700
+        FULLSCREEN = False
         WIDTH = 700
+        HEIGHT = 700
         FPS = 60
         POLLING_RATE = 60
 
@@ -28,37 +25,44 @@ class Configuration:
         CONTACTS = ""
         OPACITY = 0
 
-    class Meteor:
-        MAX_SIZE = 60
-        MIN_SIZE = 30
-        MIN_SPEED = 1
-        MAX_SPEED = 2
-        QUANTITY = 10
-
-    class Rocket:
-        SIZE = 5
-        MAX_DISTANCE = 150
+    class Font:
+        name = "opensans"
 
     class Ship:
-        SIZE = 200
-        WEIGHT = 5
+        SIZE = 100
+        WEIGHT = 2
         POWER = 5
         RESIST = 0.05  # (0; 1)
         SMOOTH = 8  # >= 1
-        ACCURACY = 3  # [1; 10]
+        ACCURACY = 5  # [1; 10]
+
+    class Meteor:
+        MAX_SIZE = 100
+        MIN_SIZE = 50
+        MIN_SPEED = 1
+        MAX_SPEED = 2
+        MAX_ROTATE_SPEED = 5
+        QUANTITY = 10
+
+    class Rocket:
+        SIZE = 5  # px
+        SPEED = 2  # > 0
+        PERIOD = 100  # ms
+        MAX_DISTANCE = 300  # px  (needs Rocket.UNLIMITED = False)
+        UNLIMITED = True
 
     class Colors:
         OVERLAY_TXT = "#000000"
 
     class Images:
-        SHIP = 0
-        ROCKET = 0
+        SHIP = 1
+        ROCKET = 1
         METEOR = 0
         FORMAT = "png"
 
     class EventListener:
         MOUSE_BUTTONS = 3
-        STICK_SENSITIVITY = 5  # [1; 10]
+        STICK_SENSITIVITY = 2  # [1; 10]
         STICK_DEAD_ZONE = 0.2
         TRIGGER_DEAD_ZONE = 0.5
 
@@ -71,4 +75,6 @@ class Configuration:
     assert 0 < Ship.RESIST < 1
     assert Window.POLLING_RATE <= Window.FPS
     assert Ship.SMOOTH >= 1
+    assert Meteor.MAX_SIZE >= Meteor.MIN_SIZE
+    assert Rocket.SPEED > 0
 
