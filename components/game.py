@@ -26,12 +26,11 @@ class Game:
     def __init__(self, window):
         # Environment
         self.window = window
-        self.counter_rockets = 0
         self.counter_meteors = Conf.Meteor.QUANTITY
         self.events = []
         # Initialisation
-        self.sprites_meteors = pg.sprite.Group()
-        self.sprites_rockets = pg.sprite.Group()
+        self.sprites_meteors = []
+        self.sprites_rockets = []
         # Components
         self.comp_overlay = Overlay(self)
 
@@ -43,8 +42,8 @@ class Game:
             self.window.sprites.remove(met)
         for roc in self.sprites_rockets:
             self.window.sprites.remove(roc)
-        self.sprites_rockets.empty()
-        self.sprites_meteors.empty()
+        self.sprites_rockets = []
+        self.sprites_meteors = []
 
     def start(self):
         """
@@ -54,7 +53,11 @@ class Game:
             meteor = Meteor(self)
             meteor.locate(*get_coords_for_meteor())
             self.window.sprites.add(meteor)
-            self.sprites_meteors.add(meteor)
+            self.sprites_meteors.append(meteor)
+        rocket = Rocket()  # TODO: убрать после тестирования
+        rocket.locate(Conf.Window.WIDTH // 2, Conf.Window.HEIGHT // 2, -30)
+        self.window.sprites.add(rocket)
+        self.sprites_rockets.append(rocket)
         # TODO: Artem
 
     def event_handler(self, eventName: str):
@@ -70,17 +73,13 @@ class Game:
         """
         Do all actions per one frame
         """
-        self.counter_rockets += 1
-        if self.counter_rockets == Conf.Window.FPS * 5:  # TODO: убрать после тестирования
-            self.counter_rockets = 0
-            rocket = Rocket()
-            rocket.locate(Conf.Window.WIDTH // 2, Conf.Window.HEIGHT // 2)
-            self.window.sprites.add(rocket)
-            self.sprites_rockets.add(rocket)
         if self.counter_meteors < Conf.Meteor.QUANTITY:
             for _ in range(Conf.Meteor.QUANTITY - self.counter_meteors):
                 meteor = Meteor(self)
                 meteor.locate(*get_coords_for_meteor())
                 self.window.sprites.add(meteor)
-                self.sprites_meteors.add(meteor)
-        self.window.sprites.update()
+                self.sprites_meteors.append(meteor)
+        for roc in self.sprites_rockets:
+            if not roc.isLive:
+                self.window.sprites.remove(roc)
+                self.sprites_rockets.remove(roc)

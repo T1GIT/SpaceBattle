@@ -77,6 +77,7 @@ class Window:
         self.player.locate(300, 300)
         self.sprites.add(self.player)
         pg.mouse.set_visible(False)
+        self.comp_game.start()
 
         try:
             while self.running:
@@ -102,7 +103,6 @@ class Window:
                     elif event.get_type() == Gp.Events.RS:
                         self.player.rotate(*event.get_data(), False)
                 self.player.accelerate(x, y)
-
                 self.comp_game.loop(self.event_listener.get_events())
                 self.sprites.update()
                 self.sprites.draw(self.screen)

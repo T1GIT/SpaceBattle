@@ -44,6 +44,14 @@ class Ship(pg.sprite.Sprite):
         """
         self.rect.x += round(self.x_speed)
         self.rect.y -= round(self.y_speed)
+        if self.rect.left > Conf.Window.WIDTH:
+            self.rect.right = 0
+        if self.rect.right < 0:
+            self.rect.left = Conf.Window.WIDTH
+        if self.rect.top > Conf.Window.HEIGHT:
+            self.rect.bottom = 0
+        if self.rect.bottom < 0:
+            self.rect.top = Conf.Window.HEIGHT
 
     def accelerate(self, x, y):
         """
