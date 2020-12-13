@@ -1,5 +1,6 @@
 import pygame as pg
 from threading import Thread
+from math import sqrt, pow
 
 from config import Configuration as Conf
 from event_listener.events import Event, Mouse, Keyboard, Gamepad
@@ -21,6 +22,7 @@ class EventListener:
         self._thread: Thread = Thread(target=self.listener)
         self._clock = pg.time.Clock()
         self._gamepad = None
+        self._stick_sens = (11 - Conf.EventListener.STICK_SENSITIVITY) * 2 / 10
         self._running: bool = False
         self._interrupted: bool = False
 
@@ -44,10 +46,10 @@ class EventListener:
         """
         self._interrupted = True
 
-    def pop_events(self) -> [Event]:
+    def get_events(self) -> list[Event]:
         """
-        Returns events list collected in for the current time
-        and erases itself
+        Returns events list collected in for the current
+        time and erases them after
         :return: events list
         """
         events = self.__events
@@ -67,8 +69,6 @@ class EventListener:
                 self._check_mouse()
                 self._check_keyboard()
                 self._check_gamepad()
-                for i in self.__events:
-                    print(i.get_type())
                 # Safe closing thread
                 if self._interrupted:
                     self._running = False
@@ -86,9 +86,7 @@ class EventListener:
                 self.__events.append(event)
         rel = pg.mouse.get_rel()
         if rel != (0, 0):
-            scale = max(map(lambda x: abs(x), rel))
-            rel = tuple(map(lambda x: round(x / scale, Conf.EventListener.ACCURACY), rel))
-            event = Event(Mouse.Events.MOVE, rel)
+            event = Event(Mouse.Events.MOVE, (rel[0], -rel[1]))
             self.__events.append(event)
 
     def _check_keyboard(self):
@@ -116,17 +114,20 @@ class EventListener:
                 if self._gamepad.get_button(btn_num):
                     event = Event(Gamepad.Events.KEY, btn_num)
                     self.__events.append(event)
-            ls_axis = (self._gamepad.get_axis(0), self._gamepad.get_axis(1))
-            if any(filter(lambda x: abs(x) > Conf.EventListener.STICK_DEAD_ZONE, ls_axis)):
-                data = tuple(map(lambda x: round(x, Conf.EventListener.ACCURACY), ls_axis))
-                event = Event(Gamepad.Events.LS, data)
+            l_x, l_y = (self._gamepad.get_axis(0), -self._gamepad.get_axis(1))
+            if abs(l_x) > Conf.EventListener.STICK_DEAD_ZONE or abs(l_y) > Conf.EventListener.STICK_DEAD_ZONE:
+                event = Event(Gamepad.Events.LS, self.__get_axis(l_x, l_y))
                 self.__events.append(event)
-            rs_axis = (self._gamepad.get_axis(3), self._gamepad.get_axis(4))
-            if any(filter(lambda x: abs(x) > Conf.EventListener.STICK_DEAD_ZONE, rs_axis)):
-                data = tuple(map(lambda x: round(x, Conf.EventListener.ACCURACY), rs_axis))
-                event = Event(Gamepad.Events.RS, data)
+            r_x, r_y = (self._gamepad.get_axis(3), -self._gamepad.get_axis(4))
+            if abs(r_x) > Conf.EventListener.STICK_DEAD_ZONE or abs(r_y) > Conf.EventListener.STICK_DEAD_ZONE:
+                event = Event(Gamepad.Events.RS, self.__get_axis(r_x, r_y))
                 self.__events.append(event)
             z_axis = self._gamepad.get_axis(5)
             if (z_axis + 1) / 2 > Conf.EventListener.TRIGGER_DEAD_ZONE:
                 event = Event(Gamepad.Events.KEY, Gamepad.Keys.RT)
                 self.__events.append(event)
+
+    def __get_axis(self, x, y):
+        x = pow(abs(x), self._stick_sens) * (-1 if x < 0 else 1)
+        y = pow(abs(y), self._stick_sens) * (-1 if y < 0 else 1)
+        return x, y
