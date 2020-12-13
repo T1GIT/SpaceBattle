@@ -1,5 +1,6 @@
+from math import cos, sin, atan2, sqrt, degrees
+
 import pygame as pg
-from math import cos, sin, tan, acos, asin, atan2, sqrt, pi, degrees, atan
 
 from config import Configuration as Conf
 from managers.image import Image as Img
@@ -11,6 +12,7 @@ class Ship(pg.sprite.Sprite):
     Can shooting rockets
     Can by destroyed by meteors
     """
+
     def __init__(self):
         pg.sprite.Sprite.__init__(self)
         raw_image = Img.get_ship()
@@ -19,10 +21,10 @@ class Ship(pg.sprite.Sprite):
         w1, h1 = map(lambda x: round(x * scale), [w0, h0])
         self.texture = pg.transform.scale(raw_image, (w1, h1))
         self.image = self.texture.copy()
-        self._max_speed = sqrt(Conf.Ship.POWER / Conf.Ship.RESIST)
         self.x_speed = 0
         self.y_speed = 0
         self.angle = 0
+        self.accuracy = 500 / pow(Conf.Ship.ACCURACY, 2)
 
     def locate(self, x, y):
         """
@@ -34,10 +36,21 @@ class Ship(pg.sprite.Sprite):
             center=(x, y))
 
     def update(self):
+        """
+        Updates ship coordinates.
+        Adds the axis speed in the current time
+        period to it's coordinates
+        Called every frame.
+        """
         self.rect.x += round(self.x_speed)
         self.rect.y -= round(self.y_speed)
 
     def accelerate(self, x, y):
+        """
+        Changes axis speed, from axel vector
+        :param x: coordinate of the axel vector
+        :param y: coordinate of the axel vector
+        """
         # Adding resistance
         speed = sqrt(pow(self.x_speed, 2) + pow(self.y_speed, 2))
         a_x, a_y = 0, 0
@@ -56,13 +69,22 @@ class Ship(pg.sprite.Sprite):
         self.y_speed += a_y / Conf.Ship.WEIGHT
 
     def rotate(self, x, y, smooth):
+        """
+        Rotates player's sprite in the direction of the vector.
+        :param x: coordinate of the axel vector
+        :param y: coordinate of the axel vector
+        :param smooth: rotates not on the whole vector, but
+            partially
+        """
         move = degrees(atan2(y, x))
         d_deg = move - self.angle
         if abs(d_deg) > 180:
             d_deg = d_deg + 360 if d_deg < 0 else - 360
-        if (not smooth) or abs(d_deg) > 100 / Conf.Ship.ACCURACY:
+        if (not smooth) or abs(d_deg) > self.accuracy:
             self.angle += (d_deg / Conf.Ship.SMOOTH) if smooth else d_deg
             self.image = pg.transform.rotate(self.texture, self.angle - 90)
             self.rect = self.image.get_rect(center=self.rect.center)
-            if self.angle > 180: self.angle -= 360
-            elif self.angle < -180: self.angle += 360
+            if self.angle > 180:
+                self.angle -= 360
+            elif self.angle < -180:
+                self.angle += 360
