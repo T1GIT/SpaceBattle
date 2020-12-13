@@ -63,15 +63,16 @@ class Window:
             self.running = False
 
     def exit(self):
+        self.comp_menu.exit()
         self.event_listener.interrupt()
         self.running = False
 
     def show(self):
         self.event_listener.start()
+        self.comp_menu.show()
         self.process()
 
     def process(self):
-
         self.player = Ship()
         self.player.locate(300, 300)
         self.sprites.add(self.player)

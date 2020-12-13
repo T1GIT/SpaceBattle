@@ -85,9 +85,12 @@ class Menu:
         self.menu.add_text_input('Type name: ')
         self.menu.add_button('Play', self.window.start)
         self.menu.add_button('About', self.about_menu)
-        self.menu.add_button('Quit', pygame_menu.events.EXIT)
+        self.menu.add_button('Quit', self.window.exit)
 
-    def reset(self):
+    def exit(self):
+        self.menu.disable()
+
+    def show(self):
         """
         Shows menu
         """

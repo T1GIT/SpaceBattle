@@ -6,6 +6,9 @@ class Configuration:
     Class containing settings of the components
     Don't require creating object
     """
+    class Font:
+        name = "opensans"
+
     class Window:
         TITLE = "Space Battle"
         FULLSCREEN = False
@@ -21,8 +24,11 @@ class Configuration:
         pass
 
     class Menu:
-        WIDTH = 0
-        HEIGHT = 0
+        HEIGHT = 700
+        WIDTH = 700
+        GAME_VERSION = "v0.1"
+        AUTHORS = "Damir", "Artem", "Dmitriy"
+        CONTACTS = ""
         OPACITY = 0
 
     class Meteor:
