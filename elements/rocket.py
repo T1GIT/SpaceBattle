@@ -38,7 +38,7 @@ class Rocket(pg.sprite.Sprite):
         self.rect = self.image.get_rect(center=(self.x, self.y))
 
     def update(self):
-        if Conf.Rocket.INFINITY:
+        if Conf.Rocket.UNLIMITED:
             if 0 < self.rect.x < Conf.Window.WIDTH and 0 < self.rect.y < Conf.Window.HEIGHT:
                 self.rect.x += self.a_x
                 self.rect.y += self.a_y
