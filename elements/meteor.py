@@ -13,36 +13,34 @@ class Meteor(pg.sprite.Sprite):
     def __init__(self, game):
         self.game = game
         pg.sprite.Sprite.__init__(self)
-        self.raw_image = Img.get_meteor()
+        raw_image = Img.get_meteor()
         self.count_rotate = 0
-        self.count_of_meteor = rd.randint(0, len(self.raw_image) - 1)
-        w0, h0 = self.raw_image[self.count_of_meteor].get_size()
+        self.count_of_meteor = rd.randint(0, len(raw_image) - 1)
+        w0, h0 = raw_image[self.count_of_meteor].get_size()
         scale = rd.randint(Conf.Meteor.MIN_SIZE, Conf.Meteor.MAX_SIZE) / h0
         w1, h1 = map(lambda x: round(x * scale), [w0, h0])
-        self.image = pg.transform.scale(self.raw_image[self.count_of_meteor], (w1, h1))
-        self.copy_image = self.image.copy()
+        self.texture = pg.transform.scale(raw_image[self.count_of_meteor], (w1, h1))
+        self.image = self.texture.copy()
         self.move_hor = rd.choice((-1, 1)) * rd.randint(Conf.Meteor.MIN_SPEED, Conf.Meteor.MAX_SPEED)
         self.move_vert = rd.choice((-1, 1)) * rd.randint(Conf.Meteor.MIN_SPEED, Conf.Meteor.MAX_SPEED)
         self.angle = 0
-        self.angle_speed = rd.randint(-5, 5)
+        self.angle_speed = rd.choice((-5, -4, -3, -2, -1, 1, 2, 3, 4, 5))
 
     def rotate(self):
         """
         Rotate the figure
         """
         self.angle = (self.angle + self.angle_speed) % 360
-        old_center = self.rect.center
-        new_image = pg.transform.rotate(self.image, self.angle)
-        self.rect = new_image.get_rect(center=old_center)
-        self.game.window.screen.blit(new_image, self.rect)
+        self.image = pg.transform.rotate(self.texture, self.angle)
+        self.rect = self.image.get_rect(center=self.rect.center)
 
     def locate(self, x, y):
         """
         Shows sprite in the screen
-        :param x: position
-        :param y: position
+        :param x: position of the end
+        :param y: position of the end
         """
-        self.rect = self.copy_image.get_rect(center=(x, y))
+        self.rect = self.image.get_rect(center=(x, y))
 
     def update(self):
         self.rect.x += self.move_hor

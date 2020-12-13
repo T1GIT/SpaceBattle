@@ -27,7 +27,6 @@ class Game:
     def __init__(self, window):
         # Environment
         self.window = window
-        self.counter_rockets = 0
         self.counter_meteors = Conf.Meteor.QUANTITY
         self.events = []
         # Initialisation
@@ -56,6 +55,10 @@ class Game:
             meteor.locate(*get_coords_for_meteor())
             self.window.sprites.add(meteor)
             self.sprites_meteors.add(meteor)
+        rocket = Rocket()  # TODO: убрать после тестирования
+        rocket.locate(Conf.Window.WIDTH // 2, Conf.Window.HEIGHT // 2, -30)
+        self.window.sprites.add(rocket)
+        self.sprites_rockets.add(rocket)
         # TODO: Artem
 
     def event_handler(self, eventName: str):
@@ -71,17 +74,9 @@ class Game:
         """
         Do all actions per one frame
         """
-        self.counter_rockets += 1
-        if self.counter_rockets == Conf.Window.FPS * 5:  # TODO: убрать после тестирования
-            self.counter_rockets = 0
-            rocket = Rocket()
-            rocket.locate(Conf.Window.WIDTH // 2, Conf.Window.HEIGHT // 2)
-            self.window.sprites.add(rocket)
-            self.sprites_rockets.add(rocket)
         if self.counter_meteors < Conf.Meteor.QUANTITY:
             for _ in range(Conf.Meteor.QUANTITY - self.counter_meteors):
                 meteor = Meteor(self)
                 meteor.locate(*get_coords_for_meteor())
                 self.window.sprites.add(meteor)
                 self.sprites_meteors.add(meteor)
-        self.window.sprites.update()
