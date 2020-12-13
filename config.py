@@ -29,9 +29,10 @@ class Configuration:
         MIN_SIZE = 30
         MIN_SPEED = 1
         MAX_SPEED = 2
+        QUANTITY = 10
 
     class Rocket:
-        SIZE = 10
+        SIZE = 5
 
     class Ship:
         SIZE = 100
@@ -41,8 +42,8 @@ class Configuration:
 
     class Images:
         SHIP = 0
-        ROCKET = (0, 4)
-        METEOR = (0, 5)
+        ROCKET = 0
+        METEOR = 0
         FORMAT = "png"
 
     class EventListener:

@@ -17,7 +17,7 @@ class EventListener:
     __gp_keys = {0, 1, 6, 7}
 
     def __init__(self):
-        self.__events: list[Event] = []
+        self.__events: [Event] = []
         self._thread: Thread = Thread(target=self.listener)
         self._clock = pg.time.Clock()
         self._gamepad = None
@@ -44,7 +44,7 @@ class EventListener:
         """
         self._interrupted = True
 
-    def pop_events(self) -> list[Event]:
+    def pop_events(self) -> [Event]:
         """
         Returns events list collected in for the current time
         and erases itself
