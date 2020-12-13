@@ -1,11 +1,12 @@
-from event_listener.events import Event
+import random as rd
+
+import pygame as pg
+
 from components.overlay import Overlay
 from config import Configuration as Conf
 from elements.meteor import Meteor
 from elements.rocket import Rocket
-from elements.ship import Ship
-import pygame as pg
-import random as rd
+from event_listener.events import Event
 
 
 def get_coords_for_meteor():

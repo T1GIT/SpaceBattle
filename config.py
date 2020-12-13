@@ -1,6 +1,3 @@
-import pygame as pg
-
-
 class Configuration:
     """
     Class containing settings of the components
@@ -11,11 +8,11 @@ class Configuration:
 
     class Window:
         TITLE = "Space Battle"
-        FULLSCREEN = False
+        FULLSCREEN = True
         HEIGHT = 700
         WIDTH = 700
         FPS = 60
-        POLLING_RATE = 30
+        POLLING_RATE = 60
 
     class Game:
         pass
@@ -43,18 +40,18 @@ class Configuration:
         MAX_DISTANCE = 150
 
     class Ship:
-        SIZE = 100
+        SIZE = 200
         WEIGHT = 5
         POWER = 5
         RESIST = 0.05  # (0; 1)
-        SMOOTH = 5
-        ACCURACY = 9  # [1; 10]
+        SMOOTH = 8  # >= 1
+        ACCURACY = 3  # [1; 10]
 
     class Colors:
         OVERLAY_TXT = "#000000"
 
     class Images:
-        SHIP = 2
+        SHIP = 0
         ROCKET = 0
         METEOR = 0
         FORMAT = "png"
@@ -73,4 +70,5 @@ class Configuration:
     assert 1 <= Ship.ACCURACY <= 10
     assert 0 < Ship.RESIST < 1
     assert Window.POLLING_RATE <= Window.FPS
+    assert Ship.SMOOTH >= 1
 

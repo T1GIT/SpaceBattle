@@ -43,7 +43,7 @@ class Window:
         """
         pg.mouse.set_visible(True)
         self.comp_game.reset()
-        self.comp_menu.reset()
+        self.comp_menu.show()
         self.sprites = pg.sprite.Group()
 
     def start(self):
@@ -69,7 +69,7 @@ class Window:
 
     def show(self):
         self.event_listener.start()
-        self.comp_menu.show()
+        # self.comp_menu.show()  TODO: Uncomment
         self.process()
 
     def process(self):
@@ -81,11 +81,12 @@ class Window:
 
         try:
             while self.running:
+
                 self.clock.tick(Conf.Window.FPS)
                 if pg.event.peek(pg.QUIT): self.exit()
 
                 x, y = 0, 0
-                for event in self.event_listener.get_events():
+                for event in self.event_listener.pop_events():
                     if event.get_type() == Kb.Events.KEY:
                         if event.get_data() in (Kb.Keys.W, Kb.Keys.UP):
                             y += 1
@@ -103,12 +104,15 @@ class Window:
                     elif event.get_type() == Gp.Events.RS:
                         self.player.rotate(*event.get_data(), False)
                 self.player.accelerate(x, y)
-                self.comp_game.loop(self.event_listener.get_events())
+                
+                self.comp_game.loop(self.event_listener.pop_events())
                 self.sprites.update()
                 self.sprites.draw(self.screen)
                 pg.display.flip()
                 self.screen.fill((0, 0, 0))
+
         except Exception:
+            print("Exception")
             self.exit()
         while self.event_listener.is_running():
             pass

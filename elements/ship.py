@@ -24,7 +24,7 @@ class Ship(pg.sprite.Sprite):
         self.x_speed = 0
         self.y_speed = 0
         self.angle = 0
-        self.accuracy = 500 / pow(Conf.Ship.ACCURACY, 2)
+        self.accuracy = 50 / Conf.Ship.ACCURACY
 
     def locate(self, x, y):
         """
@@ -83,10 +83,11 @@ class Ship(pg.sprite.Sprite):
         :param smooth: rotates not on the whole vector, but
             partially
         """
-        move = degrees(atan2(y, x))
-        d_deg = move - self.angle
-        if abs(d_deg) > 180:
-            d_deg = d_deg + 360 if d_deg < 0 else - 360
+        d_deg = degrees(atan2(y, x)) - self.angle
+        if d_deg > 180:
+            d_deg -= 360
+        elif d_deg < -180:
+            d_deg += 360
         if (not smooth) or abs(d_deg) > self.accuracy:
             self.angle += (d_deg / Conf.Ship.SMOOTH) if smooth else d_deg
             self.image = pg.transform.rotate(self.texture, self.angle - 90)
