@@ -97,9 +97,9 @@ class Window:
                         x += event.get_data()[0]
                         y += event.get_data()[1]
                     elif event.get_type() == Ms.Events.MOVE:
-                        self.player.rotate(*event.get_data())
+                        self.player.rotate(*event.get_data(), True)
                     elif event.get_type() == Gp.Events.RS:
-                        self.player.rotate(*event.get_data())
+                        self.player.rotate(*event.get_data(), False)
                 self.player.accelerate(x, y)
 
                 self.comp_game.loop(self.event_listener.get_events())

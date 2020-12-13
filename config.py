@@ -38,7 +38,7 @@ class Configuration:
         POWER = 5
         RESIST = 0.05  # (0; 1)
         SMOOTH = 5
-        ACCURACY = 10  # [1; 10]
+        ACCURACY = 7  # [1; 10]
 
     class Colors:
         OVERLAY_TXT = "#000000"

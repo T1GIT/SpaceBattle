@@ -55,29 +55,14 @@ class Ship(pg.sprite.Sprite):
         self.x_speed += a_x / Conf.Ship.WEIGHT
         self.y_speed += a_y / Conf.Ship.WEIGHT
 
-    def rotate(self, x, y):
-        move = atan2(y, x)
-        self.angle = degrees(move)
-
-        self.image = pg.transform.rotate(self.texture, self.angle - 90)
-        self.rect = self.image.get_rect(center=self.rect.center)
-        # if abs(d_deg) > 100 / Conf.Ship.ACCURACY:
-        #     self.angle += d_deg / Conf.Ship.SMOOTH
-        #     self.angle = (self.angle + 180) % 360 - 180
-        #     self.image = pg.transform.rotate(self.texture, self.angle - 90)
-        #     self.rect = self.image.get_rect(center=self.rect.center)
-
-        # move = degrees(self.__get_angle(x, y))
-        # if abs(move - self.angle) > 180 and abs(self.angle) > 90 and abs(move) > 90:
-        #     d_deg = (360 - abs(self.angle - move)) * -1 if self.angle < move else 1
-        #     print(1)
-        # else:
-        #     d_deg = move - self.angle
-
-        # print(move, d_deg, self.angle)
-        # if abs(d_deg) > 100 / Conf.Ship.ACCURACY:
-        #     self.angle += d_deg / Conf.Ship.SMOOTH
-        #     self.angle = (self.angle + 180) % 360 - 180
-        #     self.image = pg.transform.rotate(self.texture, self.angle - 90)
-        #     self.rect = self.image.get_rect(center=self.rect.center)
-
+    def rotate(self, x, y, smooth):
+        move = degrees(atan2(y, x))
+        d_deg = move - self.angle
+        if abs(d_deg) > 180:
+            d_deg = d_deg + 360 if d_deg < 0 else - 360
+        if (not smooth) or abs(d_deg) > 100 / Conf.Ship.ACCURACY:
+            self.angle += (d_deg / Conf.Ship.SMOOTH) if smooth else d_deg
+            self.image = pg.transform.rotate(self.texture, self.angle - 90)
+            self.rect = self.image.get_rect(center=self.rect.center)
+            if self.angle > 180: self.angle -= 360
+            elif self.angle < -180: self.angle += 360
