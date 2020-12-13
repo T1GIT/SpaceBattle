@@ -7,7 +7,7 @@ from math import cos, sin, radians, sqrt
 class Rocket(pg.sprite.Sprite):
     """
     Class of the rocket's mobs.
-    Flyes out from the rocket's nose.
+    Flies out from the rocket's nose.
     Destroys meteors
     """
     def __init__(self):
@@ -29,18 +29,24 @@ class Rocket(pg.sprite.Sprite):
         :param y: position
         :param deg: angle of rotation
         """
-        self.x = x
-        self.y = y
+        self.x, self.y = x, y
         self.angle = deg
         rad = radians(self.angle)
-        self.a_x = round(Conf.Rocket.SIZE * cos(rad))
-        self.a_y = round(Conf.Rocket.SIZE * sin(rad))
+        self.a_x = round(Conf.Rocket.SIZE * Conf.Rocket.SPEED * cos(rad))
+        self.a_y = round(Conf.Rocket.SIZE * Conf.Rocket.SPEED * sin(rad))
         self.image = pg.transform.rotate(self.texture, -self.angle)
         self.rect = self.image.get_rect(center=(self.x, self.y))
 
     def update(self):
-        if round(sqrt(pow(self.rect.x - self.x, 2) + pow(self.rect.y - self.y, 2))) <= Conf.Rocket.MAX_DISTANCE:
-            self.rect.x += self.a_x
-            self.rect.y += self.a_y
+        if Conf.Rocket.UNLIMITED:
+            if 0 < self.rect.x < Conf.Window.WIDTH and 0 < self.rect.y < Conf.Window.HEIGHT:
+                self.rect.x += self.a_x
+                self.rect.y += self.a_y
+            else:
+                self.kill()
         else:
-            self.kill()
+            if sqrt(pow(self.rect.x - self.x, 2) + pow(self.rect.y - self.y, 2)) <= Conf.Rocket.MAX_DISTANCE:
+                self.rect.x += self.a_x
+                self.rect.y += self.a_y
+            else:
+                self.kill()

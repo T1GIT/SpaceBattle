@@ -46,7 +46,7 @@ class EventListener:
         """
         self._interrupted = True
 
-    def pop_events(self) -> list[Event]:
+    def pop_events(self) -> [Event]:
         """
         Returns events list collected in for the current
         time and erases them after
