@@ -1,6 +1,6 @@
 import pygame as pg
 from threading import Thread
-from math import sqrt, pow
+from math import pow
 
 from config import Configuration as Conf
 from event_listener.events import Event, Mouse, Keyboard, Gamepad
@@ -46,7 +46,7 @@ class EventListener:
         """
         self._interrupted = True
 
-    def get_events(self) -> list[Event]:
+    def pop_events(self) -> list[Event]:
         """
         Returns events list collected in for the current
         time and erases them after

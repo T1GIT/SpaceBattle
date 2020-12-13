@@ -20,7 +20,7 @@ class Image:
         return Image.__SHIP
 
     @staticmethod
-    def get_rocket() -> [pg.image]:
+    def get_rocket() -> pg.image:
         if Image.__ROCKET is None:
             Image.__ROCKET = pg.image.load(f"{Image.__ROOT}/rocket/{Conf.Images.ROCKET}.{Conf.Images.FORMAT}").convert_alpha()
         return Image.__ROCKET
