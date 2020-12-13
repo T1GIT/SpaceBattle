@@ -37,7 +37,7 @@ class Configuration:
 
     class Rocket:
         SIZE = 5
-        LIFE = 150
+        MAX_DISTANCE = 150
 
     class Ship:
         SIZE = 200

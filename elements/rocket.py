@@ -21,7 +21,6 @@ class Rocket(pg.sprite.Sprite):
         self.x, self.y = 0, 0
         self.a_x, self.a_y = 0, 0
         self.angle = 0
-        self.isLive = True
 
     def locate(self, x, y, deg):
         """
@@ -32,24 +31,16 @@ class Rocket(pg.sprite.Sprite):
         """
         self.x = x
         self.y = y
-        self.rect = self.image.get_rect(center=(self.x, self.y))
-        self.rotate(deg)
-
-    def rotate(self, deg):
-        """
-        Rotate the surface object
-        :param deg: angle of rotation
-        """
         self.angle = deg
         rad = radians(self.angle)
         self.a_x = round(Conf.Rocket.SIZE * cos(rad))
         self.a_y = round(Conf.Rocket.SIZE * sin(rad))
         self.image = pg.transform.rotate(self.texture, -self.angle)
-        self.rect = self.image.get_rect(center=self.rect.center)
+        self.rect = self.image.get_rect(center=(self.x, self.y))
 
     def update(self):
-        if round(sqrt(pow(self.rect.x - self.x, 2) + pow(self.rect.y - self.y, 2))) <= Conf.Rocket.LIFE:
+        if round(sqrt(pow(self.rect.x - self.x, 2) + pow(self.rect.y - self.y, 2))) <= Conf.Rocket.MAX_DISTANCE:
             self.rect.x += self.a_x
             self.rect.y += self.a_y
         else:
-            self.isLive = False
+            self.kill()
