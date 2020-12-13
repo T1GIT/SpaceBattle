@@ -6,7 +6,7 @@ from config import Configuration as Conf
 
 class Image:
     """
-    Class containing objects' textures, already preparing for using
+    Class containing objects' textures, already prepared for using
     """
     __ROOT = "./resources/textures"
     __SHIP = None
@@ -26,7 +26,7 @@ class Image:
         return Image.__ROCKET
 
     @staticmethod
-    def get_meteor() -> [pg.image]:
+    def get_meteors() -> [pg.image]:
         if Image.__METEOR is None:
             Image.__METEOR = []
             path = f"{Image.__ROOT}/meteor/{Conf.Images.METEOR}/"
