@@ -29,6 +29,8 @@ class Game:
         self.counter_meteors = Conf.Meteor.QUANTITY
         self.events = []
         # Initialisation
+        self.g_meteors = pg.sprite.Group()
+        self.g_rockets = pg.sprite.Group()
         self.sprites_meteors = []
         self.sprites_rockets = []
         # Components
@@ -40,8 +42,10 @@ class Game:
         """
         for met in self.sprites_meteors:
             self.window.sprites.remove(met)
+            self.g_meteors.remove(met)
         for roc in self.sprites_rockets:
             self.window.sprites.remove(roc)
+            self.g_rockets.remove(roc)
         self.sprites_rockets = []
         self.sprites_meteors = []
 
@@ -53,10 +57,12 @@ class Game:
             meteor = Meteor(self)
             meteor.locate(*get_coords_for_meteor())
             self.window.sprites.add(meteor)
+            self.g_meteors.add(meteor)
             self.sprites_meteors.append(meteor)
         rocket = Rocket()  # TODO: убрать после тестирования
         rocket.locate(Conf.Window.WIDTH // 2, Conf.Window.HEIGHT // 2, -30)
         self.window.sprites.add(rocket)
+        self.g_rockets.add(rocket)
         self.sprites_rockets.append(rocket)
         # TODO: Artem
 
@@ -78,8 +84,11 @@ class Game:
                 meteor = Meteor(self)
                 meteor.locate(*get_coords_for_meteor())
                 self.window.sprites.add(meteor)
+                self.g_meteors.add(meteor)
                 self.sprites_meteors.append(meteor)
         for roc in self.sprites_rockets:
             if not roc.isLive:
                 self.window.sprites.remove(roc)
+                self.g_rockets.remove(roc)
                 self.sprites_rockets.remove(roc)
+                break
