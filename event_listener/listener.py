@@ -18,7 +18,7 @@ class EventListener:
     __gp_keys = {0, 1, 6, 7}
 
     def __init__(self):
-        self.__events: list[Event] = []
+        self.__events: [Event] = []
         self._thread: Thread = Thread(target=self.listener)
         self._clock = pg.time.Clock()
         self._gamepad = None
