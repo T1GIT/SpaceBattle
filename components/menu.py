@@ -57,7 +57,7 @@ class Menu:
 
         # TODO : добавить в менеджер картинок
         myimage = pygame_menu.baseimage.BaseImage(
-            image_path="./resources/textures/menu_bg.jpg",
+            image_path="./resources/bg/menu_bg.jpg",
         )
 
         my_theme = pygame_menu.themes.Theme(
