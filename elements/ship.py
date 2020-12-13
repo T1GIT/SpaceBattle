@@ -32,8 +32,7 @@ class Ship(pg.sprite.Sprite):
         :param x: position
         :param y: position
         """
-        self.rect = self.image.get_rect(
-            center=(x, y))
+        self.rect = self.image.get_rect(center=(x, y))
 
     def update(self):
         """
