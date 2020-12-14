@@ -86,6 +86,8 @@ class Menu:
         self.menu.add_button('About', self.about_menu)
         self.menu.add_button('Quit', self.window.exit)
 
+        # self.menu.
+
     def exit(self):
         self.menu.disable()
 
@@ -100,4 +102,5 @@ class Menu:
         """
         Hides menu from the window
         """
+        self.menu.disable()
         # TODO: Damir

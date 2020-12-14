@@ -60,25 +60,31 @@ class Window:
         self.comp_game.start()
         self.comp_menu.hide()
 
-    def event_handler(self, eventType):
+    def menu(self):
+        self.comp_game.reset()
+        self.comp_menu.show()
+
+    def event_handler(self, events: [pg.event.Event]):
         """
         Does action from event name
-        :param eventType: event name
+        :param events: list of the events
         """
-        if eventType == pg.QUIT:
-            self.running = False
+        for event in events:
+            if event.type == pg.QUIT:
+                self.exit()
 
     def exit(self):
-        self.comp_menu.exit()
-        self.event_listener.interrupt()
         self.running = False
+        self.event_listener.interrupt()
+        self.comp_menu.exit()
 
     def show(self):
         self.event_listener.start()
-        self.comp_menu.show()  # TODO: Uncomment
+        self.comp_menu.show()
         self.process()
 
     def process(self):
+
         self.ship = Ship()  # TODO: Move into Game.event_handler after testing finish
         self.ship.locate(Conf.Window.WIDTH // 2, Conf.Window.HEIGHT // 2)
         self.sprites.add(self.ship)
@@ -88,15 +94,13 @@ class Window:
         rocket_timer = 0
 
         while self.running:
-            # if not Conf.Window.BLUR:
-            #     self.screen.fill((0, 0, 0))
+            self.event_handler(pg.event.get())
             self.screen.blit(self.image, self.image.get_rect())
             self.sprites.draw(self.screen)
             self.comp_game.loop(self.event_listener.pop_events())
             self.sprites.update()
             pg.display.flip()
             self.clock.tick(Conf.Rules.FPS)
-            if pg.event.peek(pg.QUIT): self.exit()
 
 
             x, y = 0, 0  # TODO: Move into Game.event_handler after testing finish
@@ -127,6 +131,7 @@ class Window:
                 self.ship.brake()
             else:
                 self.ship.accelerate(x, y)
+
 
 
         while self.event_listener.is_running():
