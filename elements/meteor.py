@@ -58,7 +58,7 @@ class Meteor(pg.sprite.Sprite):
     @staticmethod
     def get_coords_for_meteor_on_field():
         """
-        Get coordinates for meteor object
+        Get coordinates on field for meteor object
         :return: horizontally and vertically position
         """
         x = rd.randint(0 + 50, Conf.Window.WIDTH - 50)
@@ -68,7 +68,7 @@ class Meteor(pg.sprite.Sprite):
     @staticmethod
     def get_coords_for_meteor_out_field():
         """
-        Get coordinates for meteor object
+        Get coordinates out of field for meteor object
         :return: horizontally and vertically position
         """
         x = rd.randint(-Conf.Meteor.MAX_SIZE, Conf.Window.WIDTH + Conf.Meteor.MAX_SIZE)
