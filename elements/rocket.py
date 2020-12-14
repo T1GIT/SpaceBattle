@@ -19,7 +19,8 @@ class Rocket(pg.sprite.Sprite):
         self.texture = pg.transform.scale(raw_image, (w1, h1))
         self.image = self.texture.copy()
         self.start_x, self.start_y = 0, 0
-        self.a_x, self.a_y = 0, 0
+        self.speed_x, self.speed_y = 0, 0
+        self.pos_x, self.pos_y = 0, 0
         self.angle = 0
 
     def locate(self, x, y, deg):
@@ -32,22 +33,25 @@ class Rocket(pg.sprite.Sprite):
         self.start_x, self.start_y = x, y
         self.angle = deg
         rad = radians(self.angle)
-        self.a_x = round(Conf.Rocket.SPEED * cos(rad))
-        self.a_y = round(Conf.Rocket.SPEED * sin(rad))
+        self.speed_x = Conf.Rocket.SPEED * cos(rad) * Conf.Rules.SCALE
+        self.speed_y = Conf.Rocket.SPEED * sin(rad) * Conf.Rules.SCALE
         self.image = pg.transform.rotate(self.texture, -self.angle)
         self.rect = self.image.get_rect(center=(self.start_x, self.start_y))
+        self.pos_x, self.pos_y = self.rect.x, self.rect.y
 
     def update(self):
         ctr = self.rect.center
         if Conf.Rocket.UNLIMITED:
             if 0 < ctr[0] < Conf.Window.WIDTH and 0 < ctr[1] < Conf.Window.HEIGHT:
-                self.rect.x += self.a_x
-                self.rect.y += self.a_y
+                self.pos_x += self.speed_x
+                self.pos_y += self.speed_y
             else:
                 self.kill()
         else:
             if sqrt(pow(ctr[0] - self.start_x, 2) + pow(ctr[1] - self.start_y, 2)) <= Conf.Rocket.MAX_DISTANCE:
-                self.rect.x += self.a_x
-                self.rect.y += self.a_y
+                self.pos_x += self.speed_x
+                self.pos_y += self.speed_y
             else:
                 self.kill()
+        self.rect.x, self.rect.y = self.pos_x, self.pos_y
+
