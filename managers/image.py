@@ -17,7 +17,7 @@ class Image:
     __STATIC_BG = None
     __DYNAMIC_BG = None
     __MENU = None
-    __EXPLOSION = None
+    __ANIMATIONS = dict()
 
     @staticmethod
     def get_ship(with_fire: bool) -> pg.image:
@@ -62,10 +62,11 @@ class Image:
         return Image.__MENU
 
     @staticmethod
-    def get_explosion() -> [pg.image]:
-        if Image.__EXPLOSION is None:
-            Image.__EXPLOSION = []
-            path = f"{Image.__ROOT}/gif/explosion"
+    def get_animation(name: str) -> [pg.image]:
+        if name not in Image.__ANIMATIONS:
+            pack = []
+            path = f"{Image.__ROOT}/anim/{name}"
             for frame in range(len([f for f in os.listdir(path) if os.path.isfile(os.path.join(path, f))])):
-                Image.__EXPLOSION.append(pg.image.load(f"{path}/{frame}.{Conf.Images.ANIM_FORMAT}").convert_alpha())
-        return Image.__EXPLOSION
+                pack.append(pg.image.load(f"{path}/{frame}.{Conf.Images.ANIM_FORMAT}").convert_alpha())
+            Image.__ANIMATIONS.update({name: pack})
+        return Image.__ANIMATIONS[name]

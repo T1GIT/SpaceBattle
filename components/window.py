@@ -16,6 +16,16 @@ from elements.ship import Ship
 
 
 class Window:
+    """
+    """
+
+
+
+    rocket_period = (Conf.Rules.FPS * Conf.Rocket.PERIOD) // 1000
+
+
+
+
     def __init__(self):
         # Initialisation
         pg.init()
@@ -44,8 +54,9 @@ class Window:
         self.image = pg.transform.scale(bg, (w1, h1))
 
 
-
         self.rocket_timer = 0
+
+
 
     def reset(self):
         """
@@ -116,6 +127,7 @@ class Window:
         pg.display.flip()
         self.clock.tick(Conf.Rules.FPS)
 
+        self.rocket_timer = max(0, self.rocket_timer - 1)
         x, y = 0, 0  # TODO: Move into Game.event_handler after testing finish
         for event in events:
             if event.get_type() == Kb.Events.KEY:
@@ -136,8 +148,8 @@ class Window:
                 self.ship.rotate(*event.get_data(), False)
             elif (event.get_type() == Ms.Events.KEY and event.get_data() == Ms.Keys.LEFT
                   or event.get_type() == Gp.Events.KEY and event.get_data() == Gp.Keys.RT):
-                if (time_ns() - self.rocket_timer) / 1e6 > Conf.Rocket.PERIOD:
-                    self.rocket_timer = time_ns()
+                if self.rocket_timer == 0:
+                    self.rocket_timer = self.rocket_period
                     rocket = self.ship.shoot()
                     self.sprites.add(rocket)
         if (x, y) == (0, 0):

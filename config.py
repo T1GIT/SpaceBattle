@@ -6,8 +6,8 @@ class Configuration:
     class Window:
         TITLE = "Space Battle"
         FULLSCREEN = False
-        WIDTH = 1920
-        HEIGHT = 1080
+        WIDTH = 500
+        HEIGHT = 500
 
     class Game:
         pass
@@ -38,6 +38,7 @@ class Configuration:
         RESIST = 0.05  # (0; 1)
         SMOOTH = 10  # >= 1
         ACCURACY = 5  # [1; 10]
+        DEAD_SPEED = 0.2
 
     class Meteor:
         MAX_SIZE = 100
@@ -47,7 +48,7 @@ class Configuration:
         ROTATING = True
         MIN_ROTATE_SPEED = 1
         MAX_ROTATE_SPEED = 5
-        QUANTITY = 100
+        QUANTITY = 0
         BY_TIME = False
         PERIOD = 1000
         ON_FIELD = False
@@ -55,12 +56,13 @@ class Configuration:
     class Rocket:
         SIZE = 10  # px
         SPEED = 20  # > 0
-        PERIOD = 100  # ms
+        PERIOD = 200  # ms
         MAX_DISTANCE = 300  # px  (needs Rocket.UNLIMITED = False)
         UNLIMITED = True
 
     class Animation:
-        SIZE = 30
+        SIZE = 100
+        FPS = 30
 
     class Images:
         SHIP = 0
@@ -80,7 +82,7 @@ class Configuration:
         TRIGGER_DEAD_ZONE = 0.5
 
     class Rules:
-        FPS = 60
+        FPS = 300
         POLLING_RATE = 60
         GAME_SPEED = 60
         SCALE = GAME_SPEED / FPS

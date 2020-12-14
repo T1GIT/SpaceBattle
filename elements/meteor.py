@@ -67,7 +67,7 @@ class Meteor(pg.sprite.Sprite):
             self.pos_y = self.rect.y
         elif self.rect.bottom < 0 - self.max_size:
             self.rect.top = Conf.Window.HEIGHT
-            self.pos_y = self.rect.y
+        self.pos_x, self.pos_y = self.rect.x, self.rect.y
         if Conf.Meteor.ROTATING:
             self.rotate()
 
