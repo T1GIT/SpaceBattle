@@ -10,8 +10,7 @@ class Meteor(pg.sprite.Sprite):
     Can destroy ship
     Can be destroyed by rockets
     """
-    def __init__(self, game):
-        self.game = game
+    def __init__(self):
         pg.sprite.Sprite.__init__(self)
         raw_image = Img.get_meteors()
         self.count_rotate = 0
@@ -45,13 +44,37 @@ class Meteor(pg.sprite.Sprite):
     def update(self):
         self.rect.x += self.speed_x
         self.rect.y += self.speed_y
-        if self.rect.left > Conf.Window.WIDTH:
+        if self.rect.left > Conf.Window.WIDTH + Conf.Meteor.MAX_SIZE:
             self.rect.right = 0
-        elif self.rect.right < 0:
+        elif self.rect.right < 0 - Conf.Meteor.MAX_SIZE:
             self.rect.left = Conf.Window.WIDTH
-        if self.rect.top > Conf.Window.HEIGHT:
+        if self.rect.top > Conf.Window.HEIGHT + Conf.Meteor.MAX_SIZE:
             self.rect.bottom = 0
-        elif self.rect.bottom < 0:
+        elif self.rect.bottom < 0 - Conf.Meteor.MAX_SIZE:
             self.rect.top = Conf.Window.HEIGHT
         if Conf.Meteor.ROTATING:
             self.rotate()
+
+    @staticmethod
+    def get_coords_for_meteor_on_field():
+        """
+        Get coordinates for meteor object
+        :return: horizontally and vertically position
+        """
+        x = rd.randint(0 + 50, Conf.Window.WIDTH - 50)
+        y = rd.randint(0 + 50, Conf.Window.HEIGHT - 50)
+        return x, y
+
+    @staticmethod
+    def get_coords_for_meteor_out_field():
+        """
+        Get coordinates for meteor object
+        :return: horizontally and vertically position
+        """
+        x = rd.randint(-Conf.Meteor.MAX_SIZE, Conf.Window.WIDTH + Conf.Meteor.MAX_SIZE)
+        y = rd.randint(-Conf.Meteor.MAX_SIZE, Conf.Window.HEIGHT + Conf.Meteor.MAX_SIZE)
+        while x in range(Conf.Window.WIDTH):
+            x = rd.randint(-Conf.Meteor.MAX_SIZE, Conf.Window.WIDTH + Conf.Meteor.MAX_SIZE)
+        while y in range(Conf.Window.HEIGHT):
+            y = rd.randint(-Conf.Meteor.MAX_SIZE, Conf.Window.HEIGHT + Conf.Meteor.MAX_SIZE)
+        return x, y
