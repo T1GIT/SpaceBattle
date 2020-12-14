@@ -6,8 +6,8 @@ class Configuration:
     class Window:
         TITLE = "Space Battle"
         FULLSCREEN = False
-        WIDTH = 1000
-        HEIGHT = 1000
+        WIDTH = 500
+        HEIGHT = 500
 
     class Game:
         pass
@@ -38,6 +38,7 @@ class Configuration:
         RESIST = 0.05  # (0; 1)
         SMOOTH = 10  # >= 1
         ACCURACY = 5  # [1; 10]
+        DEAD_SPEED = 0.2
 
     class Meteor:
         MAX_SIZE = 100
@@ -47,7 +48,7 @@ class Configuration:
         ROTATING = True
         MIN_ROTATE_SPEED = 1
         MAX_ROTATE_SPEED = 5
-        QUANTITY = 10
+        QUANTITY = 0
         BY_TIME = False
         PERIOD = 1000
         ON_FIELD = False
@@ -55,7 +56,7 @@ class Configuration:
     class Rocket:
         SIZE = 10  # px
         SPEED = 20  # > 0
-        PERIOD = 100  # ms
+        PERIOD = 200  # ms
         MAX_DISTANCE = 300  # px  (needs Rocket.UNLIMITED = False)
         UNLIMITED = True
 
@@ -81,10 +82,11 @@ class Configuration:
         TRIGGER_DEAD_ZONE = 0.5
 
     class Rules:
-        FPS = 60
-        POLLING_RATE = 30
-        SCALE = POLLING_RATE / FPS
-        LIFES = 0
+        FPS = 300
+        POLLING_RATE = 60
+        GAME_SPEED = 60
+        SCALE = GAME_SPEED / FPS
+        LIVES = 0
 
     # Checking parameters
     assert 0 <= EventListener.STICK_SENSITIVITY <= 10
@@ -95,5 +97,4 @@ class Configuration:
     assert Meteor.MAX_SIZE >= Meteor.MIN_SIZE
     assert Rocket.SPEED > 0
     assert 0 <= DynamicBG.OPACITY <= 100
-    # assert Rules.FPS % Implosion.FPS == 0
 
