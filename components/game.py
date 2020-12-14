@@ -15,13 +15,13 @@ def get_coords_for_meteor():
     Get coordinates for meteor object
     :return: horizontally and vertically position
     """
-    spawn_hor = Conf.Window.WIDTH // 2
-    spawn_vert = Conf.Window.HEIGHT // 2
-    while Conf.Window.WIDTH // 2 - 50 <= spawn_hor <= Conf.Window.WIDTH // 2 + 50:
-        spawn_hor = rd.randint(10, Conf.Window.WIDTH)
-    while Conf.Window.HEIGHT // 2 - 50 <= spawn_vert <= Conf.Window.HEIGHT // 2 + 50:
-        spawn_vert = rd.randint(10, Conf.Window.HEIGHT)
-    return spawn_hor, spawn_vert
+    x = Conf.Window.WIDTH // 2
+    y = Conf.Window.HEIGHT // 2
+    while Conf.Window.WIDTH // 2 - 50 <= x <= Conf.Window.WIDTH // 2 + 50:
+        x = rd.randint(10, Conf.Window.WIDTH)
+    while Conf.Window.HEIGHT // 2 - 50 <= y <= Conf.Window.HEIGHT // 2 + 50:
+        y = rd.randint(10, Conf.Window.HEIGHT)
+    return x, y
 
 
 class Game:

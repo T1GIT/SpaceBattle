@@ -44,9 +44,10 @@ class Configuration:
         MIN_SIZE = 50
         MIN_SPEED = 1
         MAX_SPEED = 2
+        ROTATING = True
         MAX_ROTATE_SPEED = 5
-        QUANTITY = 100
-        BY_TIME = True
+        QUANTITY = 500
+        BY_TIME = False
         PERIOD = 1000
         ON_FIELD = False
 
