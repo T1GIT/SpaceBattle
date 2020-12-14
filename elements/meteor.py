@@ -19,7 +19,7 @@ class Meteor(pg.sprite.Sprite):
         self.speed_x = rd.choice((-1, 1)) * rd.uniform(self.min_speed, self.max_speed)
         self.speed_y = rd.uniform(-self.max_speed, self.max_speed)
         self.angle = 0
-        self.angle_speed = rd.uniform(-Conf.Meteor.MAX_ROTATE_SPEED, Conf.Meteor.MAX_ROTATE_SPEED) * rd.choice((-1, 1)) * Conf.Rules.COEFFICIENT_OF_SCALE
+        self.angle_speed = rd.uniform(-Conf.Meteor.MAX_ROTATE_SPEED, Conf.Meteor.MAX_ROTATE_SPEED) * Conf.Rules.SCALE
         self.pos_x, self.pos_y = 0, 0
         # Init sprite
         pg.sprite.Sprite.__init__(self)
@@ -35,10 +35,13 @@ class Meteor(pg.sprite.Sprite):
         """
         Rotate the figure
         """
+        x_offset = self.pos_x - self.rect.x
+        y_offset = self.pos_y - self.rect.y
         self.angle = (self.angle + self.angle_speed) % 360
         self.image = pg.transform.rotate(self.texture, self.angle)
         self.rect = self.image.get_rect(center=self.rect.center)
-        self.pos_x, self.pos_y = self.rect.x, self.rect.y
+        self.pos_x = self.rect.x + x_offset
+        self.pos_y = self.rect.y + y_offset
 
     def locate(self, x, y):
         """
