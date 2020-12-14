@@ -79,6 +79,8 @@ class Window:
         self.process()
 
     def process(self):
+        self.mng_sound.game_music()  # Game music!
+
         self.ship = Ship()  # TODO: Move into Game.event_handler after testing finish
         self.ship.locate(Conf.Window.WIDTH // 2, Conf.Window.HEIGHT // 2)
         self.sprites.add(self.ship)
@@ -122,6 +124,7 @@ class Window:
                     if (time_ns() - rocket_timer) / 1e6 > Conf.Rocket.PERIOD:
                         rocket_timer = time_ns()
                         rocket = self.ship.shoot()
+                        self.mng_sound.fire_sound()  # Fire sound!
                         self.sprites.add(rocket)
             if (x, y) == (0, 0):
                 self.ship.brake()
