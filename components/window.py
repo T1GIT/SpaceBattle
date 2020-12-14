@@ -79,20 +79,22 @@ class Window:
         self.comp_menu.exit()
 
     def show(self):
-        self.event_listener.start()
+        self.running = True
         self.comp_menu.show()
-        self.process()
+        if self.running:
+            self.event_listener.start()
+            self.process()
 
     def process(self):
+        pg.mouse.set_visible(False)
+        pg.event.set_grab(True)
 
         self.ship = Ship()  # TODO: Move into Game.event_handler after testing finish
         self.ship.locate(Conf.Window.WIDTH // 2, Conf.Window.HEIGHT // 2)
         self.sprites.add(self.ship)
-        pg.mouse.set_visible(False)
         self.comp_game.start()
 
         rocket_timer = 0
-
         while self.running:
             self.event_handler(pg.event.get())
             self.screen.blit(self.image, self.image.get_rect())
@@ -133,7 +135,4 @@ class Window:
                 self.ship.accelerate(x, y)
 
 
-
-        while self.event_listener.is_running():
-            pass
         pg.quit()

@@ -8,7 +8,6 @@ class Configuration:
         FULLSCREEN = False
         WIDTH = 1000
         HEIGHT = 1000
-        BLUR = True
 
     class Game:
         pass
@@ -20,7 +19,6 @@ class Configuration:
         GAME_VERSION = "v0.1"
         AUTHORS = "Damir", "Artem", "Dmitriy"
         CONTACTS = ""
-        OPACITY = 0
 
         class Title:
             X_OFFSET = 100
@@ -48,7 +46,7 @@ class Configuration:
         MAX_SPEED = 2
         MAX_ROTATE_SPEED = 5
         QUANTITY = 100
-        BY_TIME = False
+        BY_TIME = True
         PERIOD = 1000
         ON_FIELD = False
 
