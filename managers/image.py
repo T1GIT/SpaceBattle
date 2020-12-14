@@ -1,6 +1,8 @@
 import pygame as pg
 import os
 
+import pygame_menu
+
 from config import Configuration as Conf
 
 
@@ -14,6 +16,7 @@ class Image:
     __METEORS = None
     __STATIC_BG = None
     __DYNAMIC_BG = None
+    __MENU = None
 
     @staticmethod
     def get_ship(with_fire: bool) -> pg.image:
@@ -49,3 +52,10 @@ class Image:
             Image.__STATIC_BG = pg.image.load(
                 f"{Image.__ROOT}/bg/static/{Conf.Images.STATIC_BG}.{Conf.Images.BASIC_FORMAT}").convert()
         return Image.__STATIC_BG
+
+    @staticmethod
+    def get_menu() -> pygame_menu.baseimage.BaseImage:
+        if Image.__MENU is None:
+            Image.__MENU = pygame_menu.baseimage.BaseImage(
+                image_path="./resources/images/bg/menu_bg.jpg")
+        return Image.__MENU

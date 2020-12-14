@@ -17,12 +17,15 @@ class Configuration:
         pass
 
     class Menu:
-        HEIGHT = 700
-        WIDTH = 700
         GAME_VERSION = "v0.1"
         AUTHORS = "Damir", "Artem", "Dmitriy"
         CONTACTS = ""
         OPACITY = 0
+
+        class Title:
+            X_OFFSET = 100
+            Y_OFFSET = 40
+            SIZE = 70
 
     class Font:
         name = "opensans"

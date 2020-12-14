@@ -2,6 +2,7 @@ import pygame as pg
 import pygame_menu
 
 from config import Configuration as Conf
+from managers.image import Image as Img
 
 
 class Menu:
@@ -31,8 +32,8 @@ class Menu:
         about_theme.title_font_size = 56
 
         self.about_menu = pygame_menu.Menu(
-            height=Conf.Menu.HEIGHT,
-            width=Conf.Menu.WIDTH,
+            height=Conf.Window.HEIGHT,
+            width=Conf.Window.WIDTH,
             onclose=pygame_menu.events.DISABLE_CLOSE,  # Action on closing
             theme=about_theme,  # Setting theme
             title='About'
@@ -56,16 +57,14 @@ class Menu:
         """
 
         # TODO : добавить в менеджер картинок
-        myimage = pygame_menu.baseimage.BaseImage(
-            image_path="./resources/images/bg/menu_bg.jpg",
-        )
+        myimage = Img.get_menu()
 
         my_theme = pygame_menu.themes.Theme(
             selection_color=(0, 250, 0),
             title_bar_style=pygame_menu.widgets.MENUBAR_STYLE_NONE,  # Separating header and body
-            title_offset=(Conf.Window.WIDTH/5, 0),
+            title_offset=(Conf.Menu.Title.X_OFFSET, Conf.Menu.Title.Y_OFFSET),
             title_font_color=(255, 255, 255),
-            title_font_size=64,
+            title_font_size=Conf.Menu.Title.SIZE,
             background_color=myimage,
             widget_font_color=(255, 255, 255),
             widget_font_size=40,
@@ -74,8 +73,8 @@ class Menu:
         )
 
         self.menu = pygame_menu.Menu(
-            Conf.Menu.HEIGHT,
-            Conf.Menu.WIDTH,
+            Conf.Window.HEIGHT,
+            Conf.Window.WIDTH,
             title='SPACE BATTLE',
             theme=my_theme,
             onclose=pygame_menu.events.DISABLE_CLOSE,

@@ -75,7 +75,7 @@ class Window:
 
     def show(self):
         self.event_listener.start()
-        # self.comp_menu.show()  TODO: Uncomment
+        self.comp_menu.show()  # TODO: Uncomment
         self.process()
 
     def process(self):
