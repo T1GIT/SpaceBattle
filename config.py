@@ -82,8 +82,8 @@ class Configuration:
     class Rules:
         FPS = 60
         POLLING_RATE = 60
-        SCALE = POLLING_RATE / FPS
-        COEFFICIENT_OF_SCALE = 60 / FPS
+        GAME_SPEED = 60
+        SCALE = GAME_SPEED / FPS
         LIVES = 0
 
     # Checking parameters

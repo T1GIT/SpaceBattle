@@ -19,7 +19,7 @@ class Meteor(pg.sprite.Sprite):
         self.speed_x = rd.choice((-1, 1)) * rd.uniform(self.min_speed, self.max_speed)
         self.speed_y = rd.uniform(-self.max_speed, self.max_speed)
         self.angle = 0
-        self.angle_speed = rd.uniform(-Conf.Meteor.MAX_ROTATE_SPEED, Conf.Meteor.MAX_ROTATE_SPEED) * rd.choice((-1, 1)) * Conf.Rules.COEFFICIENT_OF_SCALE
+        self.angle_speed = rd.uniform(-Conf.Meteor.MAX_ROTATE_SPEED, Conf.Meteor.MAX_ROTATE_SPEED) * Conf.Rules.SCALE
         self.pos_x, self.pos_y = 0, 0
         # Init sprite
         pg.sprite.Sprite.__init__(self)
