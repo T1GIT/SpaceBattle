@@ -73,7 +73,7 @@ class Window:
 
     def process(self):
         self.ship = Ship()
-        self.ship.locate(300, 300)
+        self.ship.locate(Conf.Window.WIDTH // 2, Conf.Window.HEIGHT // 2)
         self.sprites.add(self.ship)
         pg.mouse.set_visible(False)
         self.comp_game.start()
