@@ -1,27 +1,9 @@
-import random as rd
 from time import time_ns
-
 import pygame as pg
-
 from components.overlay import Overlay
 from config import Configuration as Conf
 from elements.meteor import Meteor
-from elements.rocket import Rocket
 from event_listener.events import Event
-
-
-def get_coords_for_meteor():
-    """
-    Get coordinates for meteor object
-    :return: horizontally and vertically position
-    """
-    x = Conf.Window.WIDTH // 2
-    y = Conf.Window.HEIGHT // 2
-    while Conf.Window.WIDTH // 2 - 50 <= x <= Conf.Window.WIDTH // 2 + 50:
-        x = rd.randint(10, Conf.Window.WIDTH)
-    while Conf.Window.HEIGHT // 2 - 50 <= y <= Conf.Window.HEIGHT // 2 + 50:
-        y = rd.randint(10, Conf.Window.HEIGHT)
-    return x, y
 
 
 class Game:
@@ -81,7 +63,10 @@ class Game:
                 self.counter_meteors += 1
 
     def spawn_meteor(self):
-        meteor = Meteor(self)
-        meteor.locate(*get_coords_for_meteor())
+        meteor = Meteor()
+        if Conf.Meteor.ON_FIELD:
+            meteor.locate(*Meteor.get_coords_for_meteor_on_field())
+        else:
+            meteor.locate(*Meteor.get_coords_for_meteor_out_field())
         self.window.sprites.add(meteor)
         self.sprites_meteors.add(meteor)
