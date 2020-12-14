@@ -43,6 +43,8 @@ class Configuration:
         MAX_SPEED = 2
         MAX_ROTATE_SPEED = 5
         QUANTITY = 10
+        BY_TIME = True
+        PERIOD = 1000
 
     class Rocket:
         SIZE = 5  # px
@@ -55,7 +57,7 @@ class Configuration:
         OVERLAY_TXT = "#000000"
 
     class Images:
-        SHIP = 1
+        SHIP = 2
         ROCKET = 1
         METEOR = 0
         FORMAT = "png"
