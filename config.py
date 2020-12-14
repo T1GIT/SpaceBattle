@@ -32,11 +32,11 @@ class Configuration:
         OPACITY = 50  # [0, 100]
 
     class Ship:
-        SIZE = 100
+        SIZE = 500
         WEIGHT = 2
         POWER = 5
         RESIST = 0.05  # (0; 1)
-        SMOOTH = 8  # >= 1
+        SMOOTH = 10  # >= 1
         ACCURACY = 5  # [1; 10]
 
     class Meteor:
@@ -46,7 +46,7 @@ class Configuration:
         MAX_SPEED = 2
         ROTATING = True
         MAX_ROTATE_SPEED = 5
-        QUANTITY = 500
+        QUANTITY = 10
         BY_TIME = False
         PERIOD = 1000
         ON_FIELD = False
@@ -68,6 +68,7 @@ class Configuration:
         MENU_BG = 0
         STATIC_BG = 0
         DYNAMIC_BG = 0
+        ANIM_FORMAT = "gif"
         SPRITE_FORMAT = "png"
         BASIC_FORMAT = "jpg"
 
