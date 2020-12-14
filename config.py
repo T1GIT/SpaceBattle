@@ -5,11 +5,10 @@ class Configuration:
     """
     class Window:
         TITLE = "Space Battle"
-        FULLSCREEN = False
-        WIDTH = 700
-        HEIGHT = 700
-        FPS = 60
-        POLLING_RATE = 60
+        FULLSCREEN = True
+        WIDTH = 1000
+        HEIGHT = 1000
+        BLUR = True
 
     class Game:
         pass
@@ -28,6 +27,9 @@ class Configuration:
     class Font:
         name = "opensans"
 
+    class DynamicBG:
+        OPACITY = 50  # [0, 100]
+
     class Ship:
         SIZE = 100
         WEIGHT = 2
@@ -42,9 +44,10 @@ class Configuration:
         MIN_SPEED = 1
         MAX_SPEED = 2
         MAX_ROTATE_SPEED = 5
-        QUANTITY = 10
-        BY_TIME = True
+        QUANTITY = 100
+        BY_TIME = False
         PERIOD = 1000
+        ON_FIELD = False
 
     class Rocket:
         SIZE = 5  # px
@@ -57,10 +60,13 @@ class Configuration:
         OVERLAY_TXT = "#000000"
 
     class Images:
-        SHIP = 2
+        SHIP = 0
         ROCKET = 1
         METEOR = 0
+        STATIC_BG = 0
+        DYNAMIC_BG = 0
         FORMAT = "png"
+        BASIC_FORMAT = "jpg"
 
     class EventListener:
         MOUSE_BUTTONS = 3
@@ -69,14 +75,17 @@ class Configuration:
         TRIGGER_DEAD_ZONE = 0.5
 
     class Rules:
+        FPS = 60
+        POLLING_RATE = 60
         LIFES = 0
 
     # Checking parameters
     assert 0 <= EventListener.STICK_SENSITIVITY <= 10
     assert 1 <= Ship.ACCURACY <= 10
     assert 0 < Ship.RESIST < 1
-    assert Window.POLLING_RATE <= Window.FPS
+    assert Rules.POLLING_RATE <= Rules.FPS
     assert Ship.SMOOTH >= 1
     assert Meteor.MAX_SIZE >= Meteor.MIN_SIZE
     assert Rocket.SPEED > 0
+    assert 0 <= DynamicBG.OPACITY <= 100
 

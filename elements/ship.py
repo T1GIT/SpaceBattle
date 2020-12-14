@@ -15,13 +15,15 @@ class Ship(pg.sprite.Sprite):
     """
     def __init__(self):
         pg.sprite.Sprite.__init__(self)
+        # Texture wearing
         normal = Img.get_ship(False)
         fire = Img.get_ship(True)
         w0, h0 = normal.get_size()
-        scale = Conf.Ship.SIZE / h0
+        scale = Conf.Ship.SIZE / max((w0, h0))
         w1, h1 = map(lambda x: round(x * scale), [w0, h0])
         self.texture_normal = pg.transform.scale(normal, (w1, h1))
         self.texture_fire = pg.transform.scale(fire, (w1, h1))
+        # Variables
         self.half_width = self.texture_normal.get_width() / 2
         self.half_height = self.texture_normal.get_height() / 2
         self.image = self.texture_normal.copy()

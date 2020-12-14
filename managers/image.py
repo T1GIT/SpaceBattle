@@ -6,12 +6,14 @@ from config import Configuration as Conf
 
 class Image:
     """
-    Class containing objects' textures, already prepared for using
+    Class containing objects' images, already prepared for using
     """
-    __ROOT = "./resources/textures"
+    __ROOT = "./resources/images"
     __SHIP = [None, None]
     __ROCKET = None
-    __METEOR = None
+    __METEORS = None
+    __STATIC_BG = None
+    __DYNAMIC_BG = None
 
     @staticmethod
     def get_ship(with_fire: bool) -> pg.image:
@@ -23,7 +25,7 @@ class Image:
             if Image.__SHIP[0] is None:
                 Image.__SHIP[0] = pg.image.load(
                     f"{Image.__ROOT}/ship/{Conf.Images.SHIP}/normal.{Conf.Images.FORMAT}").convert_alpha()
-        return Image.__SHIP[1 if with_fire else 0]
+        return Image.__SHIP[1] if with_fire else Image.__SHIP[0]
 
     @staticmethod
     def get_rocket() -> pg.image:
@@ -34,9 +36,16 @@ class Image:
 
     @staticmethod
     def get_meteors() -> [pg.image]:
-        if Image.__METEOR is None:
-            Image.__METEOR = []
+        if Image.__METEORS is None:
+            Image.__METEORS = []
             path = f"{Image.__ROOT}/meteor/{Conf.Images.METEOR}"
             for x in range(len([f for f in os.listdir(path) if os.path.isfile(os.path.join(path, f))])):
-                Image.__METEOR.append(pg.image.load(f"{path}/{x}.{Conf.Images.FORMAT}").convert_alpha())
-        return Image.__METEOR
+                Image.__METEORS.append(pg.image.load(f"{path}/{x}.{Conf.Images.FORMAT}").convert_alpha())
+        return Image.__METEORS
+
+    @staticmethod
+    def get_static_bg() -> pg.image:
+        if Image.__STATIC_BG is None:
+            Image.__STATIC_BG = pg.image.load(
+                f"{Image.__ROOT}/bg/static/{Conf.Images.STATIC_BG}.{Conf.Images.BASIC_FORMAT}").convert()
+        return Image.__STATIC_BG

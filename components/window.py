@@ -9,6 +9,7 @@ from managers.image import Image
 from components.game import Game
 from components.menu import Menu
 from config import Configuration as Conf
+from managers.image import Image as Img
 
 
 from elements.ship import Ship
@@ -35,6 +36,12 @@ class Window:
         self.comp_menu = Menu(self)
         # Listeners
         self.event_listener = EventListener()
+        # Background
+        bg = Img.get_static_bg()
+        w0, h0 = bg.get_size()
+        scale = max((Conf.Window.WIDTH / w0, Conf.Window.HEIGHT / h0))
+        w1, h1 = map(lambda x: round(x * scale), [w0, h0])
+        self.image = pg.transform.scale(bg, (w1, h1))
 
     def reset(self):
         """
@@ -72,7 +79,7 @@ class Window:
         self.process()
 
     def process(self):
-        self.ship = Ship()
+        self.ship = Ship()  # TODO: Move into Game.event_handler after testing finish
         self.ship.locate(Conf.Window.WIDTH // 2, Conf.Window.HEIGHT // 2)
         self.sprites.add(self.ship)
         pg.mouse.set_visible(False)
@@ -81,12 +88,14 @@ class Window:
         rocket_timer = 0
 
         while self.running:
-            self.screen.fill((0, 0, 0))
+            # if not Conf.Window.BLUR:
+            #     self.screen.fill((0, 0, 0))
+            self.screen.blit(self.image, self.image.get_rect())
             self.sprites.draw(self.screen)
             self.comp_game.loop(self.event_listener.pop_events())
             self.sprites.update()
             pg.display.flip()
-            self.clock.tick(Conf.Window.FPS)
+            self.clock.tick(Conf.Rules.FPS)
             if pg.event.peek(pg.QUIT): self.exit()
 
 
