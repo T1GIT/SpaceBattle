@@ -15,17 +15,20 @@ class Ship(pg.sprite.Sprite):
     """
     def __init__(self):
         pg.sprite.Sprite.__init__(self)
-        raw_image = Img.get_ship()
-        w0, h0 = raw_image.get_size()
+        normal = Img.get_ship(False)
+        fire = Img.get_ship(True)
+        w0, h0 = normal.get_size()
         scale = Conf.Ship.SIZE / h0
         w1, h1 = map(lambda x: round(x * scale), [w0, h0])
-        self.texture = pg.transform.scale(raw_image, (w1, h1))
-        self.half_width = self.texture.get_width() / 2
-        self.half_height = self.texture.get_height() / 2
-        self.image = self.texture.copy()
+        self.texture_normal = pg.transform.scale(normal, (w1, h1))
+        self.texture_fire = pg.transform.scale(fire, (w1, h1))
+        self.half_width = self.texture_normal.get_width() / 2
+        self.half_height = self.texture_normal.get_height() / 2
+        self.image = self.texture_normal.copy()
         self.x_speed, self.y_speed = 0, 0
         self.angle = 90
         self.accuracy = 50 / Conf.Ship.ACCURACY
+        self.with_fire = False
 
     def locate(self, x, y):
         """
@@ -72,15 +75,24 @@ class Ship(pg.sprite.Sprite):
         :param y: coordinate of the axel vector
         """
         # Adding resistance
+
         r = self.__resist()
         a = self.__axel(x, y)
         self.x_speed += (a[0] - r[0]) / Conf.Ship.WEIGHT
         self.y_speed += (a[1] - r[1]) / Conf.Ship.WEIGHT
+        if not self.with_fire:
+            self.with_fire = True
+            self.image = pg.transform.rotate(self.texture_fire, self.angle - 90)
+            self.rect = self.image.get_rect(center=self.rect.center)
 
     def brake(self):
         r = self.__resist()
         self.x_speed -= r[0] / Conf.Ship.WEIGHT
         self.y_speed -= r[1] / Conf.Ship.WEIGHT
+        if self.with_fire:
+            self.with_fire = False
+            self.image = pg.transform.rotate(self.texture_normal, self.angle - 90)
+            self.rect = self.image.get_rect(center=self.rect.center)
 
     def rotate(self, x, y, smooth):
         """
@@ -95,7 +107,8 @@ class Ship(pg.sprite.Sprite):
         elif d_deg < -180: d_deg += 360
         if (not smooth) or abs(d_deg) > self.accuracy:
             self.angle += (d_deg / Conf.Ship.SMOOTH) if smooth else d_deg
-            self.image = pg.transform.rotate(self.texture, self.angle - 90)
+            self.image = pg.transform.rotate(
+                self.texture_fire if self.with_fire else self.texture_normal, self.angle - 90)
             self.rect = self.image.get_rect(center=self.rect.center)
             if self.angle > 180: self.angle -= 360
             elif self.angle < -180: self.angle += 360
