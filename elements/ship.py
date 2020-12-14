@@ -50,12 +50,15 @@ class Ship(pg.sprite.Sprite):
         period to it's coordinates
         Called every frame.
         """
-        if 0 + self.half_width < self.rect.center[0] + self.x_speed < Conf.Window.WIDTH - self.half_width:
-            self.pos_x += self.x_speed
-            self.rect.x = self.pos_x
-        if 0 + self.half_width < self.rect.center[1] + self.y_speed < Conf.Window.HEIGHT - self.half_width:
-            self.pos_y -= self.y_speed
-            self.rect.y = self.pos_y
+        if self.x_speed < Conf.Ship.DEAD_SPEED and self.y_speed < Conf.Ship.DEAD_SPEED:
+            self.x_speed, self.y_speed = 0, 0
+        else:
+            if 0 + self.half_width < self.rect.center[0] + self.x_speed < Conf.Window.WIDTH - self.half_width:
+                self.pos_x += self.x_speed
+                self.rect.x = self.pos_x
+            if 0 + self.half_width < self.rect.center[1] + self.y_speed < Conf.Window.HEIGHT - self.half_width:
+                self.pos_y -= self.y_speed
+                self.rect.y = self.pos_y
 
     def __resist(self):
         speed = sqrt(pow(self.x_speed, 2) + pow(self.y_speed, 2))

@@ -38,6 +38,7 @@ class Configuration:
         RESIST = 0.05  # (0; 1)
         SMOOTH = 10  # >= 1
         ACCURACY = 5  # [1; 10]
+        DEAD_SPEED = 0.5
 
     class Meteor:
         MAX_SIZE = 100
