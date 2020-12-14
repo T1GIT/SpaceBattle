@@ -38,7 +38,7 @@ class Configuration:
         RESIST = 0.05  # (0; 1)
         SMOOTH = 10  # >= 1
         ACCURACY = 5  # [1; 10]
-        DEAD_SPEED = 0.5
+        DEAD_SPEED = 0.1
 
     class Meteor:
         MAX_SIZE = 100
@@ -82,7 +82,7 @@ class Configuration:
         TRIGGER_DEAD_ZONE = 0.5
 
     class Rules:
-        FPS = 60
+        FPS = 120
         POLLING_RATE = 60
         SCALE = POLLING_RATE / FPS
         LIFES = 0

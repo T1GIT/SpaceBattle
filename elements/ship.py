@@ -29,7 +29,7 @@ class Ship(pg.sprite.Sprite):
         self.half_width = self.texture_normal.get_width() / 2
         self.half_height = self.texture_normal.get_height() / 2
         self.image = self.texture_normal
-        self.x_speed, self.y_speed = 0, 0
+        self.speed_x, self.speed_y = 0, 0
         self.pos_x, self.pos_y = 0, 0
         self.angle = 90
         self.with_fire = False
@@ -50,19 +50,24 @@ class Ship(pg.sprite.Sprite):
         period to it's coordinates
         Called every frame.
         """
-        if self.x_speed < Conf.Ship.DEAD_SPEED and self.y_speed < Conf.Ship.DEAD_SPEED:
-            self.x_speed, self.y_speed = 0, 0
+        if abs(self.speed_x) < Conf.Ship.DEAD_SPEED and abs(self.speed_y) < Conf.Ship.DEAD_SPEED:
+            self.speed_x, self.speed_y = 0, 0
         else:
-            if 0 + self.half_width < self.rect.center[0] + self.x_speed < Conf.Window.WIDTH - self.half_width:
-                self.pos_x += self.x_speed
-                self.rect.x = self.pos_x
-            if 0 + self.half_width < self.rect.center[1] + self.y_speed < Conf.Window.HEIGHT - self.half_width:
-                self.pos_y -= self.y_speed
-                self.rect.y = self.pos_y
+            c_x, c_y = self.rect.center
+            next_x, next_y = c_x + self.speed_x, c_y - self.speed_y
+            if self.half_width > next_x or next_x > Conf.Window.WIDTH - self.half_width:
+                self.speed_x = 0
+            else:
+                self.pos_x += self.speed_x * Conf.Rules.SCALE
+            if self.half_width > next_y or next_y > Conf.Window.WIDTH - self.half_width:
+                self.speed_y = 0
+            else:
+                self.pos_y -= self.speed_y * Conf.Rules.SCALE
+            self.rect.x, self.rect.y = self.pos_x, self.pos_y
 
     def __resist(self):
-        speed = sqrt(pow(self.x_speed, 2) + pow(self.y_speed, 2))
-        rad = atan2(self.y_speed, self.x_speed)
+        speed = sqrt(pow(self.speed_x, 2) + pow(self.speed_y, 2))
+        rad = atan2(self.speed_y, self.speed_x)
         r = Conf.Ship.RESIST * pow(speed, 2)
         r_x = r * cos(rad)
         r_y = r * sin(rad)
@@ -86,8 +91,8 @@ class Ship(pg.sprite.Sprite):
 
         r = self.__resist()
         a = self.__axel(x, y)
-        self.x_speed += (a[0] - r[0]) / Conf.Ship.WEIGHT
-        self.y_speed += (a[1] - r[1]) / Conf.Ship.WEIGHT
+        self.speed_x += (a[0] - r[0]) / Conf.Ship.WEIGHT
+        self.speed_y += (a[1] - r[1]) / Conf.Ship.WEIGHT
         if not self.with_fire:
             self.with_fire = True
             self.image = pg.transform.rotate(self.texture_fire, self.angle - 90)
@@ -95,8 +100,8 @@ class Ship(pg.sprite.Sprite):
 
     def brake(self):
         r = self.__resist()
-        self.x_speed -= r[0] / Conf.Ship.WEIGHT
-        self.y_speed -= r[1] / Conf.Ship.WEIGHT
+        self.speed_x -= r[0] / Conf.Ship.WEIGHT
+        self.speed_y -= r[1] / Conf.Ship.WEIGHT
         if self.with_fire:
             self.with_fire = False
             self.image = pg.transform.rotate(self.texture_normal, self.angle - 90)
