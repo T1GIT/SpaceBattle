@@ -32,7 +32,7 @@ class Configuration:
         OPACITY = 50  # [0, 100]
 
     class Ship:
-        SIZE = 500
+        SIZE = 100
         WEIGHT = 2
         POWER = 5
         RESIST = 0.05  # (0; 1)
@@ -47,20 +47,21 @@ class Configuration:
         ROTATING = True
         MIN_ROTATE_SPEED = 1
         MAX_ROTATE_SPEED = 5
-        QUANTITY = 100
+        QUANTITY = 10
         BY_TIME = False
         PERIOD = 1000
         ON_FIELD = False
 
     class Rocket:
-        SIZE = 40  # px
+        SIZE = 10  # px
         SPEED = 20  # > 0
         PERIOD = 100  # ms
         MAX_DISTANCE = 300  # px  (needs Rocket.UNLIMITED = False)
         UNLIMITED = True
 
     class Animation:
-        SIZE = 30
+        SIZE = 100
+        FPS = 30
 
     class Images:
         SHIP = 0
@@ -81,7 +82,8 @@ class Configuration:
 
     class Rules:
         FPS = 60
-        POLLING_RATE = 60
+        POLLING_RATE = 30
+        SCALE = POLLING_RATE / FPS
         LIFES = 0
 
     # Checking parameters
@@ -93,4 +95,5 @@ class Configuration:
     assert Meteor.MAX_SIZE >= Meteor.MIN_SIZE
     assert Rocket.SPEED > 0
     assert 0 <= DynamicBG.OPACITY <= 100
+    # assert Rules.FPS % Implosion.FPS == 0
 

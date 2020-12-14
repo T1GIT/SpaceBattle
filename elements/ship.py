@@ -13,6 +13,8 @@ class Ship(pg.sprite.Sprite):
     Can shooting rockets
     Can by destroyed by meteors
     """
+    accuracy = 50 / Conf.Ship.ACCURACY
+
     def __init__(self):
         pg.sprite.Sprite.__init__(self)
         # Texture wearing
@@ -29,7 +31,6 @@ class Ship(pg.sprite.Sprite):
         self.image = self.texture_normal
         self.x_speed, self.y_speed = 0, 0
         self.angle = 90
-        self.accuracy = 50 / Conf.Ship.ACCURACY
         self.with_fire = False
 
     def locate(self, x, y):
