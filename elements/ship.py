@@ -30,6 +30,7 @@ class Ship(pg.sprite.Sprite):
         self.half_height = self.texture_normal.get_height() / 2
         self.image = self.texture_normal
         self.x_speed, self.y_speed = 0, 0
+        self.pos_x, self.pos_y = 0, 0
         self.angle = 90
         self.with_fire = False
 
@@ -40,6 +41,7 @@ class Ship(pg.sprite.Sprite):
         :param y: position
         """
         self.rect = self.image.get_rect(center=(x, y))
+        self.pos_x, self.pos_y = x, y
 
     def update(self):
         """
@@ -48,12 +50,12 @@ class Ship(pg.sprite.Sprite):
         period to it's coordinates
         Called every frame.
         """
-        d_x = round(self.x_speed)
-        d_y = -round(self.y_speed)
-        if 0 + self.half_width < self.rect.center[0] + d_x < Conf.Window.WIDTH - self.half_width:
-            self.rect.x += d_x
-        if 0 + self.half_width < self.rect.center[1] + d_y < Conf.Window.HEIGHT - self.half_width:
-            self.rect.y += d_y
+        if 0 + self.half_width < self.rect.center[0] + self.x_speed < Conf.Window.WIDTH - self.half_width:
+            self.pos_x += self.x_speed
+            self.rect.x = self.pos_x
+        if 0 + self.half_width < self.rect.center[1] + self.y_speed < Conf.Window.HEIGHT - self.half_width:
+            self.pos_y -= self.y_speed
+            self.rect.y = self.pos_y
 
     def __resist(self):
         speed = sqrt(pow(self.x_speed, 2) + pow(self.y_speed, 2))
@@ -113,6 +115,7 @@ class Ship(pg.sprite.Sprite):
             self.image = pg.transform.rotate(
                 self.texture_fire if self.with_fire else self.texture_normal, self.angle - 90)
             self.rect = self.image.get_rect(center=self.rect.center)
+            self.pos_x, self.pos_y = self.rect.x, self.rect.y
             if self.angle > 180: self.angle -= 360
             elif self.angle < -180: self.angle += 360
 

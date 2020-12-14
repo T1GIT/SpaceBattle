@@ -82,7 +82,7 @@ class Configuration:
 
     class Rules:
         FPS = 60
-        POLLING_RATE = 30
+        POLLING_RATE = 60
         SCALE = POLLING_RATE / FPS
         LIFES = 0
 
