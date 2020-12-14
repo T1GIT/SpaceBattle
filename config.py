@@ -13,7 +13,7 @@ class Configuration:
         pass
 
     class Overlay:
-        pass
+        TXT_COLOR = "#000000"
 
     class Menu:
         GAME_VERSION = "v0.1"
@@ -42,24 +42,25 @@ class Configuration:
     class Meteor:
         MAX_SIZE = 100
         MIN_SIZE = 50
-        MIN_SPEED = 1
-        MAX_SPEED = 2
+        MIN_SPEED = 0.5
+        MAX_SPEED = 3
         ROTATING = True
+        MIN_ROTATE_SPEED = 1
         MAX_ROTATE_SPEED = 5
-        QUANTITY = 10
+        QUANTITY = 100
         BY_TIME = False
         PERIOD = 1000
         ON_FIELD = False
 
     class Rocket:
-        SIZE = 5  # px
-        SPEED = 2  # > 0
+        SIZE = 40  # px
+        SPEED = 20  # > 0
         PERIOD = 100  # ms
         MAX_DISTANCE = 300  # px  (needs Rocket.UNLIMITED = False)
         UNLIMITED = True
 
-    class Colors:
-        OVERLAY_TXT = "#000000"
+    class Animation:
+        SIZE = 30
 
     class Images:
         SHIP = 0

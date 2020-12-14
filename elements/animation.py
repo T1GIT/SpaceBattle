@@ -10,14 +10,15 @@ class Animation(pg.sprite.Sprite):
     def __init__(self, game):
         self.game = game
         pg.sprite.Sprite.__init__(self)
-        raw_image = Img.get_meteors()
-        self.count_rotate = 0
-        self.count_of_meteor = rd.randint(0, len(raw_image) - 1)
-        w0, h0 = raw_image[self.count_of_meteor].get_size()
-        scale = rd.randint(Conf.Meteor.MIN_SIZE, Conf.Meteor.MAX_SIZE) / h0
+        # Texture wearing
+        raw_frames = Img.get_explosion()
+        w0, h0 = raw_frames[0].get_size()
+        scale = Conf.Animation.SIZE / max(w0, h0)
         w1, h1 = map(lambda x: round(x * scale), [w0, h0])
-        self.texture = pg.transform.scale(raw_image[self.count_of_meteor], (w1, h1))
-        self.image = self.texture.copy()
+        self.frames = []
+        for frame in raw_frames:
+            self.frames.append(pg.transform.scale(frame, (w1, h1)))
+        self.image = self.copy()
         self.speed_x = rd.choice((-1, 1)) * rd.randint(Conf.Meteor.MIN_SPEED, Conf.Meteor.MAX_SPEED)
         self.speed_y = rd.choice((-1, 1)) * rd.randint(Conf.Meteor.MIN_SPEED, Conf.Meteor.MAX_SPEED)
         self.angle = 0
@@ -31,5 +32,5 @@ class Animation(pg.sprite.Sprite):
         """
         self.rect = self.image.get_rect(center=(x, y))
 
-    def update(self):
+    # def update(self):
 

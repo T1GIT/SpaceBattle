@@ -26,7 +26,7 @@ class Ship(pg.sprite.Sprite):
         # Variables
         self.half_width = self.texture_normal.get_width() / 2
         self.half_height = self.texture_normal.get_height() / 2
-        self.image = self.texture_normal.copy()
+        self.image = self.texture_normal
         self.x_speed, self.y_speed = 0, 0
         self.angle = 90
         self.accuracy = 50 / Conf.Ship.ACCURACY

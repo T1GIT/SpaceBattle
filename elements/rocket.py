@@ -18,7 +18,7 @@ class Rocket(pg.sprite.Sprite):
         w1, h1 = map(lambda x: round(x * scale), [w0, h0])
         self.texture = pg.transform.scale(raw_image, (w1, h1))
         self.image = self.texture.copy()
-        self.x, self.y = 0, 0
+        self.start_x, self.start_y = 0, 0
         self.a_x, self.a_y = 0, 0
         self.angle = 0
 
@@ -29,23 +29,24 @@ class Rocket(pg.sprite.Sprite):
         :param y: position
         :param deg: angle of rotation
         """
-        self.x, self.y = x, y
+        self.start_x, self.start_y = x, y
         self.angle = deg
         rad = radians(self.angle)
-        self.a_x = round(Conf.Rocket.SIZE * Conf.Rocket.SPEED * cos(rad))
-        self.a_y = round(Conf.Rocket.SIZE * Conf.Rocket.SPEED * sin(rad))
+        self.a_x = round(Conf.Rocket.SPEED * cos(rad))
+        self.a_y = round(Conf.Rocket.SPEED * sin(rad))
         self.image = pg.transform.rotate(self.texture, -self.angle)
-        self.rect = self.image.get_rect(center=(self.x, self.y))
+        self.rect = self.image.get_rect(center=(self.start_x, self.start_y))
 
     def update(self):
+        ctr = self.rect.center
         if Conf.Rocket.UNLIMITED:
-            if 0 < self.rect.x < Conf.Window.WIDTH and 0 < self.rect.y < Conf.Window.HEIGHT:
+            if 0 < ctr[0] < Conf.Window.WIDTH and 0 < ctr[1] < Conf.Window.HEIGHT:
                 self.rect.x += self.a_x
                 self.rect.y += self.a_y
             else:
                 self.kill()
         else:
-            if sqrt(pow(self.rect.x - self.x, 2) + pow(self.rect.y - self.y, 2)) <= Conf.Rocket.MAX_DISTANCE:
+            if sqrt(pow(ctr[0] - self.start_x, 2) + pow(ctr[1] - self.start_y, 2)) <= Conf.Rocket.MAX_DISTANCE:
                 self.rect.x += self.a_x
                 self.rect.y += self.a_y
             else:

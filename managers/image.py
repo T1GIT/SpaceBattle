@@ -17,6 +17,7 @@ class Image:
     __STATIC_BG = None
     __DYNAMIC_BG = None
     __MENU = None
+    __EXPLOSION = None
 
     @staticmethod
     def get_ship(with_fire: bool) -> pg.image:
@@ -59,3 +60,12 @@ class Image:
             Image.__MENU = pygame_menu.baseimage.BaseImage(
                 image_path=f"{Image.__ROOT}/bg/menu/{Conf.Images.MENU_BG}.{Conf.Images.BASIC_FORMAT}")
         return Image.__MENU
+
+    @staticmethod
+    def get_explosion() -> [pg.image]:
+        if Image.__EXPLOSION is None:
+            Image.__EXPLOSION = []
+            path = f"{Image.__ROOT}/gif/explosion"
+            for frame in range(len([f for f in os.listdir(path) if os.path.isfile(os.path.join(path, f))])):
+                Image.__EXPLOSION.append(pg.image.load(f"{path}/{frame}.{Conf.Images.ANIM_FORMAT}").convert_alpha())
+        return Image.__EXPLOSION

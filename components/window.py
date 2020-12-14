@@ -97,11 +97,15 @@ class Window:
         self.ship.locate(Conf.Window.WIDTH // 2, Conf.Window.HEIGHT // 2)
         self.sprites.add(self.ship)
 
-        while self.running:
-            if pg.event.peek(pg.QUIT):
-                self.exit()
-            else:
-                self.loop(self.event_listener.pop_events())
+        try:
+            while self.running:
+                if pg.event.peek(pg.QUIT):
+                    self.exit()
+                else:
+                    self.loop(self.event_listener.pop_events())
+        except Exception as e:
+            print(e)
+            self.exit()
         pg.quit()
 
     def loop(self, events: [Event]):
