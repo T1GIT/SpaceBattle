@@ -1,31 +1,23 @@
-import pygame as pg
 from ctypes import windll
-from time import time_ns
 
-from event_listener.listener import EventListener
-from event_listener.events import Keyboard as Kb, Gamepad as Gp, Mouse as Ms, Event
-from managers.sound import Sound
-from managers.image import Image
+import pygame as pg
+
 from components.game import Game
 from components.menu import Menu
 from config import Configuration as Conf
+from event_listener.events import Event
+from event_listener.listener import EventListener
+from managers.image import Image
 from managers.image import Image as Img
-
-
-from elements.ship import Ship
+from managers.sound import Sound
 
 
 class Window:
     """
+    Class for show the main window.
+    Initials the Game.
+    Start event_listener
     """
-
-
-
-    rocket_period = (Conf.Rules.FPS * Conf.Rocket.PERIOD) // 1000
-
-
-
-
     def __init__(self):
         # Initialisation
         pg.init()
@@ -53,11 +45,6 @@ class Window:
         w1, h1 = map(lambda x: round(x * scale), [w0, h0])
         self.image = pg.transform.scale(bg, (w1, h1))
 
-
-        self.rocket_timer = 0
-
-
-
     def reset(self):
         """
         Reloads the game and opens the menu
@@ -72,11 +59,15 @@ class Window:
         Starts the game
         """
         pg.mouse.set_visible(False)
-        self.comp_game.start()
         self.comp_menu.hide()
+        self.comp_game.start()
+        self.event_listener.start()
+        self.mainloop()
 
     def menu(self):
-        self.comp_game.reset()
+        """
+        Opens the menu
+        """
         self.comp_menu.show()
 
     def event_handler(self, events: [Event]):
@@ -89,70 +80,46 @@ class Window:
                 self.exit()
 
     def exit(self):
+        """
+        Close menu window
+        """
         self.running = False
         self.event_listener.interrupt()
         self.comp_menu.exit()
 
     def show(self):
+        """
+        Opens the window
+        """
         self.running = True
-        # self.comp_menu.show()
-        if self.running:
-            self.event_listener.start()
-            self.mainloop()
+        self.comp_menu.show()
 
     def mainloop(self):
+        """
+        Main method of the class
+        Start event_handler
+        """
         pg.mouse.set_visible(False)
         pg.event.set_grab(True)
-
-        self.ship = Ship()  # TODO: Move into Game.event_handler after testing finish
-        self.ship.locate(Conf.Window.WIDTH // 2, Conf.Window.HEIGHT // 2)
-        self.sprites.add(self.ship)
-
         try:
             while self.running:
-                if pg.event.peek(pg.QUIT):
-                    self.exit()
-                else:
-                    self.loop(self.event_listener.pop_events())
+                self.event_handler(pg.event.get())
+                self.loop(self.event_listener.pop_events())
         except Exception as e:
             print(e)
             self.exit()
         pg.quit()
 
     def loop(self, events: [Event]):
+        """
+        Update all sprites and draw changes on the screen
+        :param events
+        """
         self.screen.blit(self.image, self.image.get_rect())
-        self.sprites.draw(self.screen)
-        self.comp_game.loop(self.event_listener.pop_events())
+        self.comp_game.loop(events)
         self.sprites.update()
+        self.sprites.draw(self.screen)
         pg.display.flip()
         self.clock.tick(Conf.Rules.FPS)
 
-        self.rocket_timer = max(0, self.rocket_timer - 1)
-        x, y = 0, 0  # TODO: Move into Game.event_handler after testing finish
-        for event in events:
-            if event.get_type() == Kb.Events.KEY:
-                if event.get_data() in (Kb.Keys.W, Kb.Keys.UP):
-                    y += 1
-                if event.get_data() in (Kb.Keys.S, Kb.Keys.DOWN):
-                    y -= 1
-                if event.get_data() in (Kb.Keys.A, Kb.Keys.LEFT):
-                    x -= 1
-                if event.get_data() in (Kb.Keys.D, Kb.Keys.RIGHT):
-                    x += 1
-            elif event.get_type() == Gp.Events.LS:
-                x += event.get_data()[0]
-                y += event.get_data()[1]
-            elif event.get_type() == Ms.Events.MOVE:
-                self.ship.rotate(*event.get_data(), True)
-            elif event.get_type() == Gp.Events.RS:
-                self.ship.rotate(*event.get_data(), False)
-            elif (event.get_type() == Ms.Events.KEY and event.get_data() == Ms.Keys.LEFT
-                  or event.get_type() == Gp.Events.KEY and event.get_data() == Gp.Keys.RT):
-                if self.rocket_timer == 0:
-                    self.rocket_timer = self.rocket_period
-                    rocket = self.ship.shoot()
-                    self.sprites.add(rocket)
-        if (x, y) == (0, 0):
-            self.ship.brake()
-        else:
-            self.ship.accelerate(x, y)
+

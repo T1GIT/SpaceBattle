@@ -48,8 +48,8 @@ class Configuration:
         ROTATING = True
         MIN_ROTATE_SPEED = 1
         MAX_ROTATE_SPEED = 5
-        QUANTITY = 0
-        BY_TIME = False
+        QUANTITY = 10
+        BY_TIME = True
         PERIOD = 1000
         ON_FIELD = False
 
