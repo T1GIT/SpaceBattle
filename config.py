@@ -6,8 +6,8 @@ class Configuration:
     class Window:
         TITLE = "Space Battle"
         FULLSCREEN = False
-        WIDTH = 1000
-        HEIGHT = 1000
+        WIDTH = 1920
+        HEIGHT = 1080
 
     class Game:
         pass
@@ -32,7 +32,7 @@ class Configuration:
         OPACITY = 50  # [0, 100]
 
     class Ship:
-        SIZE = 500
+        SIZE = 100
         WEIGHT = 2
         POWER = 5
         RESIST = 0.05  # (0; 1)
@@ -53,7 +53,7 @@ class Configuration:
         ON_FIELD = False
 
     class Rocket:
-        SIZE = 40  # px
+        SIZE = 10  # px
         SPEED = 20  # > 0
         PERIOD = 100  # ms
         MAX_DISTANCE = 300  # px  (needs Rocket.UNLIMITED = False)
@@ -82,7 +82,9 @@ class Configuration:
     class Rules:
         FPS = 60
         POLLING_RATE = 60
-        LIFES = 0
+        SCALE = POLLING_RATE / FPS
+        COEFFICIENT_OF_SCALE = 60 / FPS
+        LIVES = 0
 
     # Checking parameters
     assert 0 <= EventListener.STICK_SENSITIVITY <= 10

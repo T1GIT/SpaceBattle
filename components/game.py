@@ -35,7 +35,6 @@ class Game:
         Starts the game
         """
         self.spawn_meteors()
-        # TODO: Artem
 
     def event_handler(self, eventName: str):
         """
@@ -44,7 +43,6 @@ class Game:
         """
         # Типа убийство метеора:
         self.counter_meteors -= 1
-        # TODO: Artem
 
     def loop(self, events: [Event]):
         """
@@ -65,8 +63,8 @@ class Game:
     def spawn_meteor(self):
         meteor = Meteor()
         if Conf.Meteor.ON_FIELD:
-            meteor.locate(*Meteor.get_coords_for_meteor_on_field())
+            meteor.locate(*Meteor.Set_Meteors().get_on_field())
         else:
-            meteor.locate(*Meteor.get_coords_for_meteor_out_field())
+            meteor.locate(*Meteor.Set_Meteors().get_out_field())
         self.window.sprites.add(meteor)
         self.sprites_meteors.add(meteor)
