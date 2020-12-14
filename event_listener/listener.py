@@ -63,17 +63,14 @@ class EventListener:
         Can be safely closed by calling <EventListener.object>.interrupt()
         """
         while self._running:
-            try:
-                self._clock.tick(Conf.Window.POLLING_RATE)
-                # Checking devices
-                self._check_mouse()
-                self._check_keyboard()
-                self._check_gamepad()
-                # Safe closing thread
-                if self._interrupted:
-                    self._running = False
-            except Exception:
-                print("Was catch in the EventListener cycle")
+            self._clock.tick(Conf.Window.POLLING_RATE)
+            # Checking devices
+            self._check_mouse()
+            self._check_keyboard()
+            self._check_gamepad()
+            # Safe closing thread
+            if self._interrupted:
+                self._running = False
 
     def _check_mouse(self):
         """
