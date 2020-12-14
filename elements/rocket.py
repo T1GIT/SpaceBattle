@@ -37,8 +37,8 @@ class Rocket(pg.sprite.Sprite):
         self.angle = deg
         rad = radians(self.angle)
         self.start_x, self.start_y = x, y
-        self.a_x = round(self.speed * cos(rad))
-        self.a_y = round(self.speed * sin(rad))
+        self.a_x = round(self.speed * Conf.Rules.SCALE * cos(rad))
+        self.a_y = round(self.speed * Conf.Rules.SCALE * sin(rad))
         self.image = pg.transform.rotate(self.texture, -self.angle)
         self.rect = self.image.get_rect(center=(self.start_x, self.start_y))
 
