@@ -11,13 +11,18 @@ class Rocket(pg.sprite.Sprite):
     Destroys meteors
     """
     def __init__(self):
+        # Settings
+        self.angle = 0
+        self.start_x, self.start_y = 0, 0
+        self.a_x, self.a_y = 0, 0
+        # Init sprite
         pg.sprite.Sprite.__init__(self)
         raw_image = Img.get_rocket()
         w0, h0 = raw_image.get_size()
-        scale = Conf.Rocket.SIZE / h0
+        scale = self.size / h0
         w1, h1 = map(lambda x: round(x * scale), [w0, h0])
         self.texture = pg.transform.scale(raw_image, (w1, h1))
-        self.image = self.texture.copy()
+        self.image = self.texture
         self.start_x, self.start_y = 0, 0
         self.speed_x, self.speed_y = 0, 0
         self.pos_x, self.pos_y = 0, 0
@@ -30,9 +35,9 @@ class Rocket(pg.sprite.Sprite):
         :param y: position
         :param deg: angle of rotation
         """
-        self.start_x, self.start_y = x, y
         self.angle = deg
         rad = radians(self.angle)
+        self.start_x, self.start_y = x, y
         self.speed_x = Conf.Rocket.SPEED * cos(rad) * Conf.Rules.SCALE
         self.speed_y = Conf.Rocket.SPEED * sin(rad) * Conf.Rules.SCALE
         self.image = pg.transform.rotate(self.texture, -self.angle)
