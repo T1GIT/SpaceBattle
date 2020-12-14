@@ -35,10 +35,13 @@ class Meteor(pg.sprite.Sprite):
         """
         Rotate the figure
         """
+        x_offset = self.pos_x - self.rect.x
+        y_offset = self.pos_y - self.rect.y
         self.angle = (self.angle + self.angle_speed) % 360
         self.image = pg.transform.rotate(self.texture, self.angle)
         self.rect = self.image.get_rect(center=self.rect.center)
-        self.pos_x, self.pos_y = self.rect.x, self.rect.y
+        self.pos_x = self.rect.x + x_offset
+        self.pos_y = self.rect.y + y_offset
 
     def locate(self, x, y):
         """
