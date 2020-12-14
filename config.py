@@ -6,8 +6,8 @@ class Configuration:
     class Window:
         TITLE = "Space Battle"
         FULLSCREEN = False
-        WIDTH = 500
-        HEIGHT = 500
+        WIDTH = 1000
+        HEIGHT = 1000
 
     class Game:
         pass
@@ -48,10 +48,10 @@ class Configuration:
         ROTATING = True
         MIN_ROTATE_SPEED = 1
         MAX_ROTATE_SPEED = 5
-        QUANTITY = 10
-        BY_TIME = True
+        QUANTITY = 100
+        BY_TIME = False
         PERIOD = 1000
-        ON_FIELD = False
+        ON_FIELD = True
 
     class Rocket:
         SIZE = 10  # px
@@ -82,7 +82,7 @@ class Configuration:
         TRIGGER_DEAD_ZONE = 0.5
 
     class Rules:
-        FPS = 300
+        FPS = 60
         POLLING_RATE = 60
         GAME_SPEED = 60
         SCALE = GAME_SPEED / FPS

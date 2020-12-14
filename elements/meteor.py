@@ -16,12 +16,12 @@ class Meteor(pg.sprite.Sprite):
         self.speed_y = rd.uniform(-Conf.Meteor.MAX_SPEED, Conf.Meteor.MAX_SPEED)
         self.angle_speed = rd.uniform(-Conf.Meteor.MAX_ROTATE_SPEED, Conf.Meteor.MAX_ROTATE_SPEED) * Conf.Rules.SCALE
         self.pos_x, self.pos_y = 0, 0
-        # Init sprite
+        # Initialising sprite
         pg.sprite.Sprite.__init__(self)
         raw_image = Img.get_meteors()
         self.count_of_meteor = rd.randint(0, len(raw_image) - 1)
         w0, h0 = raw_image[self.count_of_meteor].get_size()
-        scale = rd.randint(Conf.Meteor.MIN_SIZE, Conf.Meteor.MAX_SIZE) / h0
+        scale = rd.randint(Conf.Meteor.MIN_SIZE, Conf.Meteor.MAX_SIZE) / max(w0, h0)
         w1, h1 = map(lambda x: round(x * scale), [w0, h0])
         self.texture = pg.transform.scale(raw_image[self.count_of_meteor], (w1, h1))
         self.image = self.texture
@@ -52,18 +52,21 @@ class Meteor(pg.sprite.Sprite):
         self.pos_x += self.speed_x * Conf.Rules.SCALE
         self.pos_y += self.speed_y * Conf.Rules.SCALE
         self.rect.x, self.rect.y = self.pos_x, self.pos_y
-        if self.rect.left > Conf.Window.WIDTH + Conf.Meteor.MAX_SIZE:
+        max_size = Conf.Meteor.MAX_SIZE
+        width = Conf.Window.WIDTH
+        height = Conf.Window.HEIGHT
+        if self.rect.left < -max_size:
+            self.rect.left = width
+            self.pos_x = self.rect.x
+        elif self.rect.right > width + max_size:
             self.rect.right = 0
             self.pos_x = self.rect.x
-        elif self.rect.right < 0 - Conf.Meteor.MAX_SIZE:
-            self.rect.left = Conf.Window.WIDTH
-            self.pos_x = self.rect.x
-        if self.rect.top > Conf.Window.HEIGHT + Conf.Meteor.MAX_SIZE:
+        if self.rect.top < -max_size:
+            self.rect.top = height
+            self.pos_y = self.rect.y
+        elif self.rect.bottom > height + max_size:
             self.rect.bottom = 0
             self.pos_y = self.rect.y
-        elif self.rect.bottom < 0 - Conf.Meteor.MAX_SIZE:
-            self.rect.top = Conf.Window.HEIGHT
-        self.pos_x, self.pos_y = self.rect.x, self.rect.y
         if Conf.Meteor.ROTATING:
             self.rotate()
 
@@ -85,13 +88,9 @@ class Meteor(pg.sprite.Sprite):
             :return: horizontally and vertically position
             """
             if rd.random() > 0.5:
-                x = rd.choice(
-                    (rd.uniform(-Conf.Meteor.MAX_SIZE, 0),
-                     rd.uniform(Conf.Window.WIDTH, Conf.Window.WIDTH + Conf.Meteor.MAX_SIZE)))
-                y = rd.uniform(-Conf.Meteor.MAX_SIZE, Conf.Window.HEIGHT + Conf.Meteor.MAX_SIZE)
+                x = rd.choice((-Conf.Meteor.MAX_SIZE / 2, Conf.Window.WIDTH + Conf.Meteor.MAX_SIZE / 2))
+                y = rd.uniform(-Conf.Meteor.MAX_SIZE / 2, Conf.Window.HEIGHT + Conf.Meteor.MAX_SIZE / 2)
             else:
-                x = rd.uniform(-Conf.Meteor.MAX_SIZE, Conf.Window.WIDTH + Conf.Meteor.MAX_SIZE)
-                y = rd.choice(
-                    (rd.uniform(-Conf.Meteor.MAX_SIZE, 0),
-                     rd.uniform(Conf.Window.HEIGHT, Conf.Window.HEIGHT + Conf.Meteor.MAX_SIZE)))
+                x = rd.uniform(-Conf.Meteor.MAX_SIZE / 2, Conf.Window.WIDTH + Conf.Meteor.MAX_SIZE / 2)
+                y = rd.choice((-Conf.Meteor.MAX_SIZE / 2, Conf.Window.HEIGHT + Conf.Meteor.MAX_SIZE / 2))
             return x, y
