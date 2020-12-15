@@ -1,19 +1,18 @@
+from config import Configuration as Conf
 
 
 class Overlay:
     def __init__(self, game):
         self.game = game
         self.score = 0
-        # self.life = 3
-        self.life = [0, 0, 0]
+        self.life = [0] * Conf.Rules.LIVES
 
     def reset(self):
         """
         Zero out all variables
         """
-        # TODO: Damir
         self.score = 0
-        self.life = 3
+        self.life = Conf.Rules.LIVES
 
     def up_score(self, number):
         """

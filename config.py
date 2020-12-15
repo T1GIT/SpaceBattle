@@ -109,10 +109,5 @@ class Configuration:
     assert Rocket.SPEED > 0
     assert 0 <= DynamicBG.OPACITY <= 100
     assert 1 <= Sound.Volume.GENERAL <= 10
-    assert 1 <= Sound.Volume.CLICK <= 10
-    assert 1 <= Sound.Volume.SHOOT <= 10
-    assert 1 <= Sound.Volume.BG_GAME <= 10
-    assert 1 <= Sound.Volume.BG_MENU <= 10
-    assert 1 <= Sound.Volume.EX_METEORS <= 10
-    assert 1 <= Sound.Volume.EX_PLAYER <= 10
-
+    assert 1 <= Sound.Volume.SFX <= 10
+    assert 1 <= Sound.Volume.BG <= 10

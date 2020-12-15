@@ -132,7 +132,7 @@ class Menu:
 
         # Sound
         self.engine.set_sound(pygame_menu.sound.SOUND_TYPE_CLICK_MOUSE, Snd.click(),
-                              volume=Snd.get_volume(Conf.Sound.Volume.CLICK))
+                              volume=Snd.get_volume(Conf.Sound.Volume.SFX))
         self.menu["main"].set_sound(self.engine, recursive=True)
 
     def show(self):
