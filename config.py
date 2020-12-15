@@ -32,7 +32,7 @@ class Configuration:
         OPACITY = 50  # [0, 100]
 
     class Ship:
-        SIZE = 100
+        SIZE = 300
         WEIGHT = 2
         POWER = 5
         RESIST = 0.05  # (0; 1)
@@ -48,7 +48,7 @@ class Configuration:
         ROTATING = True
         MIN_ROTATE_SPEED = 1
         MAX_ROTATE_SPEED = 5
-        QUANTITY = 100
+        QUANTITY = 10
         BY_TIME = False
         PERIOD = 1000
         ON_FIELD = True
@@ -83,7 +83,7 @@ class Configuration:
 
     class Rules:
         FPS = 60
-        POLLING_RATE = 60
+        POLLING_RATE = 30
         GAME_SPEED = 60
         SCALE = GAME_SPEED / FPS
         LIVES = 0

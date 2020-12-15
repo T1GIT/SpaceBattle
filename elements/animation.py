@@ -1,8 +1,8 @@
 from collections import deque
 
 import pygame as pg
+
 from config import Configuration as Conf
-import random as rd
 from managers.image import Image as Img
 
 

@@ -5,7 +5,6 @@ import pygame as pg
 from components.game import Game
 from components.menu import Menu
 from config import Configuration as Conf
-from event_listener.events import Event
 from event_listener.listener import EventListener
 from managers.image import Image
 from managers.image import Image as Img
@@ -29,7 +28,7 @@ class Window:
         # Environment
         self.clock = pg.time.Clock()
         self.sprites = pg.sprite.Group()
-        self.running = True
+        self.running = False
         # Managers
         self.mng_sound = Sound()
         self.mng_image = Image()
@@ -58,26 +57,27 @@ class Window:
         """
         Starts the game
         """
-        pg.mouse.set_visible(False)
+        # pg.mouse.set_visible(False)
+        # pg.event.set_grab(True)
         self.comp_menu.hide()
         self.comp_game.start()
-        self.event_listener.start()
         self.mainloop()
 
     def menu(self):
         """
         Opens the menu
         """
+        pg.mouse.set_visible(True)
+        pg.event.set_grab(False)
         self.comp_menu.show()
 
-    def event_handler(self, events: [Event]):
+    def event_handler(self, events: dict):
         """
         Does action from event name
-        :param events: list of the events
+        :param events: events dict
         """
-        for event in events:
-            if event.type == pg.QUIT:
-                self.exit()
+        if pg.QUIT in events:
+            self.exit()
 
     def exit(self):
         """
@@ -85,13 +85,14 @@ class Window:
         """
         self.running = False
         self.event_listener.interrupt()
-        self.comp_menu.exit()
+        self.comp_menu.hide()
 
     def show(self):
         """
         Opens the window
         """
         self.running = True
+        self.event_listener.start()
         self.comp_menu.show()
 
     def mainloop(self):
@@ -99,22 +100,21 @@ class Window:
         Main method of the class
         Start event_handler
         """
-        pg.mouse.set_visible(False)
-        pg.event.set_grab(True)
         try:
             while self.running:
-                self.event_handler(pg.event.get())
-                self.loop(self.event_listener.pop_events())
+                self.loop(self.event_listener.get_events())
+                self.event_listener.erase()
         except Exception as e:
             print(e)
             self.exit()
         pg.quit()
 
-    def loop(self, events: [Event]):
+    def loop(self, events: dict):
         """
         Update all sprites and draw changes on the screen
         :param events
         """
+        self.event_handler(events)
         self.screen.blit(self.image, self.image.get_rect())
         self.comp_game.loop(events)
         self.sprites.update()

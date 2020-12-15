@@ -1,4 +1,3 @@
-import pygame as pg
 import pygame_menu
 
 from config import Configuration as Conf
@@ -86,14 +85,10 @@ class Menu:
         self.menu.add_button('About', self.about_menu)
         self.menu.add_button('Quit', self.window.exit)
 
-    def exit(self):
-        self.menu.disable()
-
     def show(self):
         """
         Shows menu
         """
-        # TODO: Damir
         try:
             self.menu.mainloop(self.window.screen, fps_limit=Conf.Rules.FPS)
         except SystemExit:
@@ -104,4 +99,3 @@ class Menu:
         Hides menu from the window
         """
         self.menu.disable()
-        # TODO: Damir

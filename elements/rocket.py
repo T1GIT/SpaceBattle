@@ -1,7 +1,9 @@
+from math import cos, sin, radians, sqrt
+
 import pygame as pg
+
 from config import Configuration as Conf
 from managers.image import Image as Img
-from math import cos, sin, radians, sqrt
 
 
 class Rocket(pg.sprite.Sprite):

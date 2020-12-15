@@ -1,42 +1,6 @@
 import pygame as pg
 
 
-class Event:
-    """
-    Class of the event's object.
-    Object contains:
-        Event's type.
-        Event's data.
-    """
-    def __init__(self, eventType: int, data):
-        self._type: int = eventType
-        self._data = data
-
-    def get_type(self) -> int:
-        """
-        Returns event's type.
-        Gets from Mouse.Events, Keyboard.Events, Gamepad.Events.
-        Can be checked so: if (<Event.Object>.get_type() == Mouse.Events.KEY):
-        :return: event's type
-        """
-        return self._type
-
-    def get_data(self):
-        """
-        Returns event's data, specific for different event's type:
-            Tuple - ( 0 <= x_axis <= 1, 0 <= y_axis <= 1) for:
-                Mouse.Events.MOVE
-                Gamepad.Events.LS
-                Gamepad.Events.RS
-            Int for:
-                Mouse.Keys.<Name>
-                Keyboard.Keys.<Name>
-                Gamepad.Keys.<Name>
-        :return: int or tuple - (0 <= x_axis <= 1, 0 <= y_axis <= 1)
-        """
-        return self._data
-
-
 class Mouse:
     class Events:
         KEY = 0

@@ -1,6 +1,8 @@
-import pygame as pg
-from config import Configuration as Conf
 import random as rd
+
+import pygame as pg
+
+from config import Configuration as Conf
 from managers.image import Image as Img
 
 
@@ -12,8 +14,8 @@ class Meteor(pg.sprite.Sprite):
     """
     def __init__(self):
         # Settings
-        self.speed_x = rd.uniform(-Conf.Meteor.MAX_SPEED, Conf.Meteor.MAX_SPEED)
-        self.speed_y = rd.uniform(-Conf.Meteor.MAX_SPEED, Conf.Meteor.MAX_SPEED)
+        self.speed_x = rd.uniform(-Conf.Meteor.MAX_SPEED, Conf.Meteor.MAX_SPEED) * Conf.Rules.SCALE
+        self.speed_y = rd.uniform(-Conf.Meteor.MAX_SPEED, Conf.Meteor.MAX_SPEED) * Conf.Rules.SCALE
         self.angle_speed = rd.uniform(-Conf.Meteor.MAX_ROTATE_SPEED, Conf.Meteor.MAX_ROTATE_SPEED) * Conf.Rules.SCALE
         self.pos_x, self.pos_y = 0, 0
         # Initialising sprite
@@ -49,8 +51,8 @@ class Meteor(pg.sprite.Sprite):
         self.pos_x, self.pos_y = self.rect.x, self.rect.y
 
     def update(self):
-        self.pos_x += self.speed_x * Conf.Rules.SCALE
-        self.pos_y += self.speed_y * Conf.Rules.SCALE
+        self.pos_x += self.speed_x
+        self.pos_y += self.speed_y
         self.rect.x, self.rect.y = self.pos_x, self.pos_y
         max_size = Conf.Meteor.MAX_SIZE
         width = Conf.Window.WIDTH
