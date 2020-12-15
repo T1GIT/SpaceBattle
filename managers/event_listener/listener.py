@@ -16,7 +16,7 @@ class EventListener:
                 pg.K_d, pg.K_RIGHT, pg.K_SPACE, pg.K_RETURN, pg.K_ESCAPE}
     _gp_keys = {0, 1, 6, 7}
     _system = {pg.QUIT}
-    _stick_sens = (11 - Conf.EventListener.STICK_SENSITIVITY) * 2 / 10
+    _stick_sens = (11 - Conf.Control.STICK_SENSITIVITY) * 2 / 10
 
     @staticmethod
     def get_events():
@@ -50,7 +50,7 @@ class EventListener:
         """
         events = []
         for key in EventListener._ms_keys:
-            if pg.mouse.get_pressed(num_buttons=Conf.EventListener.MOUSE_BUTTONS)[key]:
+            if pg.mouse.get_pressed(num_buttons=Conf.Control.MOUSE_BUTTONS)[key]:
                 events.append(Event(Mouse.Events.KEY, key))
         rel = pg.mouse.get_rel()
         if rel != (0, 0):
@@ -86,13 +86,13 @@ class EventListener:
                 if EventListener._gamepad.get_button(btn_num):
                     events.append(Event(Gamepad.Events.KEY, btn_num))
             l_x, l_y = (EventListener._gamepad.get_axis(0), -EventListener._gamepad.get_axis(1))
-            if abs(l_x) > Conf.EventListener.STICK_DEAD_ZONE or abs(l_y) > Conf.EventListener.STICK_DEAD_ZONE:
+            if abs(l_x) > Conf.Control.STICK_DEAD_ZONE or abs(l_y) > Conf.Control.STICK_DEAD_ZONE:
                 events.append(Event(Gamepad.Events.LS, EventListener._get_axis(l_x, l_y)))
             r_x, r_y = (EventListener._gamepad.get_axis(3), -EventListener._gamepad.get_axis(4))
-            if abs(r_x) > Conf.EventListener.STICK_DEAD_ZONE or abs(r_y) > Conf.EventListener.STICK_DEAD_ZONE:
+            if abs(r_x) > Conf.Control.STICK_DEAD_ZONE or abs(r_y) > Conf.Control.STICK_DEAD_ZONE:
                 events.append(Event(Gamepad.Events.RS, EventListener._get_axis(r_x, r_y)))
             z_axis = EventListener._gamepad.get_axis(5)
-            if (z_axis + 1) / 2 > Conf.EventListener.TRIGGER_DEAD_ZONE:
+            if (z_axis + 1) / 2 > Conf.Control.TRIGGER_DEAD_ZONE:
                 events.append(Event(Gamepad.Events.KEY, Gamepad.Keys.RT))
         return events
 
