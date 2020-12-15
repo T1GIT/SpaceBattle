@@ -99,7 +99,9 @@ class Window:
     def mainloop(self):
         try:
             while self.running:
+                t = time_ns()
                 self.loop(EventListener.get_events())
+                print((time_ns() - t) / 1e6, "ms")
         except Exception as e:
             print(e)
         pg.quit()

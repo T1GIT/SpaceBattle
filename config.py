@@ -60,7 +60,7 @@ class Configuration:
         ROTATING = True
         MIN_ROTATE_SPEED = 1
         MAX_ROTATE_SPEED = 5
-        QUANTITY = 30
+        QUANTITY = 50
         BY_TIME = False
         PERIOD = 500
         ON_FIELD = True
@@ -78,12 +78,10 @@ class Configuration:
 
     class Images:
         SHIP = 0
-        LIFE = 0
+        LIFE = 5
         ROCKET = 1
-        METEOR = 0
         MENU_BG = 0
-        STATIC_BG = 0
-        DYNAMIC_BG = 0
+        STATIC_BG = 1
         ANIM_FORMAT = "gif"
         SPRITE_FORMAT = "png"
         BASIC_FORMAT = "jpg"
@@ -96,9 +94,9 @@ class Configuration:
         FORMAT = "mp3"
 
         class Volume:
-            GENERAL = 2  # [0; 10]
+            GENERAL = 5  # [0; 10]
             BG = 7  # [0; 10]
-            SFX = 5  # [0; 10]
+            SFX = 3  # [0; 10]
 
     class Control:
         MOUSE_BUTTONS = 3

@@ -48,6 +48,7 @@ class Sound:
             f'{Sound._ROOT}/background/game/{Conf.Sound.BG_GAME}.{Conf.Sound.FORMAT}')
         pg.mixer.music.set_volume(Sound.get_volume(Sound._VOLUME.BG))
         pg.mixer.music.play(-1)
+        pg.mixer.music.set_pos(10)
 
     """
     EXPLODE

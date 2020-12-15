@@ -43,7 +43,7 @@ class Image:
     def get_meteors() -> [pg.image]:
         if Image._METEORS is None:
             Image._METEORS = []
-            path = f"{Image._ROOT}/meteor/{Conf.Images.METEOR}"
+            path = f"{Image._ROOT}/meteor"
             for x in range(len([f for f in os.listdir(path) if os.path.isfile(os.path.join(path, f))])):
                 Image._METEORS.append(pg.image.load(f"{path}/{x}.{Conf.Images.SPRITE_FORMAT}").convert_alpha())
         return Image._METEORS
