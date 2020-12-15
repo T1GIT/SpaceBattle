@@ -33,7 +33,7 @@ class Configuration:
         OPACITY = 50  # [0, 100]
 
     class Ship:
-        SIZE = 300
+        SIZE = 100
         WEIGHT = 2
         POWER = 5
         RESIST = 0.05  # (0; 1)
@@ -85,12 +85,8 @@ class Configuration:
 
         class Volume:
             GENERAL = 5  # [0; 10]
-            CLICK = 2  # [0; 10]
-            SHOOT = 2  # [0; 10]
-            BG_GAME = 2  # [0; 10]
-            BG_MENU = 2  # [0; 10]
-            EX_PLAYER = 10  # [0; 10]
-            EX_METEORS = 4  # [0; 10]
+            BG = 7  # [0; 10]
+            SFX = 5  # [0; 10]
 
     class Control:
         MOUSE_BUTTONS = 3

@@ -30,7 +30,6 @@ class Window:
         self.clock = pg.time.Clock()
         self.sprites = pg.sprite.Group()
         self.running = False
-        self.menu_opened = False
         # Components
         self.comp_game = Game(self)
         self.comp_menu = Menu(self)
@@ -47,14 +46,14 @@ class Window:
         """
         self.sprites.empty()
         self.comp_game.reset()
-        self.comp_menu.show()
 
     def start(self):
         """
         Starts the game
         """
         self._close_menu()
-        self.menu_opened = False
+        if len(self.sprites.sprites()) > 0:
+            self.reset()
         self.comp_game.start()
         self.mainloop()
 
@@ -78,11 +77,7 @@ class Window:
                 self.exit()
         for event in events["keyboard"]:
             if event.get_data() == Kb.Keys.ESC:
-                if self.menu_opened:
-                    self._close_menu()
-                else:
-                    self._open_menu()
-                self.menu_opened = not self.menu_opened
+                self._open_menu()
 
     def exit(self):
         """
@@ -95,7 +90,6 @@ class Window:
         """
         Opens the window
         """
-        self.menu_opened = True
         self.running = True
         self.comp_menu.show()
 
@@ -119,11 +113,10 @@ class Window:
         """
         self.clock.tick(Conf.Rules.FPS)
         self.event_handler(events)
-        if not self.menu_opened:
-            self.comp_game.loop(events)
-            self.screen.blit(self.image, self.image.get_rect())
-            self.sprites.update()
-            self.sprites.draw(self.screen)
-            pg.display.flip()
+        self.comp_game.loop(events)
+        self.screen.blit(self.image, self.image.get_rect())
+        self.sprites.update()
+        self.sprites.draw(self.screen)
+        pg.display.flip()
 
 

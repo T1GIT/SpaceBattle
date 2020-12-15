@@ -10,63 +10,63 @@ class Image:
     """
     Class containing objects' images, already prepared for using
     """
-    __ROOT = "./resources/images"
-    __SHIP = [None, None]
-    __ROCKET = None
-    __METEORS = None
-    __STATIC_BG = None
-    __DYNAMIC_BG = None
-    __MENU = None
-    __ANIMATIONS = dict()
+    _ROOT = "./resources/images"
+    _SHIP = [None, None]
+    _ROCKET = None
+    _METEORS = None
+    _STATIC_BG = None
+    _DYNAMIC_BG = None
+    _MENU = None
+    _ANIMATIONS = dict()
 
     @staticmethod
     def get_ship(with_fire: bool) -> pg.image:
         if with_fire:
-            if Image.__SHIP[1] is None:
-                Image.__SHIP[1] = pg.image.load(
-                    f"{Image.__ROOT}/ship/{Conf.Images.SHIP}/fire.{Conf.Images.SPRITE_FORMAT}").convert_alpha()
+            if Image._SHIP[1] is None:
+                Image._SHIP[1] = pg.image.load(
+                    f"{Image._ROOT}/ship/{Conf.Images.SHIP}/fire.{Conf.Images.SPRITE_FORMAT}").convert_alpha()
         else:
-            if Image.__SHIP[0] is None:
-                Image.__SHIP[0] = pg.image.load(
-                    f"{Image.__ROOT}/ship/{Conf.Images.SHIP}/normal.{Conf.Images.SPRITE_FORMAT}").convert_alpha()
-        return Image.__SHIP[1] if with_fire else Image.__SHIP[0]
+            if Image._SHIP[0] is None:
+                Image._SHIP[0] = pg.image.load(
+                    f"{Image._ROOT}/ship/{Conf.Images.SHIP}/normal.{Conf.Images.SPRITE_FORMAT}").convert_alpha()
+        return Image._SHIP[1] if with_fire else Image._SHIP[0]
 
     @staticmethod
     def get_rocket() -> pg.image:
-        if Image.__ROCKET is None:
-            Image.__ROCKET = pg.image.load(
-                f"{Image.__ROOT}/rocket/{Conf.Images.ROCKET}.{Conf.Images.SPRITE_FORMAT}").convert_alpha()
-        return Image.__ROCKET
+        if Image._ROCKET is None:
+            Image._ROCKET = pg.image.load(
+                f"{Image._ROOT}/rocket/{Conf.Images.ROCKET}.{Conf.Images.SPRITE_FORMAT}").convert_alpha()
+        return Image._ROCKET
 
     @staticmethod
     def get_meteors() -> [pg.image]:
-        if Image.__METEORS is None:
-            Image.__METEORS = []
-            path = f"{Image.__ROOT}/meteor/{Conf.Images.METEOR}"
+        if Image._METEORS is None:
+            Image._METEORS = []
+            path = f"{Image._ROOT}/meteor/{Conf.Images.METEOR}"
             for x in range(len([f for f in os.listdir(path) if os.path.isfile(os.path.join(path, f))])):
-                Image.__METEORS.append(pg.image.load(f"{path}/{x}.{Conf.Images.SPRITE_FORMAT}").convert_alpha())
-        return Image.__METEORS
+                Image._METEORS.append(pg.image.load(f"{path}/{x}.{Conf.Images.SPRITE_FORMAT}").convert_alpha())
+        return Image._METEORS
 
     @staticmethod
     def get_static_bg() -> pg.image:
-        if Image.__STATIC_BG is None:
-            Image.__STATIC_BG = pg.image.load(
-                f"{Image.__ROOT}/bg/static/{Conf.Images.STATIC_BG}.{Conf.Images.BASIC_FORMAT}").convert()
-        return Image.__STATIC_BG
+        if Image._STATIC_BG is None:
+            Image._STATIC_BG = pg.image.load(
+                f"{Image._ROOT}/bg/static/{Conf.Images.STATIC_BG}.{Conf.Images.BASIC_FORMAT}").convert()
+        return Image._STATIC_BG
 
     @staticmethod
     def get_menu() -> pygame_menu.baseimage.BaseImage:
-        if Image.__MENU is None:
-            Image.__MENU = pygame_menu.baseimage.BaseImage(
-                image_path=f"{Image.__ROOT}/bg/menu/{Conf.Images.MENU_BG}.{Conf.Images.BASIC_FORMAT}")
-        return Image.__MENU
+        if Image._MENU is None:
+            Image._MENU = pygame_menu.baseimage.BaseImage(
+                image_path=f"{Image._ROOT}/bg/menu/{Conf.Images.MENU_BG}.{Conf.Images.BASIC_FORMAT}")
+        return Image._MENU
 
     @staticmethod
     def get_animation(name: str) -> [pg.image]:
-        if name not in Image.__ANIMATIONS:
+        if name not in Image._ANIMATIONS:
             pack = []
-            path = f"{Image.__ROOT}/anim/{name}"
+            path = f"{Image._ROOT}/anim/{name}"
             for frame in range(len([f for f in os.listdir(path) if os.path.isfile(os.path.join(path, f))])):
                 pack.append(pg.image.load(f"{path}/{frame}.{Conf.Images.ANIM_FORMAT}").convert_alpha())
-            Image.__ANIMATIONS.update({name: pack})
-        return Image.__ANIMATIONS[name]
+            Image._ANIMATIONS.update({name: pack})
+        return Image._ANIMATIONS[name]

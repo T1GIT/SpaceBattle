@@ -5,6 +5,7 @@ from config import Configuration as Conf
 from elements.meteor import Meteor
 from elements.ship import Ship
 from managers.event_listener.events import Keyboard as Kb, Gamepad as Gp, Mouse as Ms, Event
+from managers.sound import Sound as Snd
 
 
 class Game:
@@ -35,9 +36,14 @@ class Game:
         """
         Erases all mobs and objects
         """
+        self.running = False
         self.ship.kill()
         self.sprites_rockets.empty()
         self.sprites_meteors.empty()
+        self.counter_meteors = 0
+        self.meteor_timer = 0
+        self.rocket_timer = 0
+        self.comp_overlay.reset()
 
     def start(self):
         """
@@ -47,6 +53,7 @@ class Game:
         self.window.sprites.add(self.ship)
         self.ship.locate(Conf.Window.WIDTH // 2, Conf.Window.HEIGHT // 2)
         self.spawn_all_meteors()
+        Snd.bg_game()
 
     def event_handler(self, events: [Event]):
         """
