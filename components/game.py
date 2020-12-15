@@ -87,10 +87,11 @@ class Game:
             if event.get_type() == Gp.Events.KEY and event.get_data() == Gp.Keys.RT:
                 shoot = True
         # Shooting
-        if shoot and self.rocket_timer ==0:
+        if shoot and self.rocket_timer == 0:
             self.rocket_timer = self.rocket_period
             rocket = self.ship.shoot()
             self.window.sprites.add(rocket)
+            self.sprites_rockets.add(rocket)
         # Moving
         if (x, y) == (0, 0):
             self.ship.brake()
@@ -105,6 +106,8 @@ class Game:
         self.event_handler(events)
         # Collide sprites
         self.col_met_ship()
+        if self.sprites_rockets.sprites():
+            self.col_met_roc()
         # Spawning mobs
         self.spawn_all_meteors()
         # Decrementing timers
@@ -118,6 +121,15 @@ class Game:
                     not is_correct_mask(self.ship, met):
                 self.ship.kill()
                 met.kill()
+
+    def col_met_roc(self):
+        for roc in self.sprites_rockets.sprites():
+            for met in self.sprites_meteors.sprites():
+                if met.rect.right > roc.rect.left and met.rect.left < roc.rect.right and \
+                        met.rect.bottom > roc.rect.top and met.rect.top < roc.rect.bottom and \
+                        not is_correct_mask(met, roc):
+                    roc.kill()
+                    met.kill()
 
     def spawn_all_meteors(self):
         """
