@@ -7,9 +7,8 @@ from components.menu import Menu
 from config import Configuration as Conf
 from managers.event_listener.events import System as Sys, Keyboard as Kb
 from managers.event_listener.listener import EventListener
-from managers.image import Image
 from managers.image import Image as Img
-from managers.sound import Sound
+from managers.sound import Sound as Snd
 
 
 class Window:
@@ -21,6 +20,7 @@ class Window:
     def __init__(self):
         # Initialisation
         pg.init()
+        pg.mixer.init()
         pg.display.set_caption(Conf.Window.TITLE)
         if Conf.Window.FULLSCREEN:
             user32 = windll.user32
@@ -31,9 +31,6 @@ class Window:
         self.sprites = pg.sprite.Group()
         self.running = False
         self.menu_opened = False
-        # Managers
-        self.mng_sound = Sound()
-        self.mng_image = Image()
         # Components
         self.comp_game = Game(self)
         self.comp_menu = Menu(self)
