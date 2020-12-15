@@ -1,8 +1,11 @@
+
+
 class Overlay:
     def __init__(self, game):
         self.game = game
         self.score = 0
-        self.life = 3
+        # self.life = 3
+        self.life = [0, 0, 0]
 
     def reset(self):
         """
@@ -25,7 +28,10 @@ class Overlay:
         Subtracts one life
         """
         # TODO: Damir
-        self.life -= self.life
+        if self.life:
+            del self.life[-1]
+        else:
+            ArithmeticError
 
     def is_alive(self) -> bool:
         """
@@ -33,9 +39,10 @@ class Overlay:
         :return True if it has lifes
         """
         # TODO: Damir
-        if self.life == 0:
+        if not self.life:
             return False
-        elif 0 < self.life < 4:
-            return True
         else:
-            return ArithmeticError
+            return True
+
+    # def show_lifes(self):
+

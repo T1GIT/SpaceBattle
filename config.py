@@ -76,6 +76,14 @@ class Configuration:
         SPRITE_FORMAT = "png"
         BASIC_FORMAT = "jpg"
 
+    class Sounds:
+        FIRE = 0.3
+        BACKGROUND_GAME = 0.1
+        BACKGROUND_MENU = 0.1
+        CLICK = 0.1
+        EXPLODE_PLAYER = 0.5
+        EXPLODE_ASTEROIDS = 0.2
+
     class EventListener:
         MOUSE_BUTTONS = 3
         STICK_SENSITIVITY = 2  # [1; 10]
