@@ -5,7 +5,7 @@ import pygame as pg
 from components.game import Game
 from components.menu import Menu
 from config import Configuration as Conf
-from managers.event_listener.events import System as Sys, Keyboard as Kb
+from managers.event_listener.events import System as Sys, Keyboard as Kb, Device as Dvs
 from managers.event_listener.listener import EventListener
 from managers.image import Image as Img
 from managers.sound import Sound as Snd
@@ -30,6 +30,7 @@ class Window:
         self.clock = pg.time.Clock()
         self.sprites = pg.sprite.Group()
         self.running = False
+        self.game_started = False
         # Components
         self.comp_game = Game(self)
         self.comp_menu = Menu(self)
@@ -51,6 +52,7 @@ class Window:
         """
         Starts the game
         """
+        self.game_started = True
         self._close_menu()
         if len(self.sprites.sprites()) > 0:
             self.reset()
@@ -72,10 +74,10 @@ class Window:
         Does action from event name
         :param events: events dict
         """
-        for event in events["system"]:
+        for event in events[Dvs.SYSTEM]:
             if event.get_type() == Sys.Events.QUIT:
                 self.exit()
-        for event in events["keyboard"]:
+        for event in events[Dvs.KEYBOARD]:
             if event.get_data() == Kb.Keys.ESC:
                 self._open_menu()
 

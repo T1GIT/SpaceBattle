@@ -4,7 +4,7 @@ from components.overlay import Overlay
 from config import Configuration as Conf
 from elements.meteor import Meteor
 from elements.ship import Ship
-from managers.event_listener.events import Keyboard as Kb, Gamepad as Gp, Mouse as Ms, Event
+from managers.event_listener.events import Keyboard as Kb, Gamepad as Gp, Mouse as Ms, Device as Dvs, Event
 from managers.sound import Sound as Snd
 
 
@@ -62,17 +62,17 @@ class Game:
         """
         x, y = 0, 0
         shoot = False
-        for event in events["mouse"]:
+        for event in events[Dvs.MOUSE]:
             if event.get_type() == Ms.Events.MOVE:
                 self.ship.rotate(*event.get_data(), True)
             if event.get_type() == Ms.Events.KEY and event.get_data() == Ms.Keys.LEFT:
                 shoot = True
-        for event in events["keyboard"]:
+        for event in events[Dvs.KEYBOARD]:
             if event.get_data() in (Kb.Keys.W, Kb.Keys.UP):       y += 1
             if event.get_data() in (Kb.Keys.A, Kb.Keys.LEFT):     x -= 1
             if event.get_data() in (Kb.Keys.S, Kb.Keys.DOWN):     y -= 1
             if event.get_data() in (Kb.Keys.D, Kb.Keys.RIGHT):    x += 1
-        for event in events["gamepad"]:
+        for event in events[Dvs.GAMEPAD]:
             if event.get_type() == Gp.Events.LS:    x, y = event.get_data()
             if event.get_type() == Gp.Events.RS:    self.ship.rotate(*event.get_data(), False)
             if event.get_type() == Gp.Events.KEY and event.get_data() == Gp.Keys.RT:

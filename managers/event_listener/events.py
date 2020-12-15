@@ -44,8 +44,8 @@ class System:
 
 class Mouse:
     class Events:
-        KEY = 0
-        MOVE = 1
+        KEY = 100
+        MOVE = 101
 
     class Keys:
         LEFT = 0
@@ -53,7 +53,7 @@ class Mouse:
 
 class Keyboard:
     class Events:
-        KEY = 2
+        KEY = 102
 
     class Keys:
         UP = pg.K_UP
@@ -71,9 +71,9 @@ class Keyboard:
 
 class Gamepad:
     class Events:
-        LS = 3
-        RS = 4
-        KEY = 5
+        LS = 103
+        RS = 104
+        KEY = 105
 
     class Keys:
         A = 0
@@ -81,3 +81,9 @@ class Gamepad:
         RT = 2
         BACK = 6
         START = 7
+
+class Device:
+    GAMEPAD = 10001
+    KEYBOARD = 10002
+    MOUSE = 10003
+    SYSTEM = 10004

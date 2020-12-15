@@ -2,6 +2,8 @@ import pygame as pg
 import pygame_menu
 
 from config import Configuration as Conf
+from managers.event_listener.events import Event, Device as Dvs, Keyboard as Kb, Gamepad as Gp
+from managers.event_listener.listener import EventListener
 from managers.image import Image as Img
 from managers.sound import Sound as Snd
 
@@ -135,6 +137,13 @@ class Menu:
                               volume=Snd.get_volume(Conf.Sound.Volume.SFX))
         self.menu["main"].set_sound(self.engine, recursive=True)
 
+    def event_handler(self, events: dict[str, set[Event]]):
+        for event in events[Dvs.KEYBOARD] | events[Dvs.GAMEPAD]:
+            if self.window.game_started:
+                if (event.get_data() == Kb.Keys.ESC
+                        or (event.get_type() == Gp.Events.KEY and event.get_data() == Gp.Keys.START)):
+                    self.hide()
+
     def show(self):
         try:
             pygame_menu.themes.THEME_DEFAULT.widget_font = pygame_menu.font.FONT_OPEN_SANS  # Setting the default font
@@ -142,10 +151,10 @@ class Menu:
             self.create_settings()
             self.create_menu()
             Snd.bg_menu()
-            self.menu["main"].mainloop(self.window.screen)
+            self.menu["main"].mainloop(self.window.screen, fps_limit=Conf.Rules.FPS,
+                                       bgfun=lambda: self.event_handler(EventListener.get_events()))
         except SystemExit:
             self.window.exit()
 
     def hide(self):
-        # pg.mixer.stop()
         self.menu["main"].disable()
