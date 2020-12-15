@@ -50,9 +50,9 @@ class Configuration:
         MIN_ROTATE_SPEED = 1
         MAX_ROTATE_SPEED = 5
         QUANTITY = 10
-        BY_TIME = False
+        BY_TIME = True
         PERIOD = 1000
-        ON_FIELD = True
+        ON_FIELD = False
 
     class Rocket:
         SIZE = 10  # px

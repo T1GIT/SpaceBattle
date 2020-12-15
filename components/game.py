@@ -8,6 +8,15 @@ from managers.event_listener.events import Keyboard as Kb, Gamepad as Gp, Mouse 
 from managers.sound import Sound as Snd
 
 
+def is_correct_mask(sprite1, sprite2):
+    mask1 = pg.mask.from_surface(sprite1.image)
+    mask2 = pg.mask.from_surface(sprite2.image)
+    offset = (int(sprite2.rect.x - sprite1.rect.x), int(sprite2.rect.y - sprite1.rect.y))
+    if mask1.overlap_area(mask2, offset) > 0:
+        return False
+    return True
+
+
 class Game:
     """
     Class which initials the game.
@@ -94,11 +103,21 @@ class Game:
         """
         # Events processing
         self.event_handler(events)
+        # Collide sprites
+        self.col_met_ship()
         # Spawning mobs
         self.spawn_all_meteors()
         # Decrementing timers
         self.meteor_timer = max(0, self.meteor_timer - 1)
         self.rocket_timer = max(0, self.rocket_timer - 1)
+
+    def col_met_ship(self):
+        for met in self.sprites_meteors.sprites():
+            if met.rect.right > self.ship.rect.left and met.rect.left < self.ship.rect.right and \
+                    met.rect.bottom > self.ship.rect.top and met.rect.top < self.ship.rect.bottom and \
+                    not is_correct_mask(self.ship, met):
+                self.ship.kill()
+                met.kill()
 
     def spawn_all_meteors(self):
         """
