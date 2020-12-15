@@ -1,7 +1,9 @@
+from math import cos, sin, radians, sqrt
+
 import pygame as pg
+
 from config import Configuration as Conf
 from managers.image import Image as Img
-from math import cos, sin, radians, sqrt
 
 
 class Rocket(pg.sprite.Sprite):
@@ -19,7 +21,7 @@ class Rocket(pg.sprite.Sprite):
         pg.sprite.Sprite.__init__(self)
         raw_image = Img.get_rocket()
         w0, h0 = raw_image.get_size()
-        scale = self.size / h0
+        scale = Conf.Rocket.SIZE / h0
         w1, h1 = map(lambda x: round(x * scale), [w0, h0])
         self.texture = pg.transform.scale(raw_image, (w1, h1))
         self.image = self.texture

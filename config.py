@@ -6,8 +6,8 @@ class Configuration:
     class Window:
         TITLE = "Space Battle"
         FULLSCREEN = False
-        WIDTH = 500
-        HEIGHT = 500
+        WIDTH = 1000
+        HEIGHT = 1000
 
     class Game:
         pass
@@ -19,6 +19,7 @@ class Configuration:
         GAME_VERSION = "v0.1"
         AUTHORS = "Damir", "Artem", "Dmitriy"
         CONTACTS = ""
+        THEME_COLOR = (0, 250, 0)
 
         class Title:
             X_OFFSET = 100
@@ -32,7 +33,7 @@ class Configuration:
         OPACITY = 50  # [0, 100]
 
     class Ship:
-        SIZE = 100
+        SIZE = 300
         WEIGHT = 2
         POWER = 5
         RESIST = 0.05  # (0; 1)
@@ -48,10 +49,10 @@ class Configuration:
         ROTATING = True
         MIN_ROTATE_SPEED = 1
         MAX_ROTATE_SPEED = 5
-        QUANTITY = 0
+        QUANTITY = 10
         BY_TIME = False
         PERIOD = 1000
-        ON_FIELD = False
+        ON_FIELD = True
 
     class Rocket:
         SIZE = 10  # px
@@ -82,8 +83,7 @@ class Configuration:
         TRIGGER_DEAD_ZONE = 0.5
 
     class Rules:
-        FPS = 300
-        POLLING_RATE = 60
+        FPS = 60
         GAME_SPEED = 60
         SCALE = GAME_SPEED / FPS
         LIVES = 0
@@ -92,7 +92,6 @@ class Configuration:
     assert 0 <= EventListener.STICK_SENSITIVITY <= 10
     assert 1 <= Ship.ACCURACY <= 10
     assert 0 < Ship.RESIST < 1
-    assert Rules.POLLING_RATE <= Rules.FPS
     assert Ship.SMOOTH >= 1
     assert Meteor.MAX_SIZE >= Meteor.MIN_SIZE
     assert Rocket.SPEED > 0

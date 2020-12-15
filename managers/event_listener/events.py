@@ -37,6 +37,11 @@ class Event:
         return self._data
 
 
+class System:
+    class Events:
+        QUIT = pg.QUIT
+
+
 class Mouse:
     class Events:
         KEY = 0

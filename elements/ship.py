@@ -65,47 +65,23 @@ class Ship(pg.sprite.Sprite):
                 self.pos_y -= self.speed_y * Conf.Rules.SCALE
             self.rect.x, self.rect.y = self.pos_x, self.pos_y
 
-    def __resist(self):
-        speed = sqrt(pow(self.speed_x, 2) + pow(self.speed_y, 2))
-        rad = atan2(self.speed_y, self.speed_x)
-        r = Conf.Ship.RESIST * pow(speed, 2)
-        r_x = r * cos(rad)
-        r_y = r * sin(rad)
-        return r_x, r_y
-
-    def __axel(self, x, y):
-        if (x, y) == (0, 0): return 0, 0
-        rad = atan2(y, x)
-        f = Conf.Ship.POWER
-        a_x = f * cos(rad) * pow(x, 2)
-        a_y = f * sin(rad) * pow(y, 2)
-        return a_x, a_y
-
     def accelerate(self, x, y):
         """
         Changes axis speed, from axel vector
         :param x: coordinate of the axel vector
         :param y: coordinate of the axel vector
         """
-        # Adding resistance
-
-        r = self.__resist()
-        a = self.__axel(x, y)
+        r = self._resist(self.speed_x, self.speed_y)
+        a = self._axel(x, y)
         self.speed_x += (a[0] - r[0]) / Conf.Ship.WEIGHT
         self.speed_y += (a[1] - r[1]) / Conf.Ship.WEIGHT
-        if not self.with_fire:
-            self.with_fire = True
-            self.image = pg.transform.rotate(self.texture_fire, self.angle - 90)
-            self.rect = self.image.get_rect(center=self.rect.center)
+        self._wear_fire(True)
 
     def brake(self):
-        r = self.__resist()
+        r = self._resist(self.speed_x, self.speed_y)
         self.speed_x -= r[0] / Conf.Ship.WEIGHT
         self.speed_y -= r[1] / Conf.Ship.WEIGHT
-        if self.with_fire:
-            self.with_fire = False
-            self.image = pg.transform.rotate(self.texture_normal, self.angle - 90)
-            self.rect = self.image.get_rect(center=self.rect.center)
+        self._wear_fire(False)
 
     def rotate(self, x, y, smooth):
         """
@@ -135,3 +111,28 @@ class Ship(pg.sprite.Sprite):
         y = ctr[1] + self.half_height * sin(rad)
         rocket.locate(x, y, -self.angle)
         return rocket
+
+    def _wear_fire(self, with_fire: bool):
+        if with_fire != self.with_fire:
+            self.with_fire = with_fire
+            self.image = pg.transform.rotate(
+                self.texture_fire if with_fire else self.texture_normal, self.angle - 90)
+            self.rect = self.image.get_rect(center=self.rect.center)
+
+    @staticmethod
+    def _resist(speed_x, speed_y):
+        speed = sqrt(pow(speed_x, 2) + pow(speed_y, 2))
+        rad = atan2(speed_y, speed_x)
+        r = Conf.Ship.RESIST * pow(speed, 2)
+        r_x = r * cos(rad)
+        r_y = r * sin(rad)
+        return r_x, r_y
+
+    @staticmethod
+    def _axel(x, y):
+        if (x, y) == (0, 0): return 0, 0
+        rad = atan2(y, x)
+        f = Conf.Ship.POWER
+        a_x = f * cos(rad) * pow(x, 2)
+        a_y = f * sin(rad) * pow(y, 2)
+        return a_x, a_y
