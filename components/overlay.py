@@ -1,11 +1,14 @@
+import pygame as pg
 
 
 class Overlay:
-    def __init__(self, game):
-        self.game = game
+    def __init__(self, window):
+        self.window = window
         self.score = 0
         # self.life = 3
         self.life = [0, 0, 0]
+        self.health_img = pg.image.load('./resources/images/overlay/health.png')  # TODO: add to managers
+        self.health_img = pg.transform.scale(self.health_img, (90, 90))
 
     def reset(self):
         """
@@ -44,5 +47,16 @@ class Overlay:
         else:
             return True
 
-    # def show_lifes(self):
+    def show_score(self):
+        f1 = pg.font.Font(None, 84)
+        text1 = f1.render(f"{self.score}", True,
+                          (60, 255, 60))
+        self.window.screen.blit(text1, (1650, 60))
 
+    def show_lifes(self):
+        show = 0
+        x = 20
+        while show != len(self.life):
+            self.window.screen.blit(self.health_img, (x, 20))
+            x += 90
+            show += 1

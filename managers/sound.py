@@ -13,7 +13,7 @@ class Sound:
 
     @staticmethod
     def menu_music():
-        pg.mixer.music.load('./resources/sounds/menu/SW-opening.mp3')
+        pg.mixer.music.load('./resources/sounds/menu/SW-oppening.mp3')
         pg.mixer.music.set_volume(Conf.Sounds.BACKGROUND_MENU)
         pg.mixer.music.play(-1)
 

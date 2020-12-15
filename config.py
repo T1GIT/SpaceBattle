@@ -72,12 +72,13 @@ class Configuration:
         BASIC_FORMAT = "jpg"
 
     class Sounds:
-        FIRE = 0.3
-        BACKGROUND_GAME = 0.1
-        BACKGROUND_MENU = 0.1
-        CLICK = 0.1
-        EXPLODE_PLAYER = 0.5
-        EXPLODE_ASTEROIDS = 0.2
+        GENERAL = 1
+        FIRE = 0.03 * GENERAL
+        BACKGROUND_GAME = 0.08 * GENERAL
+        BACKGROUND_MENU = 0.05 * GENERAL
+        CLICK = 0.1 * GENERAL
+        EXPLODE_PLAYER = 0.05 * GENERAL
+        EXPLODE_ASTEROIDS = 0.02 * GENERAL
 
     class EventListener:
         MOUSE_BUTTONS = 3

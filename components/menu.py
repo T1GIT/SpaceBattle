@@ -3,6 +3,7 @@ import pygame_menu
 
 from config import Configuration as Conf
 from managers.image import Image as Img
+from managers.sound import Sound
 
 
 class Menu:
@@ -13,6 +14,11 @@ class Menu:
         # Initialisation
         # TODO: Damir
         self.engine = pygame_menu.sound.Sound()
+        self.engine.set_sound(pygame_menu.sound.SOUND_TYPE_CLICK_MOUSE,
+                              "./resources/sounds/menu/Click.mp3",
+                              volume=Conf.Sounds.CLICK)
+        self.mng_sound = Sound()
+        self.mng_sound.menu_music()
         pygame_menu.themes.THEME_DEFAULT.widget_font = pygame_menu.font.FONT_OPEN_SANS  # Setting the default font
         self.create_about()  # Create the about menu
         self.create_settings()
@@ -72,17 +78,55 @@ class Menu:
         )
 
         # TODO: в другое место
-        def change_sound(value):
+        def change_general_sound(value):
+            Conf.Sounds.GENERAL = value/100
+
+        def change_game_sound(value):
+            Conf.Sounds.BACKGROUND_GAME = value/100
+
+        def change_menu_sound(value):
             Conf.Sounds.BACKGROUND_MENU = value/100
+            self.mng_sound.menu_music()
+
+        def change_fire_sound(value):
+            Conf.Sounds.FIRE = value / 100
 
         self.settings_menu.add_text_input(
-            f'Menu sound: ',
+            f'General sound: ',
+            font_color=(0, 0, 0),
+            input_type=pygame_menu.locals.INPUT_FLOAT,
+            default=round(Conf.Sounds.GENERAL * 100),
+            maxchar=3,
+            onreturn=change_general_sound
+        )
+
+        self.settings_menu.add_text_input(
+            f'Game music: ',
+            font_color=(0, 0, 0),
+            input_type=pygame_menu.locals.INPUT_FLOAT,
+            default=round(Conf.Sounds.BACKGROUND_GAME * 100),
+            maxchar=3,
+            onreturn=change_game_sound
+        )
+
+        self.settings_menu.add_text_input(
+            f'Menu music: ',
             font_color=(0, 0, 0),
             input_type=pygame_menu.locals.INPUT_FLOAT,
             default=round(Conf.Sounds.BACKGROUND_MENU * 100),
             maxchar=3,
-            onreturn=change_sound
+            onreturn=change_menu_sound
         )
+
+        self.settings_menu.add_text_input(
+            f'Fire sound : ',
+            font_color=(0, 0, 0),
+            input_type=pygame_menu.locals.INPUT_FLOAT,
+            default=round(Conf.Sounds.FIRE * 100),
+            maxchar=3,
+            onreturn=change_fire_sound
+        )
+
         self.settings_menu.add_vertical_margin(100)
         self.settings_menu.add_button(
             'Return to menu',
@@ -99,6 +143,9 @@ class Menu:
         """
 
         myimage = Img.get_menu()
+
+        def change_name(name):
+            pass
 
         my_theme = pygame_menu.themes.Theme(
             selection_color=(0, 250, 0),
@@ -121,14 +168,9 @@ class Menu:
             onclose=pygame_menu.events.DISABLE_CLOSE,
             mouse_motion_selection=True
         )
-
-        # Menu OnClick sound
-        self.engine.set_sound(pygame_menu.sound.SOUND_TYPE_CLICK_MOUSE,
-                              "./resources/sounds/menu/Click.mp3",
-                              volume=Conf.Sounds.CLICK)
         self.menu.set_sound(self.engine, recursive=True)
 
-        self.menu.add_text_input('Type name: ')
+        self.menu.add_text_input('Type name: ', onchange=change_name)
         self.menu.add_button('Play', self.window.process)
         self.menu.add_button('Settings', self.settings_menu)
         self.menu.add_button('About', self.about_menu)

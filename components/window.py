@@ -8,6 +8,7 @@ from managers.sound import Sound
 from managers.image import Image
 from components.game import Game
 from components.menu import Menu
+from components.overlay import Overlay
 from config import Configuration as Conf
 from managers.image import Image as Img
 
@@ -34,6 +35,7 @@ class Window:
         # Components
         self.comp_game = Game(self)
         self.comp_menu = Menu(self)
+        self.comp_overlay = Overlay(self)
         # Listeners
         self.event_listener = EventListener()
         # Background
@@ -76,7 +78,7 @@ class Window:
     def show(self):
         self.event_listener.start()
         self.comp_menu.show()  # TODO: Uncomment
-        self.process()
+        # self.process()
 
     def process(self):
         self.mng_sound.game_music()  # Game music!
@@ -96,6 +98,8 @@ class Window:
             self.sprites.draw(self.screen)
             self.comp_game.loop(self.event_listener.pop_events())
             self.sprites.update()
+            self.comp_overlay.show_lifes()
+            self.comp_overlay.show_score()
             pg.display.flip()
             self.clock.tick(Conf.Rules.FPS)
             if pg.event.peek(pg.QUIT): self.exit()
@@ -124,7 +128,9 @@ class Window:
                     if (time_ns() - rocket_timer) / 1e6 > Conf.Rocket.PERIOD:
                         rocket_timer = time_ns()
                         rocket = self.ship.shoot()
+
                         self.mng_sound.fire_sound()  # Fire sound!
+
                         self.sprites.add(rocket)
             if (x, y) == (0, 0):
                 self.ship.brake()
