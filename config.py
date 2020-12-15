@@ -76,15 +76,23 @@ class Configuration:
         SPRITE_FORMAT = "png"
         BASIC_FORMAT = "jpg"
 
-    class Sounds:
-        FIRE = 0.3
-        BACKGROUND_GAME = 0.1
-        BACKGROUND_MENU = 0.1
-        CLICK = 0.1
-        EXPLODE_PLAYER = 0.5
-        EXPLODE_ASTEROIDS = 0.2
+    class Sound:
+        SHOOT = 0
+        CLICK = 0
+        BG_MENU = 0
+        BG_GAME = 0
+        FORMAT = "mp3"
 
-    class EventListener:
+        class Volume:
+            GENERAL = 5  # [0; 10]
+            CLICK = 2  # [0; 10]
+            SHOOT = 2  # [0; 10]
+            BG_GAME = 2  # [0; 10]
+            BG_MENU = 2  # [0; 10]
+            EX_PLAYER = 10  # [0; 10]
+            EX_METEORS = 4  # [0; 10]
+
+    class Control:
         MOUSE_BUTTONS = 3
         STICK_SENSITIVITY = 2  # [1; 10]
         STICK_DEAD_ZONE = 0.2
@@ -97,11 +105,18 @@ class Configuration:
         LIVES = 0
 
     # Checking parameters
-    assert 0 <= EventListener.STICK_SENSITIVITY <= 10
+    assert 0 <= Control.STICK_SENSITIVITY <= 10
     assert 1 <= Ship.ACCURACY <= 10
     assert 0 < Ship.RESIST < 1
     assert Ship.SMOOTH >= 1
     assert Meteor.MAX_SIZE >= Meteor.MIN_SIZE
     assert Rocket.SPEED > 0
     assert 0 <= DynamicBG.OPACITY <= 100
+    assert 1 <= Sound.Volume.GENERAL <= 10
+    assert 1 <= Sound.Volume.CLICK <= 10
+    assert 1 <= Sound.Volume.SHOOT <= 10
+    assert 1 <= Sound.Volume.BG_GAME <= 10
+    assert 1 <= Sound.Volume.BG_MENU <= 10
+    assert 1 <= Sound.Volume.EX_METEORS <= 10
+    assert 1 <= Sound.Volume.EX_PLAYER <= 10
 
