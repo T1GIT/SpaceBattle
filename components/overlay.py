@@ -34,8 +34,8 @@ class Overlay:
 
     def is_alive(self) -> bool:
         """
-        Checks if is it has lifes
-        :return True if it has lifes
+        Checks if is it has life
+        :return True if it has life
         """
         # TODO: Damir
         if not self.life:

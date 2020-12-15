@@ -67,6 +67,7 @@ class Configuration:
 
     class Images:
         SHIP = 0
+        LIFE = 0
         ROCKET = 1
         METEOR = 0
         MENU_BG = 0
