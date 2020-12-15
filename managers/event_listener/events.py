@@ -82,8 +82,9 @@ class Gamepad:
         BACK = 6
         START = 7
 
+
 class Device:
-    GAMEPAD = 10001
+    SYSTEM = 10000
+    MOUSE = 10001
     KEYBOARD = 10002
-    MOUSE = 10003
-    SYSTEM = 10004
+    GAMEPAD = 10003

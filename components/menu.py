@@ -1,5 +1,6 @@
 import pygame as pg
 import pygame_menu
+from time import time_ns
 
 from config import Configuration as Conf
 from managers.event_listener.events import Event, Device as Dvs, Keyboard as Kb, Gamepad as Gp
@@ -140,9 +141,11 @@ class Menu:
     def event_handler(self, events: dict[str, set[Event]]):
         for event in events[Dvs.KEYBOARD] | events[Dvs.GAMEPAD]:
             if self.window.game_started:
-                if (event.get_data() == Kb.Keys.ESC
-                        or (event.get_type() == Gp.Events.KEY and event.get_data() == Gp.Keys.START)):
-                    self.hide()
+                if ((event.get_data() == Kb.Keys.ESC
+                        or (event.get_type() == Gp.Events.KEY and event.get_data() == Gp.Keys.START))
+                        and (time_ns() - self.window._esc_timer) / 1e6 > Conf.Window.ESC_PERIOD):
+                    self.window._esc_timer = time_ns()
+                    self.window.close_menu()
 
     def show(self):
         try:

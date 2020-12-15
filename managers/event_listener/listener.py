@@ -16,6 +16,7 @@ class EventListener:
                 pg.K_d, pg.K_RIGHT, pg.K_SPACE, pg.K_RETURN, pg.K_ESCAPE}
     _gp_keys = {0, 1, 6, 7}
     _system = {pg.QUIT}
+    _gamepad = None
     _stick_sens = (11 - Conf.Control.STICK_SENSITIVITY) * 2 / 10
 
     @staticmethod
