@@ -77,7 +77,8 @@ class Configuration:
         FPS = 30
 
     class Images:
-        SHIP = 2
+        SHIP = 0
+        LIFE = 0
         ROCKET = 1
         METEOR = 0
         MENU_BG = 0

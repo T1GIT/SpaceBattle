@@ -17,6 +17,7 @@ class Image:
     _STATIC_BG = None
     _DYNAMIC_BG = None
     _MENU = None
+    _LIFE = None
     _ANIMATIONS = dict()
 
     @staticmethod
@@ -70,3 +71,10 @@ class Image:
                 pack.append(pg.image.load(f"{path}/{frame}.{Conf.Images.ANIM_FORMAT}").convert_alpha())
             Image._ANIMATIONS.update({name: pack})
         return Image._ANIMATIONS[name]
+
+    @staticmethod
+    def get_life() -> pg.image:
+        if Image._LIFE is None:
+            Image._LIFE = pg.image.load(
+                f"{Image._ROOT}/life/{Conf.Images.LIFE}.{Conf.Images.SPRITE_FORMAT}").convert_alpha()
+        return Image._LIFE
