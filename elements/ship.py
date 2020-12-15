@@ -5,6 +5,7 @@ import pygame as pg
 from config import Configuration as Conf
 from elements.rocket import Rocket
 from managers.image import Image as Img
+from managers.sound import Sound as Snd
 
 
 class Ship(pg.sprite.Sprite):
@@ -88,8 +89,7 @@ class Ship(pg.sprite.Sprite):
         Rotates player's sprite in the direction of the vector.
         :param x: coordinate of the axel vector
         :param y: coordinate of the axel vector
-        :param smooth: rotates not on the whole vector, but
-            partially
+        :param smooth: rotates not on the whole vector, but partially
         """
         d_deg = degrees(atan2(y, x)) - self.angle
         if d_deg > 180: d_deg -= 360
@@ -110,6 +110,7 @@ class Ship(pg.sprite.Sprite):
         x = ctr[0] + self.half_height * cos(rad)
         y = ctr[1] + self.half_height * sin(rad)
         rocket.locate(x, y, -self.angle)
+        Snd.shoot()
         return rocket
 
     def _wear_fire(self, with_fire: bool):
