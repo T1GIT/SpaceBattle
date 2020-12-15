@@ -19,6 +19,7 @@ class Configuration:
         GAME_VERSION = "v0.1"
         AUTHORS = "Damir", "Artem", "Dmitriy"
         CONTACTS = ""
+        THEME_COLOR = (0, 250, 0)
 
         class Title:
             X_OFFSET = 100
@@ -83,7 +84,6 @@ class Configuration:
 
     class Rules:
         FPS = 60
-        POLLING_RATE = 30
         GAME_SPEED = 60
         SCALE = GAME_SPEED / FPS
         LIVES = 0
@@ -92,7 +92,6 @@ class Configuration:
     assert 0 <= EventListener.STICK_SENSITIVITY <= 10
     assert 1 <= Ship.ACCURACY <= 10
     assert 0 < Ship.RESIST < 1
-    assert Rules.POLLING_RATE <= Rules.FPS
     assert Ship.SMOOTH >= 1
     assert Meteor.MAX_SIZE >= Meteor.MIN_SIZE
     assert Rocket.SPEED > 0

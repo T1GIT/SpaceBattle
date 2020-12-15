@@ -5,7 +5,8 @@ import pygame as pg
 from components.game import Game
 from components.menu import Menu
 from config import Configuration as Conf
-from event_listener.listener import EventListener
+from managers.event_listener.events import System as Sys, Keyboard as Kb
+from managers.event_listener.listener import EventListener
 from managers.image import Image
 from managers.image import Image as Img
 from managers.sound import Sound
@@ -29,14 +30,13 @@ class Window:
         self.clock = pg.time.Clock()
         self.sprites = pg.sprite.Group()
         self.running = False
+        self.menu_opened = False
         # Managers
         self.mng_sound = Sound()
         self.mng_image = Image()
         # Components
         self.comp_game = Game(self)
         self.comp_menu = Menu(self)
-        # Listeners
-        self.event_listener = EventListener()
         # Background
         bg = Img.get_static_bg()
         w0, h0 = bg.get_size()
@@ -48,51 +48,58 @@ class Window:
         """
         Reloads the game and opens the menu
         """
-        pg.mouse.set_visible(True)
+        self.sprites.empty()
         self.comp_game.reset()
         self.comp_menu.show()
-        self.sprites = pg.sprite.Group()
 
     def start(self):
         """
         Starts the game
         """
-        # pg.mouse.set_visible(False)
-        # pg.event.set_grab(True)
-        self.comp_menu.hide()
+        self._close_menu()
+        self.menu_opened = False
         self.comp_game.start()
         self.mainloop()
 
-    def menu(self):
-        """
-        Opens the menu
-        """
+    def _open_menu(self):
         pg.mouse.set_visible(True)
         pg.event.set_grab(False)
         self.comp_menu.show()
+
+    def _close_menu(self):
+        pg.mouse.set_visible(False)
+        pg.event.set_grab(True)
+        self.comp_menu.hide()
 
     def event_handler(self, events: dict):
         """
         Does action from event name
         :param events: events dict
         """
-        if pg.QUIT in events:
-            self.exit()
+        for event in events["system"]:
+            if event.get_type() == Sys.Events.QUIT:
+                self.exit()
+        for event in events["keyboard"]:
+            if event.get_data() == Kb.Keys.ESC:
+                if self.menu_opened:
+                    self._close_menu()
+                else:
+                    self._open_menu()
+                self.menu_opened = not self.menu_opened
 
     def exit(self):
         """
         Close menu window
         """
         self.running = False
-        self.event_listener.interrupt()
         self.comp_menu.hide()
 
     def show(self):
         """
         Opens the window
         """
+        self.menu_opened = True
         self.running = True
-        self.event_listener.start()
         self.comp_menu.show()
 
     def mainloop(self):
@@ -102,8 +109,7 @@ class Window:
         """
         try:
             while self.running:
-                self.loop(self.event_listener.get_events())
-                self.event_listener.erase()
+                self.loop(EventListener.get_events())
         except Exception as e:
             print(e)
             self.exit()
@@ -114,12 +120,13 @@ class Window:
         Update all sprites and draw changes on the screen
         :param events
         """
-        self.event_handler(events)
-        self.screen.blit(self.image, self.image.get_rect())
-        self.comp_game.loop(events)
-        self.sprites.update()
-        self.sprites.draw(self.screen)
-        pg.display.flip()
         self.clock.tick(Conf.Rules.FPS)
+        self.event_handler(events)
+        if not self.menu_opened:
+            self.comp_game.loop(events)
+            self.screen.blit(self.image, self.image.get_rect())
+            self.sprites.update()
+            self.sprites.draw(self.screen)
+            pg.display.flip()
 
 

@@ -8,12 +8,8 @@ class Menu:
     def __init__(self, window):
         # Environment
         self.window = window
-
-        # Initialisation
-        # TODO: Damir
-        pygame_menu.themes.THEME_DEFAULT.widget_font = pygame_menu.font.FONT_OPEN_SANS  # Setting the default font
-        self.create_about()  # Create the about menu
-        self.create_menu()  # Create the main menu
+        self.menu: pygame_menu.Menu
+        self.about_menu: pygame_menu
 
     def create_about(self):
         """
@@ -59,7 +55,7 @@ class Menu:
         myimage = Img.get_menu()
 
         my_theme = pygame_menu.themes.Theme(
-            selection_color=(0, 250, 0),
+            selection_color=Conf.Menu.THEME_COLOR,
             title_bar_style=pygame_menu.widgets.MENUBAR_STYLE_NONE,  # Separating header and body
             title_offset=(Conf.Menu.Title.X_OFFSET, Conf.Menu.Title.Y_OFFSET),
             title_font_color=(255, 255, 255),
@@ -90,7 +86,10 @@ class Menu:
         Shows menu
         """
         try:
-            self.menu.mainloop(self.window.screen, fps_limit=Conf.Rules.FPS)
+            pygame_menu.themes.THEME_DEFAULT.widget_font = pygame_menu.font.FONT_OPEN_SANS  # Setting the default font
+            self.create_about()
+            self.create_menu()
+            self.menu.mainloop(self.window.screen)
         except SystemExit:
             self.window.exit()
 
