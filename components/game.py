@@ -4,7 +4,7 @@ from components.overlay import Overlay
 from config import Configuration as Conf
 from elements.meteor import Meteor
 from elements.ship import Ship
-from managers.event_listener.events import Keyboard as Kb, Gamepad as Gp, Mouse as Ms, Event
+from managers.event_listener.events import Keyboard as Kb, Gamepad as Gp, Mouse as Ms, Device as Dvs, Event
 from managers.sound import Sound as Snd
 
 
@@ -20,12 +20,10 @@ class Game:
     def __init__(self, window):
         # Environment
         self.window = window
-        self.counter_meteors = 0
-        self.running = False
         # Sprites
         self.ship = None
-        self.sprites_meteors = pg.sprite.Group()
-        self.sprites_rockets = pg.sprite.Group()
+        self.gp_meteors = pg.sprite.Group()
+        self.gp_rockets = pg.sprite.Group()
         # Components
         self.comp_overlay = Overlay(self)
         # Timers
@@ -36,11 +34,9 @@ class Game:
         """
         Erases all mobs and objects
         """
-        self.running = False
         self.ship.kill()
-        self.sprites_rockets.empty()
-        self.sprites_meteors.empty()
-        self.counter_meteors = 0
+        self.gp_rockets.empty()
+        self.gp_meteors.empty()
         self.meteor_timer = 0
         self.rocket_timer = 0
         self.comp_overlay.reset()
@@ -50,10 +46,9 @@ class Game:
         Starts the game
         """
         self.ship = Ship()
-        self.window.sprites.add(self.ship)
+        self.window.gp_all.add(self.ship)
         self.ship.locate(Conf.Window.WIDTH // 2, Conf.Window.HEIGHT // 2)
         self.spawn_all_meteors()
-        Snd.bg_game()
 
     def event_handler(self, events: [Event]):
         """
@@ -62,17 +57,17 @@ class Game:
         """
         x, y = 0, 0
         shoot = False
-        for event in events["mouse"]:
+        for event in events[Dvs.MOUSE]:
             if event.get_type() == Ms.Events.MOVE:
                 self.ship.rotate(*event.get_data(), True)
             if event.get_type() == Ms.Events.KEY and event.get_data() == Ms.Keys.LEFT:
                 shoot = True
-        for event in events["keyboard"]:
+        for event in events[Dvs.KEYBOARD]:
             if event.get_data() in (Kb.Keys.W, Kb.Keys.UP):       y += 1
             if event.get_data() in (Kb.Keys.A, Kb.Keys.LEFT):     x -= 1
             if event.get_data() in (Kb.Keys.S, Kb.Keys.DOWN):     y -= 1
             if event.get_data() in (Kb.Keys.D, Kb.Keys.RIGHT):    x += 1
-        for event in events["gamepad"]:
+        for event in events[Dvs.GAMEPAD]:
             if event.get_type() == Gp.Events.LS:    x, y = event.get_data()
             if event.get_type() == Gp.Events.RS:    self.ship.rotate(*event.get_data(), False)
             if event.get_type() == Gp.Events.KEY and event.get_data() == Gp.Keys.RT:
@@ -81,7 +76,7 @@ class Game:
         if shoot and self.rocket_timer ==0:
             self.rocket_timer = self.rocket_period
             rocket = self.ship.shoot()
-            self.window.sprites.add(rocket)
+            self.window.gp_all.add(rocket)
         # Moving
         if (x, y) == (0, 0):
             self.ship.brake()
@@ -109,9 +104,8 @@ class Game:
                 self.meteor_timer = self.meteor_period
                 self.spawn_meteor()
         else:
-            while self.counter_meteors < Conf.Meteor.QUANTITY:
+            while len(self.gp_meteors) < Conf.Meteor.QUANTITY:
                 self.spawn_meteor()
-                self.counter_meteors += 1
 
     def spawn_meteor(self):
         """
@@ -122,5 +116,5 @@ class Game:
             meteor.locate(*Meteor.SetMeteors().get_on_field())
         else:
             meteor.locate(*Meteor.SetMeteors().get_out_field())
-        self.window.sprites.add(meteor)
-        self.sprites_meteors.add(meteor)
+        self.window.gp_all.add(meteor)
+        self.gp_meteors.add(meteor)

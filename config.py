@@ -8,12 +8,23 @@ class Configuration:
         FULLSCREEN = False
         WIDTH = 1000
         HEIGHT = 1000
+        ESC_PERIOD = 500  # ms
 
     class Game:
         pass
 
     class Overlay:
         TXT_COLOR = "#000000"
+
+        class Score:
+            X_OFFSET = 0
+            Y_OFFSET = 0
+
+        class Life:
+            SIZE = 0
+            MARGIN = 0
+            X_OFFSET = 0
+            Y_OFFSET = 0
 
     class Menu:
         GAME_VERSION = "v0.1"
@@ -49,9 +60,9 @@ class Configuration:
         ROTATING = True
         MIN_ROTATE_SPEED = 1
         MAX_ROTATE_SPEED = 5
-        QUANTITY = 10
+        QUANTITY = 30
         BY_TIME = False
-        PERIOD = 1000
+        PERIOD = 500
         ON_FIELD = True
 
     class Rocket:
@@ -85,7 +96,7 @@ class Configuration:
         FORMAT = "mp3"
 
         class Volume:
-            GENERAL = 5  # [0; 10]
+            GENERAL = 2  # [0; 10]
             BG = 7  # [0; 10]
             SFX = 5  # [0; 10]
 
