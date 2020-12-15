@@ -4,17 +4,10 @@ from components.overlay import Overlay
 from config import Configuration as Conf
 from elements.meteor import Meteor
 from elements.ship import Ship
+from elements.animation import Animation
 from managers.event_listener.events import Keyboard as Kb, Gamepad as Gp, Mouse as Ms, Event
 from managers.sound import Sound as Snd
-
-
-def is_correct_mask(sprite1, sprite2):
-    mask1 = pg.mask.from_surface(sprite1.image)
-    mask2 = pg.mask.from_surface(sprite2.image)
-    offset = (int(sprite2.rect.x - sprite1.rect.x), int(sprite2.rect.y - sprite1.rect.y))
-    if mask1.overlap_area(mask2, offset) > 0:
-        return False
-    return True
+from managers.image import Image as Img
 
 
 class Game:
@@ -104,7 +97,7 @@ class Game:
         """
         # Events processing
         self.event_handler(events)
-        # Collide sprites
+        # Collide sprites check
         self.col_met_ship()
         if self.sprites_rockets.sprites():
             self.col_met_roc()
@@ -115,20 +108,31 @@ class Game:
         self.rocket_timer = max(0, self.rocket_timer - 1)
 
     def col_met_ship(self):
+        """
+        Checks the collision of a meteor and a ship.
+        Causes an explosion animation if a collision occurs
+        """
         for met in self.sprites_meteors.sprites():
             if met.rect.right > self.ship.rect.left and met.rect.left < self.ship.rect.right and \
                     met.rect.bottom > self.ship.rect.top and met.rect.top < self.ship.rect.bottom and \
-                    not is_correct_mask(self.ship, met):
+                    not Game.is_correct_mask(self.ship, met):
+                self.animation("ship", self.ship)
                 self.ship.kill()
+                self.animation("meteor", met)
                 met.kill()
 
     def col_met_roc(self):
+        """
+        Checks the collision of a meteor and a rocket.
+        Causes an explosion animation if a collision occurs
+        """
         for roc in self.sprites_rockets.sprites():
             for met in self.sprites_meteors.sprites():
                 if met.rect.right > roc.rect.left and met.rect.left < roc.rect.right and \
                         met.rect.bottom > roc.rect.top and met.rect.top < roc.rect.bottom and \
-                        not is_correct_mask(met, roc):
+                        not Game.is_correct_mask(met, roc):
                     roc.kill()
+                    self.animation("meteor", met)
                     met.kill()
 
     def spawn_all_meteors(self):
@@ -155,3 +159,23 @@ class Game:
             meteor.locate(*Meteor.SetMeteors().get_out_field())
         self.window.sprites.add(meteor)
         self.sprites_meteors.add(meteor)
+
+    def animation(self, name: str, sprite):
+        """
+        Animation is invoked
+        :param name: name of animation package
+        :param sprite: the sprite for which the animation is called
+        """
+        x, y = sprite.rect.centerx, sprite.rect.centery
+        ship_anime = Animation(name)
+        self.window.sprites.add(ship_anime)
+        ship_anime.locate(x, y)
+
+    @staticmethod
+    def is_correct_mask(sprite1, sprite2):
+        mask1 = pg.mask.from_surface(sprite1.image)
+        mask2 = pg.mask.from_surface(sprite2.image)
+        offset = (int(sprite2.rect.x - sprite1.rect.x), int(sprite2.rect.y - sprite1.rect.y))
+        if mask1.overlap_area(mask2, offset) > 0:
+            return False
+        return True
