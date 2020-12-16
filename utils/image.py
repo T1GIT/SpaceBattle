@@ -1,6 +1,6 @@
-import pygame as pg
 import os
 
+import pygame as pg
 import pygame_menu
 
 from config import Configuration as Conf

@@ -1,7 +1,5 @@
 import pygame as pg
 
-from elements.ship import Ship
-
 
 class Group:
     ALL = pg.sprite.Group()

@@ -1,5 +1,3 @@
-import pygame as pg
-
 from config import Configuration as Conf
 from elements.meteor import Meteor
 from elements.piece import Piece

@@ -1,7 +1,5 @@
 from time import time_ns
 
-from config import Configuration as Conf
-
 
 class Debugger:
     t = 0
