@@ -8,12 +8,23 @@ class Configuration:
         FULLSCREEN = False
         WIDTH = 1000
         HEIGHT = 1000
+        ESC_PERIOD = 500  # ms
 
     class Game:
         pass
 
     class Overlay:
         TXT_COLOR = "#000000"
+
+        class Score:
+            X_OFFSET = 0
+            Y_OFFSET = 0
+
+        class Life:
+            SIZE = 0
+            MARGIN = 0
+            X_OFFSET = 0
+            Y_OFFSET = 0
 
     class Menu:
         GAME_VERSION = "v0.1"
@@ -67,12 +78,10 @@ class Configuration:
 
     class Images:
         SHIP = 0
-        LIFE = 0
+        LIFE = 5
         ROCKET = 1
-        METEOR = 0
         MENU_BG = 0
-        STATIC_BG = 0
-        DYNAMIC_BG = 0
+        STATIC_BG = 1
         ANIM_FORMAT = "gif"
         SPRITE_FORMAT = "png"
         BASIC_FORMAT = "jpg"
@@ -87,7 +96,7 @@ class Configuration:
         class Volume:
             GENERAL = 5  # [0; 10]
             BG = 7  # [0; 10]
-            SFX = 5  # [0; 10]
+            SFX = 3  # [0; 10]
 
     class Control:
         MOUSE_BUTTONS = 3
