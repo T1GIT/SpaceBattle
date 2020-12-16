@@ -3,7 +3,7 @@ import random as rnd
 import pygame as pg
 
 from config import Configuration as Conf
-from managers.image import Image as Img
+from utils.image import Image as Img
 
 
 class Piece(pg.sprite.Sprite):
@@ -12,9 +12,10 @@ class Piece(pg.sprite.Sprite):
     Moves all the time
     """
     def __init__(self):
+        super().__init__()
         # Settings
-        self.speed_x = rnd.uniform(-Conf.Piece.MAX_SPEED, Conf.Piece.MAX_SPEED) * Conf.Rules.SCALE
-        self.speed_y = rnd.uniform(-Conf.Piece.MAX_SPEED, Conf.Piece.MAX_SPEED) * Conf.Rules.SCALE
+        self.speed_x = rnd.uniform(-Conf.Piece.MAX_SPEED, Conf.Piece.MAX_SPEED) * Conf.System.SCALE
+        self.speed_y = rnd.uniform(-Conf.Piece.MAX_SPEED, Conf.Piece.MAX_SPEED) * Conf.System.SCALE
         self.pos_x, self.pos_y = 0, 0
         # Initialising sprite
         pg.sprite.Sprite.__init__(self)
@@ -44,7 +45,7 @@ class Piece(pg.sprite.Sprite):
                 or self.rect.top > Conf.Window.HEIGHT or self.rect.bottom < 0):
             self.kill()
 
-    class SetPieces:
+    class GetCoord:
         @staticmethod
         def get_on_field():
             """

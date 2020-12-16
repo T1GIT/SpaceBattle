@@ -3,21 +3,23 @@ from collections import deque
 import pygame as pg
 
 from config import Configuration as Conf
-from managers.image import Image as Img
+from elements.ship import Ship
+from utils.group import Group
+from utils.image import Image as Img
 
 
 class Animation(pg.sprite.Sprite):
     """
     Class that shows an animation of exploding objects
     """
-    skip_frame = Conf.Rules.FPS // Conf.Animation.FPS
+    skip_frame = Conf.System.FPS // Conf.Animation.FPS
 
-    def __init__(self, name: str):
-        pg.sprite.Sprite.__init__(self)
+    def __init__(self, name: str, size: int = Conf.Animation.DEFAULT_SIZE):
+        super().__init__()
         # Texture wearing
         raw_frames = Img.get_animation(name)
         w0, h0 = raw_frames[0].get_size()
-        scale = Conf.Animation.SIZE / max(w0, h0)
+        scale = size / max(w0, h0)
         w1, h1 = map(lambda x: round(x * scale), [w0, h0])
         self.frames = []
         for frame in raw_frames:
@@ -42,3 +44,16 @@ class Animation(pg.sprite.Sprite):
             else:
                 self.kill()
         self.skipped += 1
+
+    @staticmethod
+    def on_sprite(name: str, sprite: pg.sprite.Sprite, size: int):
+        """
+        Animation is invoked
+        :param size: size of the animation
+        :param name: name of animation package
+        :param sprite: the sprite for which the animation is called
+        """
+        x, y = sprite.rect.centerx, sprite.rect.centery
+        animation = Animation(name, size)
+        Group.ALL.add(animation)
+        animation.locate(x, y)

@@ -3,7 +3,8 @@ import random as rnd
 import pygame as pg
 
 from config import Configuration as Conf
-from managers.image import Image as Img
+from utils.image import Image as Img
+from utils.sound import Sound as Snd
 
 
 class Meteor(pg.sprite.Sprite):
@@ -13,12 +14,13 @@ class Meteor(pg.sprite.Sprite):
     Can be destroyed by rockets
     """
     def __init__(self):
-        # Settings
-        self.speed_x = rnd.uniform(-Conf.Meteor.MAX_SPEED, Conf.Meteor.MAX_SPEED) * Conf.Rules.SCALE
-        self.speed_y = rnd.uniform(-Conf.Meteor.MAX_SPEED, Conf.Meteor.MAX_SPEED) * Conf.Rules.SCALE
-        self.angle_speed = rnd.uniform(-Conf.Meteor.MAX_ROTATE_SPEED, Conf.Meteor.MAX_ROTATE_SPEED) * Conf.Rules.SCALE
+        super().__init__()
+        # Variables
+        self.speed_x = rnd.uniform(-Conf.Meteor.MAX_SPEED, Conf.Meteor.MAX_SPEED) * Conf.System.SCALE
+        self.speed_y = rnd.uniform(-Conf.Meteor.MAX_SPEED, Conf.Meteor.MAX_SPEED) * Conf.System.SCALE
+        self.angle_speed = rnd.uniform(-Conf.Meteor.MAX_ROTATE_SPEED, Conf.Meteor.MAX_ROTATE_SPEED) * Conf.System.SCALE
         self.pos_x, self.pos_y = 0, 0
-        # Initialising sprite
+        # Initialising
         pg.sprite.Sprite.__init__(self)
         raw_image = Img.get_meteors()
         self.amount = rnd.randint(0, len(raw_image) - 1)
@@ -54,6 +56,15 @@ class Meteor(pg.sprite.Sprite):
         self.pos_x += self.speed_x
         self.pos_y += self.speed_y
         self.rect.x, self.rect.y = self.pos_x, self.pos_y
+        if Conf.Meteor.ROTATING:
+            self.rotate()
+        if Conf.Meteor.TOR:
+            self.teleport()
+        elif (self.rect.left > Conf.Window.WIDTH or self.rect.right < 0
+                or self.rect.top > Conf.Window.HEIGHT or self.rect.bottom < 0):
+            self.kill()
+
+    def teleport(self):
         max_size = Conf.Meteor.MAX_SIZE
         width = Conf.Window.WIDTH
         height = Conf.Window.HEIGHT
@@ -69,10 +80,8 @@ class Meteor(pg.sprite.Sprite):
         elif self.rect.bottom > height + max_size:
             self.rect.bottom = 0
             self.pos_y = self.rect.y
-        if Conf.Meteor.ROTATING:
-            self.rotate()
 
-    class SetMeteors:
+    class GetCoord:
         @staticmethod
         def get_on_field():
             """

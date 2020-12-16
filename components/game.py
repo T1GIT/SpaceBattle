@@ -2,13 +2,16 @@ import pygame as pg
 
 from components.overlay import Overlay
 from config import Configuration as Conf
-from elements.meteor import Meteor
-from elements.piece import Piece
-from elements.ship import Ship
 from elements.animation import Animation
-from managers.event_listener.events import Keyboard as Kb, Gamepad as Gp, Mouse as Ms, Device as Dvs, Event
-from managers.sound import Sound as Snd
-from managers.image import Image as Img
+from elements.ship import Ship
+from utils.collider import Collider
+from utils.debugger import Debugger
+from utils.events import Keyboard as Kb, Gamepad as Gp, Mouse as Ms, Device as Dvs, System as Sys, Event
+from utils.group import Group
+from utils.image import Image as Img
+from utils.listener import EventListener
+from utils.sound import Sound as Snd
+from utils.spawner import Spawner
 
 
 class Game:
@@ -17,46 +20,48 @@ class Game:
     Spawns meteors.
     Catches events and redirect to the ship
     """
-    rocket_period = (Conf.Rules.FPS * Conf.Rocket.PERIOD) // 1000
-    meteor_period = (Conf.Rules.FPS * Conf.Meteor.PERIOD) // 1000
+    rocket_period = (Conf.System.FPS * Conf.Rocket.PERIOD) // 1000
+    meteor_period = (Conf.System.FPS * Conf.Meteor.PERIOD) // 1000
 
     def __init__(self, window):
         # Environment
         self.window = window
-        # Sprites
-        self.ship = None
-        self.gp_meteors = pg.sprite.Group()
-        self.gp_rockets = pg.sprite.Group()
-        self.gp_pieces = pg.sprite.Group()
+        self.running = False
+        self.clock = pg.time.Clock()
         # Components
         self.comp_overlay = Overlay(self)
+        # Sprites
+        self.ship = None
         # Timers
         self.meteor_timer = 0
         self.rocket_timer = 0
+        self.losing_timer = 0
+        # Background
+        bg = Img.get_background()
+        w0, h0 = bg.get_size()
+        scale = max((Conf.Window.WIDTH / w0, Conf.Window.HEIGHT / h0))
+        w1, h1 = map(lambda x: round(x * scale), [w0, h0])
+        self.image = pg.transform.scale(bg, (w1, h1))
 
     def reset(self):
         """
         Erases all mobs and objects
         """
-        self.ship.kill()
-        self.gp_rockets.empty()
-        self.gp_meteors.empty()
-        self.gp_pieces.empty()
-        self.meteor_timer = 0
-        self.rocket_timer = 0
-        self.comp_overlay.reset()
+        self.__init__(self.window)
 
     def start(self):
         """
         Starts the game
         """
+        self.running = True
+        self.comp_overlay.show()
         self.ship = Ship()
-        self.window.gp_all.add(self.ship)
         self.ship.locate(Conf.Window.WIDTH // 2, Conf.Window.HEIGHT // 2)
-        self.spawn_all_meteors()
-        self.spawn_all_healths()
-        self.spawn_all_pieces(on_field=True)
-        Snd.bg_game()
+        Group.ALL.add(self.ship)
+        if not Conf.Meteor.BY_TIME:
+            Spawner.all_meteors()
+        Spawner.all_pieces(True)
+        self.mainloop()
 
     def event_handler(self, events: [Event]):
         """
@@ -65,150 +70,71 @@ class Game:
         """
         x, y = 0, 0
         shoot = False
+        for event in events[Dvs.SYSTEM]:
+            if event.get_type() == Sys.Events.QUIT:
+                self.running = False
         for event in events[Dvs.MOUSE]:
             if event.get_type() == Ms.Events.MOVE:
                 self.ship.rotate(*event.get_data(), True)
             if event.get_type() == Ms.Events.KEY and event.get_data() == Ms.Keys.LEFT:
                 shoot = True
-        for event in events["keyboard"]:
-            if event.get_data() in (Kb.Keys.W, Kb.Keys.UP):
-                y += 1
         for event in events[Dvs.KEYBOARD]:
             if event.get_data() in (Kb.Keys.W, Kb.Keys.UP):       y += 1
             if event.get_data() in (Kb.Keys.A, Kb.Keys.LEFT):     x -= 1
             if event.get_data() in (Kb.Keys.S, Kb.Keys.DOWN):     y -= 1
             if event.get_data() in (Kb.Keys.D, Kb.Keys.RIGHT):    x += 1
+            elif event.get_data() == Kb.Keys.ESC: self.window.pause()
         for event in events[Dvs.GAMEPAD]:
             if event.get_type() == Gp.Events.LS:    x, y = event.get_data()
             if event.get_type() == Gp.Events.RS:    self.ship.rotate(*event.get_data(), False)
-            if event.get_type() == Gp.Events.KEY and event.get_data() == Gp.Keys.RT:
-                shoot = True
+            if event.get_type() == Gp.Events.KEY and event.get_data() == Gp.Keys.RT: shoot = True
+            if event.get_type() == Gp.Events.KEY and event.get_data() == Gp.Keys.START: self.window.pause()
         # Shooting
         if shoot and self.rocket_timer == 0:
             self.rocket_timer = self.rocket_period
             rocket = self.ship.shoot()
-            self.sprites_rockets.add(rocket)
-            self.window.gp_all.add(rocket)
+            Group.ALL.add(rocket)
+            Group.ROCKETS.add(rocket)
         # Moving
-        if (x, y) == (0, 0):
-            self.ship.brake()
-        else:
-            self.ship.accelerate(x, y)
+        if (x, y) == (0, 0):    self.ship.brake()
+        else:                   self.ship.accelerate(x, y)
 
-    def loop(self, events: dict):
+    def mainloop(self):
+        while self.running:
+            self.event_handler(EventListener.get_events())
+            self.window.screen.blit(self.image, self.image.get_rect())
+            Group.ALL.update()
+            Group.ALL.draw(self.window.screen)
+            pg.display.flip()
+            # Decrementing timers
+            self.meteor_timer = max(0, self.meteor_timer - 1)
+            self.rocket_timer = max(0, self.rocket_timer - 1)
+            self.losing_timer = max(0, self.losing_timer - 1)
+            if self.losing_timer == 0:
+                self.preparation()
+            elif self.losing_timer == 1:
+                self.window.reset()
+                self.window.open_menu()
+            self.clock.tick(Conf.System.FPS)
+
+    def preparation(self):
         """
         Do all actions per one frame
         """
-        # Events processing
-        self.event_handler(events)
-        # Collide sprites check
-        self.col_met_ship()
-        if self.sprites_rockets.sprites():
-            self.col_met_roc()
+        # Colliding
+        points = Collider.rockets_meteors()
+        wounds = Collider.ship_meteors(self.ship)
+        self.comp_overlay.score.up(points)
+        if wounds: self.comp_overlay.health.down()
+        if self.comp_overlay.health.is_dead():
+            self.ship.kill()
+            Snd.ex_ship()
+            Animation.on_sprite("meteor", self.ship, max(self.ship.rect.size) * Conf.Ship.ANIM_SCALE)
+            self.losing_timer = Conf.System.FPS * Conf.Game.LOSE_DELAY
         # Spawning
-        self.spawn_all_meteors()
-        self.spawn_pieces(on_field=False)
-        # Decrementing timers
-        self.meteor_timer = max(0, self.meteor_timer - 1)
-        self.rocket_timer = max(0, self.rocket_timer - 1)
-        
-    def spawn_all_pieces(self, on_field: bool):
-        while len(self.gp_pieces) < Conf.Piece.QUANTITY:
-            piece = Piece()
-            if on_field:
-                piece.locate(*Piece.SetPieces().get_on_field())
-            else:
-                piece.locate(*Piece.SetPieces().get_out_field())
-            self.window.gp_all.add(piece)
-            self.gp_pieces.add(piece)
-            
-    def col_met_ship(self):
-        """
-        Checks the collision of a meteor and a ship.
-        Causes an explosion animation if a collision occurs
-        """
-        for met in self.sprites_meteors.sprites():
-            if met.rect.right > self.ship.rect.left and met.rect.left < self.ship.rect.right and \
-                    met.rect.bottom > self.ship.rect.top and met.rect.top < self.ship.rect.bottom and \
-                    not Game.is_correct_mask(self.ship, met):
-                self.animation("ship", self.ship)
-                self.ship.kill()
-                self.animation("meteor", met)
-                met.kill()
-
-    def col_met_roc(self):
-        """
-        Checks the collision of a meteor and a rocket.
-        Causes an explosion animation if a collision occurs
-        """
-        for roc in self.sprites_rockets.sprites():
-            for met in self.sprites_meteors.sprites():
-                if met.rect.right > roc.rect.left and met.rect.left < roc.rect.right and \
-                        met.rect.bottom > roc.rect.top and met.rect.top < roc.rect.bottom and \
-                        not Game.is_correct_mask(met, roc):
-                    roc.kill()
-                    self.animation("meteor", met)
-                    met.kill()
-
-    def spawn_all_meteors(self):
-        """
-        Spawn all meteors by time or quantity configurations
-        """
         if Conf.Meteor.BY_TIME:
             if self.meteor_timer == 0:
                 self.meteor_timer = self.meteor_period
-                self.spawn_meteor()
-        else:
-            while len(self.gp_meteors) < Conf.Meteor.QUANTITY:
-                self.spawn_meteor()
-
-    def spawn_meteor(self):
-        """
-        Spawn simple meteor on the field
-        """
-        meteor = Meteor()
-        if Conf.Meteor.ON_FIELD:
-            meteor.locate(*Meteor.SetMeteors().get_on_field())
-        else:
-            meteor.locate(*Meteor.SetMeteors().get_out_field())
-        self.window.gp_all.add(meteor)
-        self.gp_meteors.add(meteor)
-
-    def spawn_all_healths(self):
-        x = Conf.Overlay.Health.X_OFFSET
-        health_num = 0
-        while self.comp_overlay.get_health() != Conf.Rules.LIVES:
-            self.spawn_health(x)
-            x += Conf.Overlay.Health.SIZE
-            health_num += 1
-
-    def spawn_health(self, pos_x):
-        """
-        This method spawn a meteor on the given position
-        """
-        health = Overlay.Health()
-        health.show_health(pos_x)
-        self.comp_overlay.add_to_life(health)
-
-        self.window.sprites.add(health)
-        self.sprites_healths.add(health)
-
-    def animation(self, name: str, sprite):
-        """
-        Animation is invoked
-        :param name: name of animation package
-        :param sprite: the sprite for which the animation is called
-        """
-        x, y = sprite.rect.centerx, sprite.rect.centery
-        ship_anime = Animation(name)
-        self.window.sprites.add(ship_anime)
-        ship_anime.locate(x, y)
-
-    @staticmethod
-    def is_correct_mask(sprite1, sprite2):
-        mask1 = pg.mask.from_surface(sprite1.image)
-        mask2 = pg.mask.from_surface(sprite2.image)
-        offset = (int(sprite2.rect.x - sprite1.rect.x), int(sprite2.rect.y - sprite1.rect.y))
-        if mask1.overlap_area(mask2, offset) > 0:
-            return False
-        return True
+                Spawner.meteor()
+        else: Spawner.all_meteors()
+        Spawner.all_pieces(False)

@@ -3,7 +3,7 @@ from math import cos, sin, radians, sqrt
 import pygame as pg
 
 from config import Configuration as Conf
-from managers.image import Image as Img
+from utils.image import Image as Img
 
 
 class Rocket(pg.sprite.Sprite):
@@ -13,6 +13,7 @@ class Rocket(pg.sprite.Sprite):
     Destroys meteors
     """
     def __init__(self):
+        super().__init__()
         # Settings
         self.angle = 0
         self.start_x, self.start_y = 0, 0
@@ -40,22 +41,22 @@ class Rocket(pg.sprite.Sprite):
         self.angle = deg
         rad = radians(self.angle)
         self.start_x, self.start_y = x, y
-        self.speed_x = Conf.Rocket.SPEED * cos(rad) * Conf.Rules.SCALE
-        self.speed_y = Conf.Rocket.SPEED * sin(rad) * Conf.Rules.SCALE
+        self.speed_x = Conf.Rocket.SPEED * cos(rad) * Conf.System.SCALE
+        self.speed_y = Conf.Rocket.SPEED * sin(rad) * Conf.System.SCALE
         self.image = pg.transform.rotate(self.texture, -self.angle)
         self.rect = self.image.get_rect(center=(self.start_x, self.start_y))
         self.pos_x, self.pos_y = self.rect.x, self.rect.y
 
     def update(self):
-        ctr = self.rect.center
+        c_x, c_y = self.rect.center
         if Conf.Rocket.UNLIMITED:
-            if 0 < ctr[0] < Conf.Window.WIDTH and 0 < ctr[1] < Conf.Window.HEIGHT:
+            if 0 < c_x < Conf.Window.WIDTH and 0 < c_y < Conf.Window.HEIGHT:
                 self.pos_x += self.speed_x
                 self.pos_y += self.speed_y
             else:
                 self.kill()
         else:
-            if sqrt(pow(ctr[0] - self.start_x, 2) + pow(ctr[1] - self.start_y, 2)) <= Conf.Rocket.MAX_DISTANCE:
+            if sqrt(pow(c_x - self.start_x, 2) + pow(c_y - self.start_y, 2)) <= Conf.Rocket.MAX_DISTANCE:
                 self.pos_x += self.speed_x
                 self.pos_y += self.speed_y
             else:

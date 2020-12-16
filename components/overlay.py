@@ -1,80 +1,85 @@
 import pygame as pg
+from collections import deque
 
 from config import Configuration as Conf
-from managers.image import Image as Img
+from utils.group import Group
+from utils.image import Image as Img
 
 
 class Overlay:
-    def __init__(self, window):
-        life_image = Img.get_life()
-        self.texture = pg.transform.scale(life_image, (Conf.Overlay.Health.SIZE, Conf.Overlay.Health.SIZE))
-        self.image = self.texture
-        self.font = pg.font.Font('./resources/fonts/opensans.ttf', Conf.Overlay.Score.FONT_SIZE)
-
-        self.window = window
-        self.score = 0
-        self.life = []
-
-    def get_health(self):
-        return len(self.life)
-
-    def get_score(self):
-        return self.score
-
-    def add_to_life(self, obj):
-        self.life.append(obj)
+    def __init__(self, game):
+        self.game = game
+        # Components
+        self.score = self.Score()
+        self.health = self.Health()
+        Group.ALL.add(self.score)
+        Group.ALL.add(self.health)
 
     def reset(self):
         """
         Zero out all variables
         """
-        self.score = 0
-        self.life = [0] * Conf.Rules.LIVES
+        self.score.reset()
+        self.health.reset()
+        self.__init__(self.game)
 
-    def up_score(self):
-        """
-        Raises score in the overlay
-        """
-        # May request delta in func parameter, or write it into Conf.Overlay
-        # TODO: Damir
-        self.score += Conf.Overlay.Score.NUMBER
+    def show(self):
+        self.score.show()
+        self.health.show()
 
-    def down_life(self):
-        """
-        Subtracts one life
-        """
-        # TODO: Damir
-        if self.life:
-            self.life[-1].kill()
-            del self.life[-1]
-        else:
-            pass
+    class Score(pg.sprite.Sprite):
+        def __init__(self):
+            super().__init__()
+            self.font = pg.font.Font(Conf.Window.FONT, Conf.Overlay.Score.SIZE)
+            self.need_update = False
+            self.score = 0
+            self.image = self.font.render(str(self.score), True, Conf.Overlay.Score.COLOR)
+            # self.image.set_alpha(Conf.Overlay.OPACITY)
 
-    def is_alive(self) -> bool:
-        """
-        Checks if is it has life
-        :return True if it has life
-        """
-        # TODO: Damir
-        if not self.life:
-            return False
-        else:
-            return True
+        def reset(self) -> None:
+            self.__init__()
 
-    def show_score(self):
-        score = self.font.render(f"{self.get_score()}", True, Conf.Overlay.Score.FONT_COLOR)
-        score_rect = score.get_rect()
-        score_rect.topright = (Conf.Window.HEIGHT - Conf.Overlay.Score.X_OFFSET, Conf.Overlay.Score.Y_OFFSET)
+        def show(self) -> None:
+            self.rect = self.image.get_rect(topright=(
+                Conf.Window.WIDTH - Conf.Overlay.Score.X_OFFSET, Conf.Overlay.Score.Y_OFFSET))
 
-        self.window.window.screen.blit(score, score_rect)
+        def update(self) -> None:
+            if self.need_update:
+                self.image = self.font.render(str(self.score), True, Conf.Overlay.Score.COLOR)
+                self.image.set_alpha(Conf.Overlay.OPACITY)
+                self.show()
+                self.need_update = False
 
+        def up(self, points: int) -> None:
+            self.need_update = True
+            self.score += Conf.Overlay.Score.DELTA * points
 
     class Health(pg.sprite.Sprite):
         def __init__(self):
-            pg.sprite.Sprite.__init__(self)
-            life_image = Img.get_life()
-            self.texture = pg.transform.scale(life_image, (Conf.Overlay.Health.SIZE, Conf.Overlay.Health.SIZE))
-            self.image = self.texture
+            super().__init__()
+            self.points: deque[pg.sprite.Sprite] = deque()
+            self.image = pg.surface.Surface((0, 0))
+            self.rect = pg.rect.Rect(0, 0, 0, 0)
+            raw_image = Img.get_life()
+            self.texture = pg.transform.scale(raw_image, [Conf.Overlay.Health.SIZE] * 2)
+            for i in range(Conf.Rules.LIFES):
+                point = pg.sprite.Sprite()
+                point.image = self.texture
+                point.image.set_alpha(Conf.Overlay.OPACITY)
+                self.points.append(point)
+                Group.ALL.add(point)
 
-        def show_health(self, x):
-            self.rect = self.image.get_rect(center=(x, Conf.Overlay.Health.Y_OFFSET))
+        def reset(self) -> None:
+            self.__init__()
+
+        def show(self) -> None:
+            cnf = Conf.Overlay.Health
+            for i, point in enumerate(self.points):
+                point.rect = point.image.get_rect(
+                    topleft=(cnf.X_OFFSET + (i * cnf.SIZE) + (i * cnf.MARGIN), cnf.Y_OFFSET))
+
+        def down(self) -> None:
+            self.points.pop().kill()
+
+        def is_dead(self) -> bool:
+            return len(self.points) == 0

@@ -1,12 +1,11 @@
 import pygame as pg
 import pygame_menu
-from time import time_ns
 
 from config import Configuration as Conf
-from managers.event_listener.events import Event, Device as Dvs, Keyboard as Kb, Gamepad as Gp
-from managers.event_listener.listener import EventListener
-from managers.image import Image as Img
-from managers.sound import Sound as Snd
+from utils.events import Event, Device as Dvs, Keyboard as Kb, Gamepad as Gp
+from utils.image import Image as Img
+from utils.listener import EventListener
+from utils.sound import Sound as Snd
 
 
 class Menu:
@@ -15,6 +14,7 @@ class Menu:
         self.window = window
         self.engine = pygame_menu.sound.Sound()
         self.menu: dict[str, pygame_menu.Menu] = dict()
+        self.time = 0
 
     def create_about(self):
         """
@@ -60,7 +60,7 @@ class Menu:
         """
 
         # Theme
-        theme = pygame_menu.themes.THEME_DEFAULT.copy()
+        theme = pygame_menu.themes.THEME_SOLARIZED.copy()
         theme.title_font_size = 56
 
         # Initialisation
@@ -137,37 +137,33 @@ class Menu:
         )
 
         # Layout
-        self.menu["main"].add_text_input('Type name: ')
-        self.menu["main"].add_button('Play', self.window.start)
-        self.menu["main"].add_button('Settings', self.menu["settings"])
-        self.menu["main"].add_button('About', self.menu["about"])
-        self.menu["main"].add_button('Quit', self.window.exit)
+        self.menu["main"].add_button('     Play     ', self.window.start, font_size=60, margin=(0, 50))
+        self.menu["main"].add_button('   Settings   ', self.menu["settings"])
+        self.menu["main"].add_button('     About     ', self.menu["about"])
+        self.menu["main"].add_button('     Quit     ', exit)
 
         # Sound
         self.engine.set_sound(pygame_menu.sound.SOUND_TYPE_CLICK_MOUSE, Snd.click(),
                               volume=Snd.get_volume(Conf.Sound.Volume.SFX))
         self.menu["main"].set_sound(self.engine, recursive=True)
 
+    def start(self):
+        self.window.start()
+
     def event_handler(self, events: dict[str, set[Event]]):
         for event in events[Dvs.KEYBOARD] | events[Dvs.GAMEPAD]:
-            if self.window.game_started:
-                if ((event.get_data() == Kb.Keys.ESC
-                        or (event.get_type() == Gp.Events.KEY and event.get_data() == Gp.Keys.START))
-                        and (time_ns() - self.window._esc_timer) / 1e6 > Conf.Window.ESC_PERIOD):
-                    self.window._esc_timer = time_ns()
-                    self.window.close_menu()
+            if (event.get_data() == Kb.Keys.ESC
+                    or (event.get_type() == Gp.Events.KEY
+                        and event.get_data() == Gp.Keys.START)):
+                self.window.play()
 
-    def show(self):
-        try:
-            pygame_menu.themes.THEME_DEFAULT.widget_font = pygame_menu.font.FONT_OPEN_SANS  # Setting the default font
-            self.create_about()
-            self.create_settings()
-            self.create_menu()
-            Snd.bg_menu()
-            self.menu["main"].mainloop(self.window.screen, fps_limit=Conf.Rules.FPS,
-                                       bgfun=lambda: self.event_handler(EventListener.get_events()))
-        except SystemExit:
-            self.window.exit()
+    def open(self):
+        pygame_menu.themes.THEME_DEFAULT.widget_font = pygame_menu.font.FONT_OPEN_SANS  # Setting the default font
+        self.create_about()
+        self.create_settings()
+        self.create_menu()
+        self.menu["main"].mainloop(self.window.screen, fps_limit=Conf.System.FPS,
+                                   bgfun=lambda: self.event_handler(EventListener.get_events()))
 
-    def hide(self):
+    def close(self):
         self.menu["main"].disable()

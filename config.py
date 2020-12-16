@@ -5,29 +5,29 @@ class Configuration:
     """
     class Window:
         TITLE = "Space Battle"
-        FULLSCREEN = False
+        FULLSCREEN = True
         WIDTH = 1000
         HEIGHT = 1000
-        ESC_PERIOD = 500  # ms
+        FONT = "./resources/fonts/opensans.ttf"
 
     class Game:
-        pass
+        LOSE_DELAY = 3
 
     class Overlay:
-        TXT_COLOR = "#000000"
+        OPACITY = 100
 
         class Score:
-            FONT_SIZE = 64
-            FONT_COLOR = (100, 255, 100)
+            SIZE = 64
+            COLOR = (100, 255, 100)
             X_OFFSET = 30
             Y_OFFSET = 5
-            NUMBER = 300
+            DELTA = 300
 
         class Health:
-            SIZE = 90
-            MARGIN = 0
-            X_OFFSET = 40
-            Y_OFFSET = 50
+            SIZE = 50
+            MARGIN = 5
+            X_OFFSET = 10
+            Y_OFFSET = 5
 
     class Menu:
         GAME_VERSION = "v0.1"
@@ -40,16 +40,13 @@ class Configuration:
             Y_OFFSET = 40
             SIZE = 70
 
-    class Font:
-        name = "opensans"
-
     class Piece:
         MIN_OPACITY = 60  # [0, 100]
         MAX_OPACITY = 90  # [0, 100]
         MIN_SIZE = 100  # px
-        MAX_SIZE = 200  # px
-        MAX_SPEED = 2
-        QUANTITY = 20
+        MAX_SIZE = 300  # px
+        MAX_SPEED = 1
+        QUANTITY = 10
 
     class Ship:
         SIZE = 100
@@ -57,37 +54,40 @@ class Configuration:
         POWER = 5
         RESIST = 0.05  # (0; 1)
         SMOOTH = 10  # >= 1
-        ACCURACY = 5  # [1; 10]
+        ACCURACY = 10  # [1; 10]
         DEAD_SPEED = 0.2
+        ANIM_SCALE = 3
 
     class Meteor:
         MAX_SIZE = 100
-        MIN_SIZE = 50
+        MIN_SIZE = 70
         MAX_SPEED = 3
+        TOR = True
         ROTATING = True
-        MAX_ROTATE_SPEED = 5
+        MAX_ROTATE_SPEED = 4
         QUANTITY = 20
         BY_TIME = True
-        PERIOD = 1000
+        PERIOD = 500
         ON_FIELD = False
 
     class Rocket:
         SIZE = 10  # px
         SPEED = 20  # > 0
         PERIOD = 200  # ms
+        DESTROYABLE = False
         MAX_DISTANCE = 300  # px  (needs Rocket.UNLIMITED = False)
         UNLIMITED = True
 
     class Animation:
-        SIZE = 100
+        DEFAULT_SIZE = 200
         FPS = 30
 
-    class Images:
+    class Image:
         SHIP = 0
-        LIFE = 5
+        LIFE = 0
         ROCKET = 1
         MENU_BG = 0
-        STATIC_BG = 1
+        STATIC_BG = 0
         ANIM_FORMAT = "gif"
         SPRITE_FORMAT = "png"
         BASIC_FORMAT = "jpg"
@@ -109,12 +109,15 @@ class Configuration:
         STICK_SENSITIVITY = 2  # [1; 10]
         STICK_DEAD_ZONE = 0.2
         TRIGGER_DEAD_ZONE = 0.5
+        ESC_PERIOD = 500  # ms
 
     class Rules:
-        FPS = 5
+        LIFES = 3
+
+    class System:
+        FPS = 60
         GAME_SPEED = 60
         SCALE = GAME_SPEED / FPS
-        LIVES = 5
 
     # Checking parameters
     assert 0 <= Control.STICK_SENSITIVITY <= 10

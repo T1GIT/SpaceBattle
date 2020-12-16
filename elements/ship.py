@@ -4,8 +4,8 @@ import pygame as pg
 
 from config import Configuration as Conf
 from elements.rocket import Rocket
-from managers.image import Image as Img
-from managers.sound import Sound as Snd
+from utils.image import Image as Img
+from utils.sound import Sound as Snd
 
 
 class Ship(pg.sprite.Sprite):
@@ -17,7 +17,7 @@ class Ship(pg.sprite.Sprite):
     accuracy = 50 / Conf.Ship.ACCURACY
 
     def __init__(self):
-        pg.sprite.Sprite.__init__(self)
+        super().__init__()
         # Texture wearing
         normal = Img.get_ship(False)
         fire = Img.get_ship(True)
@@ -59,11 +59,11 @@ class Ship(pg.sprite.Sprite):
             if self.half_width > next_x or next_x > Conf.Window.WIDTH - self.half_width:
                 self.speed_x = 0
             else:
-                self.pos_x += self.speed_x * Conf.Rules.SCALE
+                self.pos_x += self.speed_x * Conf.System.SCALE
             if self.half_width > next_y or next_y > Conf.Window.WIDTH - self.half_width:
                 self.speed_y = 0
             else:
-                self.pos_y -= self.speed_y * Conf.Rules.SCALE
+                self.pos_y -= self.speed_y * Conf.System.SCALE
             self.rect.x, self.rect.y = self.pos_x, self.pos_y
 
     def accelerate(self, x, y):
@@ -94,8 +94,8 @@ class Ship(pg.sprite.Sprite):
         d_deg = degrees(atan2(y, x)) - self.angle
         if d_deg > 180: d_deg -= 360
         elif d_deg < -180: d_deg += 360
-        if (not smooth) or abs(d_deg) > self.accuracy:
-            self.angle += (d_deg / Conf.Ship.SMOOTH) if smooth else d_deg
+        if (not smooth) or abs(d_deg) > self.accuracy * Conf.System.SCALE:
+            self.angle += (d_deg / Conf.Ship.SMOOTH * Conf.System.SCALE) if smooth else d_deg
             self.image = pg.transform.rotate(
                 self.texture_fire if self.with_fire else self.texture_normal, self.angle - 90)
             self.rect = self.image.get_rect(center=self.rect.center)
@@ -119,6 +119,7 @@ class Ship(pg.sprite.Sprite):
             self.image = pg.transform.rotate(
                 self.texture_fire if with_fire else self.texture_normal, self.angle - 90)
             self.rect = self.image.get_rect(center=self.rect.center)
+            if with_fire: Snd.engine()
 
     @staticmethod
     def _resist(speed_x, speed_y):
