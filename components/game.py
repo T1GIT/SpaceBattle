@@ -3,6 +3,7 @@ import pygame as pg
 from components.overlay import Overlay
 from config import Configuration as Conf
 from elements.meteor import Meteor
+from elements.piece import Piece
 from elements.ship import Ship
 from elements.animation import Animation
 from managers.event_listener.events import Keyboard as Kb, Gamepad as Gp, Mouse as Ms, Device as Dvs, Event
@@ -26,6 +27,7 @@ class Game:
         self.ship = None
         self.gp_meteors = pg.sprite.Group()
         self.gp_rockets = pg.sprite.Group()
+        self.gp_pieces = pg.sprite.Group()
         # Components
         self.comp_overlay = Overlay(self)
         # Timers
@@ -39,6 +41,7 @@ class Game:
         self.ship.kill()
         self.gp_rockets.empty()
         self.gp_meteors.empty()
+        self.gp_pieces.empty()
         self.meteor_timer = 0
         self.rocket_timer = 0
         self.comp_overlay.reset()
@@ -51,6 +54,7 @@ class Game:
         self.window.gp_all.add(self.ship)
         self.ship.locate(Conf.Window.WIDTH // 2, Conf.Window.HEIGHT // 2)
         self.spawn_all_meteors()
+        self.spawn_pieces(on_field=True)
 
     def event_handler(self, events: [Event]):
         """
@@ -96,12 +100,23 @@ class Game:
         self.col_met_ship()
         if self.sprites_rockets.sprites():
             self.col_met_roc()
-        # Spawning mobs
+        # Spawning
         self.spawn_all_meteors()
+        self.spawn_pieces(on_field=False)
         # Decrementing timers
         self.meteor_timer = max(0, self.meteor_timer - 1)
         self.rocket_timer = max(0, self.rocket_timer - 1)
-
+        
+    def spawn_pieces(self, on_field: bool):
+        while len(self.gp_pieces) < Conf.Piece.QUANTITY:
+            piece = Piece()
+            if on_field:
+                piece.locate(*Piece.SetPieces().get_on_field())
+            else:
+                piece.locate(*Piece.SetPieces().get_out_field())
+            self.window.gp_all.add(piece)
+            self.gp_pieces.add(piece)
+            
     def col_met_ship(self):
         """
         Checks the collision of a meteor and a ship.

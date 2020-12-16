@@ -38,7 +38,7 @@ class Window:
         self.comp_game = Game(self)
         self.comp_menu = Menu(self)
         # Background
-        bg = Img.get_static_bg()
+        bg = Img.get_background()
         w0, h0 = bg.get_size()
         scale = max((Conf.Window.WIDTH / w0, Conf.Window.HEIGHT / h0))
         w1, h1 = map(lambda x: round(x * scale), [w0, h0])
@@ -97,13 +97,8 @@ class Window:
         self.comp_menu.show()
 
     def mainloop(self):
-        try:
-            while self.running:
-                t = time_ns()
-                self.loop(EventListener.get_events())
-                print((time_ns() - t) / 1e6, "ms")
-        except Exception as e:
-            print(e)
+        while self.running:
+            self.loop(EventListener.get_events())
         pg.quit()
 
     def loop(self, events: dict[int, set[Event]]):
@@ -111,12 +106,12 @@ class Window:
         Update all sprites and draw changes on the screen
         :param events
         """
-        self.clock.tick(Conf.Rules.FPS)
         self.event_handler(events)
         self.comp_game.loop(events)
         self.screen.blit(self.image, self.image.get_rect())
         self.gp_all.update()
         self.gp_all.draw(self.screen)
         pg.display.flip()
+        self.clock.tick(Conf.Rules.FPS)
 
 
