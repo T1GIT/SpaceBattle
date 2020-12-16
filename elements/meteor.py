@@ -1,4 +1,4 @@
-import random as rd
+import random as rnd
 
 import pygame as pg
 
@@ -14,18 +14,18 @@ class Meteor(pg.sprite.Sprite):
     """
     def __init__(self):
         # Settings
-        self.speed_x = rd.uniform(-Conf.Meteor.MAX_SPEED, Conf.Meteor.MAX_SPEED) * Conf.Rules.SCALE
-        self.speed_y = rd.uniform(-Conf.Meteor.MAX_SPEED, Conf.Meteor.MAX_SPEED) * Conf.Rules.SCALE
-        self.angle_speed = rd.uniform(-Conf.Meteor.MAX_ROTATE_SPEED, Conf.Meteor.MAX_ROTATE_SPEED) * Conf.Rules.SCALE
+        self.speed_x = rnd.uniform(-Conf.Meteor.MAX_SPEED, Conf.Meteor.MAX_SPEED) * Conf.Rules.SCALE
+        self.speed_y = rnd.uniform(-Conf.Meteor.MAX_SPEED, Conf.Meteor.MAX_SPEED) * Conf.Rules.SCALE
+        self.angle_speed = rnd.uniform(-Conf.Meteor.MAX_ROTATE_SPEED, Conf.Meteor.MAX_ROTATE_SPEED) * Conf.Rules.SCALE
         self.pos_x, self.pos_y = 0, 0
         # Initialising sprite
         pg.sprite.Sprite.__init__(self)
         raw_image = Img.get_meteors()
-        self.count_of_meteor = rd.randint(0, len(raw_image) - 1)
-        w0, h0 = raw_image[self.count_of_meteor].get_size()
-        scale = rd.randint(Conf.Meteor.MIN_SIZE, Conf.Meteor.MAX_SIZE) / max(w0, h0)
+        self.amount = rnd.randint(0, len(raw_image) - 1)
+        w0, h0 = raw_image[self.amount].get_size()
+        scale = rnd.randint(Conf.Meteor.MIN_SIZE, Conf.Meteor.MAX_SIZE) / max(w0, h0)
         w1, h1 = map(lambda x: round(x * scale), [w0, h0])
-        self.texture = pg.transform.scale(raw_image[self.count_of_meteor], (w1, h1))
+        self.texture = pg.transform.scale(raw_image[self.amount], (w1, h1))
         self.image = self.texture
         self.angle = 0
 
@@ -79,8 +79,8 @@ class Meteor(pg.sprite.Sprite):
             Get coordinates on field for meteor object
             :return: horizontally and vertically position
             """
-            x = rd.uniform(0 + 50, Conf.Window.WIDTH - 50)
-            y = rd.uniform(0 + 50, Conf.Window.HEIGHT - 50)
+            x = rnd.uniform(0, Conf.Window.WIDTH)
+            y = rnd.uniform(0, Conf.Window.HEIGHT)
             return x, y
 
         @staticmethod
@@ -89,10 +89,10 @@ class Meteor(pg.sprite.Sprite):
             Get coordinates out of field for meteor object
             :return: horizontally and vertically position
             """
-            if rd.random() > 0.5:
-                x = rd.choice((-Conf.Meteor.MAX_SIZE / 2, Conf.Window.WIDTH + Conf.Meteor.MAX_SIZE / 2))
-                y = rd.uniform(-Conf.Meteor.MAX_SIZE / 2, Conf.Window.HEIGHT + Conf.Meteor.MAX_SIZE / 2)
+            if rnd.random() > 0.5:
+                x = rnd.choice((-Conf.Meteor.MAX_SIZE / 2, Conf.Window.WIDTH + Conf.Meteor.MAX_SIZE / 2))
+                y = rnd.uniform(-Conf.Meteor.MAX_SIZE / 2, Conf.Window.HEIGHT + Conf.Meteor.MAX_SIZE / 2)
             else:
-                x = rd.uniform(-Conf.Meteor.MAX_SIZE / 2, Conf.Window.WIDTH + Conf.Meteor.MAX_SIZE / 2)
-                y = rd.choice((-Conf.Meteor.MAX_SIZE / 2, Conf.Window.HEIGHT + Conf.Meteor.MAX_SIZE / 2))
+                x = rnd.uniform(-Conf.Meteor.MAX_SIZE / 2, Conf.Window.WIDTH + Conf.Meteor.MAX_SIZE / 2)
+                y = rnd.choice((-Conf.Meteor.MAX_SIZE / 2, Conf.Window.HEIGHT + Conf.Meteor.MAX_SIZE / 2))
             return x, y

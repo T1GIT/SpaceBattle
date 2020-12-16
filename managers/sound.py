@@ -71,17 +71,22 @@ class Sound:
         @staticmethod
         def set_general(level: float):
             Conf.Sound.Volume.GENERAL = level
-            Sound._SHOOT.set_volume(Sound.get_volume(Conf.Sound.Volume.SFX))
-            Sound._EX_PLAYER.set_volume(Sound.get_volume(Conf.Sound.Volume.SFX))
-            Sound._EX_METEOR.set_volume(Sound.get_volume(Conf.Sound.Volume.SFX))
+            if Sound._SHOOT is not None:
+                Sound._SHOOT.set_volume(Sound.get_volume(Conf.Sound.Volume.SFX))
+            if Sound._EX_PLAYER is not None:
+                Sound._EX_PLAYER.set_volume(Sound.get_volume(Conf.Sound.Volume.SFX))
+            if Sound._EX_METEOR is not None:
+                Sound._EX_METEOR.set_volume(Sound.get_volume(Conf.Sound.Volume.SFX))
             pg.mixer.music.set_volume(Sound.get_volume(Conf.Sound.Volume.BG))
 
         @staticmethod
         def set_sfx(level: float):
             Conf.Sound.Volume.SFX = level
             Sound._SHOOT.set_volume(Sound.get_volume(level))
-            Sound._EX_PLAYER.set_volume(Sound.get_volume(level))
-            Sound._EX_METEOR.set_volume(Sound.get_volume(level))
+            if Sound._EX_PLAYER is not None:
+                Sound._EX_PLAYER.set_volume(Sound.get_volume(level))
+            if Sound._EX_METEOR is not None:
+                Sound._EX_METEOR.set_volume(Sound.get_volume(level))
 
         @staticmethod
         def set_bg(level: float):

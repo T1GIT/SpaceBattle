@@ -8,6 +8,7 @@ class Configuration:
         FULLSCREEN = False
         WIDTH = 1000
         HEIGHT = 1000
+        ESC_PERIOD = 500  # ms
 
     class Game:
         pass
@@ -42,8 +43,13 @@ class Configuration:
     class Font:
         name = "opensans"
 
-    class DynamicBG:
-        OPACITY = 50  # [0, 100]
+    class Piece:
+        MIN_OPACITY = 60  # [0, 100]
+        MAX_OPACITY = 90  # [0, 100]
+        MIN_SIZE = 100  # px
+        MAX_SIZE = 200  # px
+        MAX_SPEED = 2
+        QUANTITY = 20
 
     class Ship:
         SIZE = 100
@@ -57,15 +63,13 @@ class Configuration:
     class Meteor:
         MAX_SIZE = 100
         MIN_SIZE = 50
-        MIN_SPEED = 0.5
         MAX_SPEED = 3
         ROTATING = True
-        MIN_ROTATE_SPEED = 1
         MAX_ROTATE_SPEED = 5
-        QUANTITY = 10
-        BY_TIME = False
+        QUANTITY = 20
+        BY_TIME = True
         PERIOD = 1000
-        ON_FIELD = True
+        ON_FIELD = False
 
     class Rocket:
         SIZE = 10  # px
@@ -80,12 +84,10 @@ class Configuration:
 
     class Images:
         SHIP = 0
-        LIFE = 0
+        LIFE = 5
         ROCKET = 1
-        METEOR = 0
         MENU_BG = 0
-        STATIC_BG = 0
-        DYNAMIC_BG = 0
+        STATIC_BG = 1
         ANIM_FORMAT = "gif"
         SPRITE_FORMAT = "png"
         BASIC_FORMAT = "jpg"
@@ -100,7 +102,7 @@ class Configuration:
         class Volume:
             GENERAL = 5  # [0; 10]
             BG = 7  # [0; 10]
-            SFX = 5  # [0; 10]
+            SFX = 3  # [0; 10]
 
     class Control:
         MOUSE_BUTTONS = 3
@@ -121,7 +123,8 @@ class Configuration:
     assert Ship.SMOOTH >= 1
     assert Meteor.MAX_SIZE >= Meteor.MIN_SIZE
     assert Rocket.SPEED > 0
-    assert 0 <= DynamicBG.OPACITY <= 100
+    assert 0 <= Piece.MIN_OPACITY <= 100
+    assert 0 <= Piece.MAX_OPACITY <= 100
     assert 1 <= Sound.Volume.GENERAL <= 10
     assert 1 <= Sound.Volume.SFX <= 10
     assert 1 <= Sound.Volume.BG <= 10
