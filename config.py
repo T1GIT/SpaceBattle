@@ -40,8 +40,13 @@ class Configuration:
     class Font:
         name = "opensans"
 
-    class DynamicBG:
-        OPACITY = 50  # [0, 100]
+    class Piece:
+        MIN_OPACITY = 60  # [0, 100]
+        MAX_OPACITY = 90  # [0, 100]
+        MIN_SIZE = 100  # px
+        MAX_SIZE = 200  # px
+        MAX_SPEED = 2
+        QUANTITY = 20
 
     class Ship:
         SIZE = 100
@@ -55,10 +60,8 @@ class Configuration:
     class Meteor:
         MAX_SIZE = 100
         MIN_SIZE = 50
-        MIN_SPEED = 0.5
         MAX_SPEED = 3
         ROTATING = True
-        MIN_ROTATE_SPEED = 1
         MAX_ROTATE_SPEED = 5
         QUANTITY = 50
         BY_TIME = False
@@ -117,7 +120,8 @@ class Configuration:
     assert Ship.SMOOTH >= 1
     assert Meteor.MAX_SIZE >= Meteor.MIN_SIZE
     assert Rocket.SPEED > 0
-    assert 0 <= DynamicBG.OPACITY <= 100
+    assert 0 <= Piece.MIN_OPACITY <= 100
+    assert 0 <= Piece.MAX_OPACITY <= 100
     assert 1 <= Sound.Volume.GENERAL <= 10
     assert 1 <= Sound.Volume.SFX <= 10
     assert 1 <= Sound.Volume.BG <= 10
