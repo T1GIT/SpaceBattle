@@ -8,6 +8,7 @@ from managers.image import Image as Img
 
 class Animation(pg.sprite.Sprite):
     """
+    Class that shows an animation of exploding objects
     """
     skip_frame = Conf.Rules.FPS // Conf.Animation.FPS
 
