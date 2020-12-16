@@ -34,7 +34,7 @@ class Overlay:
             self.need_update = False
             self.score = 0
             self.image = self.font.render(str(self.score), True, Conf.Overlay.Score.COLOR)
-            # self.image.set_alpha(Conf.Overlay.OPACITY)
+            self.image.set_alpha(Conf.Overlay.OPACITY)
 
         def reset(self) -> None:
             self.__init__()
