@@ -109,8 +109,11 @@ class Window:
         self.event_handler(events)
         self.comp_game.loop(events)
         self.screen.blit(self.image, self.image.get_rect())
+        self.sprites.update()
+        self.sprites.draw(self.screen)
         self.gp_all.update()
         self.gp_all.draw(self.screen)
+        self.comp_game.comp_overlay.show_score()  # TODO: Переделать нормально
         pg.display.flip()
         self.clock.tick(Conf.Rules.FPS)
 

@@ -54,7 +54,9 @@ class Game:
         self.window.gp_all.add(self.ship)
         self.ship.locate(Conf.Window.WIDTH // 2, Conf.Window.HEIGHT // 2)
         self.spawn_all_meteors()
-        self.spawn_pieces(on_field=True)
+        self.spawn_all_healths()
+        self.spawn_all_pieces(on_field=True)
+        Snd.bg_game()
 
     def event_handler(self, events: [Event]):
         """
@@ -68,6 +70,9 @@ class Game:
                 self.ship.rotate(*event.get_data(), True)
             if event.get_type() == Ms.Events.KEY and event.get_data() == Ms.Keys.LEFT:
                 shoot = True
+        for event in events["keyboard"]:
+            if event.get_data() in (Kb.Keys.W, Kb.Keys.UP):
+                y += 1
         for event in events[Dvs.KEYBOARD]:
             if event.get_data() in (Kb.Keys.W, Kb.Keys.UP):       y += 1
             if event.get_data() in (Kb.Keys.A, Kb.Keys.LEFT):     x -= 1
@@ -107,7 +112,7 @@ class Game:
         self.meteor_timer = max(0, self.meteor_timer - 1)
         self.rocket_timer = max(0, self.rocket_timer - 1)
         
-    def spawn_pieces(self, on_field: bool):
+    def spawn_all_pieces(self, on_field: bool):
         while len(self.gp_pieces) < Conf.Piece.QUANTITY:
             piece = Piece()
             if on_field:
@@ -168,6 +173,25 @@ class Game:
             meteor.locate(*Meteor.SetMeteors().get_out_field())
         self.window.gp_all.add(meteor)
         self.gp_meteors.add(meteor)
+
+    def spawn_all_healths(self):
+        x = Conf.Overlay.Health.X_OFFSET
+        health_num = 0
+        while self.comp_overlay.get_health() != Conf.Rules.LIVES:
+            self.spawn_health(x)
+            x += Conf.Overlay.Health.SIZE
+            health_num += 1
+
+    def spawn_health(self, pos_x):
+        """
+        This method spawn a meteor on the given position
+        """
+        health = Overlay.Health()
+        health.show_health(pos_x)
+        self.comp_overlay.add_to_life(health)
+
+        self.window.sprites.add(health)
+        self.sprites_healths.add(health)
 
     def animation(self, name: str, sprite):
         """

@@ -65,8 +65,6 @@ class Menu:
 
         # Initialisation
         self.menu["settings"] = pygame_menu.Menu(
-            columns=2,
-            rows=4,
             height=Conf.Window.HEIGHT,
             width=Conf.Window.WIDTH,
             onclose=pygame_menu.events.DISABLE_CLOSE,  # Action on closing
@@ -74,18 +72,30 @@ class Menu:
             title='Settings'
         )
 
-        # TODO: в другое место
-        def change_sound(value):
-            Conf.Sound.BACKGROUND_MENU = value / 100
-
         # Layout
         self.menu["settings"].add_text_input(
-            f'Menu sound: ',
+            f'General volume: ',
             font_color=(0, 0, 0),
             input_type=pygame_menu.locals.INPUT_FLOAT,
-            default=round(Conf.Sound.BG_MENU * 10),
-            maxchar=3,
-            onreturn=change_sound
+            default=Conf.Sound.Volume.GENERAL,
+            maxchar=2,
+            onreturn=Snd.Volume.set_general
+        )
+        self.menu["settings"].add_text_input(
+            f'Background music volume: ',
+            font_color=(0, 0, 0),
+            input_type=pygame_menu.locals.INPUT_FLOAT,
+            default=Conf.Sound.Volume.BG,
+            maxchar=2,
+            onreturn=Snd.Volume.set_bg
+        )
+        self.menu["settings"].add_text_input(
+            f'SFX volume: ',
+            font_color=(0, 0, 0),
+            input_type=pygame_menu.locals.INPUT_FLOAT,
+            default=Conf.Sound.Volume.SFX,
+            maxchar=2,
+            onreturn=Snd.Volume.set_sfx
         )
         self.menu["settings"].add_vertical_margin(100)
         self.menu["settings"].add_button(

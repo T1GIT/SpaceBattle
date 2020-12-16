@@ -17,14 +17,17 @@ class Configuration:
         TXT_COLOR = "#000000"
 
         class Score:
-            X_OFFSET = 0
-            Y_OFFSET = 0
+            FONT_SIZE = 64
+            FONT_COLOR = (100, 255, 100)
+            X_OFFSET = 30
+            Y_OFFSET = 5
+            NUMBER = 300
 
-        class Life:
-            SIZE = 0
+        class Health:
+            SIZE = 90
             MARGIN = 0
-            X_OFFSET = 0
-            Y_OFFSET = 0
+            X_OFFSET = 40
+            Y_OFFSET = 50
 
     class Menu:
         GAME_VERSION = "v0.1"
@@ -108,10 +111,10 @@ class Configuration:
         TRIGGER_DEAD_ZONE = 0.5
 
     class Rules:
-        FPS = 60
+        FPS = 5
         GAME_SPEED = 60
         SCALE = GAME_SPEED / FPS
-        LIVES = 0
+        LIVES = 5
 
     # Checking parameters
     assert 0 <= Control.STICK_SENSITIVITY <= 10
