@@ -97,11 +97,8 @@ class Window:
         self.comp_menu.show()
 
     def mainloop(self):
-        try:
-            while self.running:
-                self.loop(EventListener.get_events())
-        except Exception as e:
-            print(e)
+        while self.running:
+            self.loop(EventListener.get_events())
         pg.quit()
 
     def loop(self, events: dict[int, set[Event]]):
@@ -109,12 +106,12 @@ class Window:
         Update all sprites and draw changes on the screen
         :param events
         """
-        self.clock.tick(Conf.Rules.FPS)
         self.event_handler(events)
         self.comp_game.loop(events)
         self.screen.blit(self.image, self.image.get_rect())
         self.gp_all.update()
         self.gp_all.draw(self.screen)
         pg.display.flip()
+        self.clock.tick(Conf.Rules.FPS)
 
 
