@@ -117,6 +117,7 @@ class Window:
         self.screen.blit(self.image, self.image.get_rect())
         self.sprites.update()
         self.sprites.draw(self.screen)
+        self.comp_game.comp_overlay.show_score()
         pg.display.flip()
 
 

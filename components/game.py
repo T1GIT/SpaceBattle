@@ -26,6 +26,7 @@ class Game:
         self.ship = None
         self.sprites_meteors = pg.sprite.Group()
         self.sprites_rockets = pg.sprite.Group()
+        self.sprites_healths = pg.sprite.Group()
         # Components
         self.comp_overlay = Overlay(self)
         # Timers
@@ -53,6 +54,7 @@ class Game:
         self.window.sprites.add(self.ship)
         self.ship.locate(Conf.Window.WIDTH // 2, Conf.Window.HEIGHT // 2)
         self.spawn_all_meteors()
+        self.spawn_all_healths()
         Snd.bg_game()
 
     def event_handler(self, events: [Event]):
@@ -67,8 +69,11 @@ class Game:
                 self.ship.rotate(*event.get_data(), True)
             if event.get_type() == Ms.Events.KEY and event.get_data() == Ms.Keys.LEFT:
                 shoot = True
+
         for event in events["keyboard"]:
-            if event.get_data() in (Kb.Keys.W, Kb.Keys.UP):       y += 1
+            if event.get_data() in (Kb.Keys.W, Kb.Keys.UP):
+                y += 1
+                self.comp_overlay.down_life()
             if event.get_data() in (Kb.Keys.A, Kb.Keys.LEFT):     x -= 1
             if event.get_data() in (Kb.Keys.S, Kb.Keys.DOWN):     y -= 1
             if event.get_data() in (Kb.Keys.D, Kb.Keys.RIGHT):    x += 1
@@ -78,7 +83,7 @@ class Game:
             if event.get_type() == Gp.Events.KEY and event.get_data() == Gp.Keys.RT:
                 shoot = True
         # Shooting
-        if shoot and self.rocket_timer ==0:
+        if shoot and self.rocket_timer == 0:
             self.rocket_timer = self.rocket_period
             rocket = self.ship.shoot()
             self.window.sprites.add(rocket)
@@ -124,3 +129,22 @@ class Game:
             meteor.locate(*Meteor.SetMeteors().get_out_field())
         self.window.sprites.add(meteor)
         self.sprites_meteors.add(meteor)
+
+    def spawn_all_healths(self):
+        x = Conf.Overlay.Health.X_OFFSET
+        health_num = 0
+        while self.comp_overlay.get_health() != Conf.Rules.LIVES:
+            self.spawn_health(x)
+            x += Conf.Overlay.Health.SIZE
+            health_num += 1
+
+    def spawn_health(self, pos_x):
+        """
+        This method spawn a meteor on the given position
+        """
+        health = Overlay.Health()
+        health.show_health(pos_x)
+        self.comp_overlay.add_to_life(health)
+
+        self.window.sprites.add(health)
+        self.sprites_healths.add(health)
