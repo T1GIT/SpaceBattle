@@ -63,7 +63,8 @@ class Rocket(pg.sprite.Sprite):
                 self.kill()
         self.rect.x, self.rect.y = self.pos_x, self.pos_y
 
-    def change_texture(self):
+    def change_texture(self, number: int):
+        Conf.Image.ROCKET = number
         raw_image = Img.get_rocket()
         w0, h0 = raw_image.get_size()
         scale = Conf.Rocket.SIZE / h0

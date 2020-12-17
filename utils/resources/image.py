@@ -11,8 +11,8 @@ class Image:
     Class containing objects' images, already prepared for using
     """
     _ROOT = "./resources/images"
-    _SHIP = [None, None]
-    _ROCKET = None
+    SHIPS = None
+    ROCKETS = None
     _METEORS = None
     _BACKGROUND = None
     _PIECES = None
@@ -29,15 +29,25 @@ class Image:
 
     @staticmethod
     def get_ship(with_fire: bool) -> pg.image:
-        if with_fire:
-            if Image._SHIP[1] is None:
-                Image._SHIP[1] = pg.image.load(
-                    f"{Image._ROOT}/ship/{Conf.Image.SHIP}/fire.{Conf.Image.SPRITE_FORMAT}").convert_alpha()
-        else:
-            if Image._SHIP[0] is None:
-                Image._SHIP[0] = pg.image.load(
-                    f"{Image._ROOT}/ship/{Conf.Image.SHIP}/normal.{Conf.Image.SPRITE_FORMAT}").convert_alpha()
-        return Image._SHIP[1] if with_fire else Image._SHIP[0]
+        if Image.SHIPS is None:
+            Image.SHIPS = []
+            path = f"{Image._ROOT}/ship"
+            for x in range(len([f for f in os.listdir(path) if os.path.isfile(os.path.join(path, f))])):
+                Image.SHIPS.append([
+                    pg.image.load(f"{Image._ROOT}/ship/{x}/normal.{Conf.Image.SPRITE_FORMAT}").convert_alpha(),
+                    pg.image.load(f"{Image._ROOT}/ship/{x}/fire.{Conf.Image.SPRITE_FORMAT}").convert_alpha()
+                ])
+        return Image.SHIPS[Conf.Image.SHIP][1 if with_fire else 0]
+
+    @staticmethod
+    def get_rocket() -> pg.image:
+        if Image.ROCKETS is None:
+            Image.ROCKETS = []
+            path = f"{Image._ROOT}/rocket"
+            for x in range(len([f for f in os.listdir(path) if os.path.isfile(os.path.join(path, f))])):
+                Image.ROCKETS.append(pg.image.load(
+                    f"{Image._ROOT}/ship/{x}.{Conf.Image.SPRITE_FORMAT}").convert_alpha())
+        return Image.ROCKETS[Conf.Image.SHIP]
 
     @staticmethod
     def get_life() -> pg.image:
@@ -45,13 +55,6 @@ class Image:
             Image._LIFE = pg.image.load(
                 f"{Image._ROOT}/life/{Conf.Image.LIFE}.{Conf.Image.SPRITE_FORMAT}").convert_alpha()
         return Image._LIFE
-
-    @staticmethod
-    def get_rocket() -> pg.image:
-        if Image._ROCKET is None:
-            Image._ROCKET = pg.image.load(
-                f"{Image._ROOT}/rocket/{Conf.Image.ROCKET}.{Conf.Image.SPRITE_FORMAT}").convert_alpha()
-        return Image._ROCKET
 
     @staticmethod
     def get_background() -> pg.image:

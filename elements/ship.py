@@ -139,3 +139,12 @@ class Ship(pg.sprite.Sprite):
         a_x = f * cos(rad) * pow(x, 2)
         a_y = f * sin(rad) * pow(y, 2)
         return a_x, a_y
+
+    def change_texture(self, number: int):
+        Conf.Image.SHIP = number
+        raw_image = Img.get_ship(self.with_fire)
+        w0, h0 = raw_image.get_size()
+        scale = Conf.Ship.SIZE / h0
+        w1, h1 = map(lambda x: round(x * scale), [w0, h0])
+        self.texture = pg.transform.scale(raw_image, (w1, h1))
+        self.image = pg.transform.rotate(self.texture, -self.angle)

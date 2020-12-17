@@ -95,6 +95,23 @@ class Menu:
             onchange=lambda _, value: Spawner.change_difficulty(value)
         )
         self.menu["settings"].add_label(
+            "Textures"
+        )
+        self.menu["settings"].add_selector(
+            f'Ship:  ',
+            items=[(str(i), i) for i in range(Img.SHIPS)],
+            font_color=(0, 0, 0),
+            default=1 if Conf.Meteor.BY_TIME else 0,
+            onchange=lambda _, value: Spawner.change_spawn_mode(value)
+        )
+        self.menu["settings"].add_selector(
+            f'Difficulty:  ',
+            items=Conf.Game.DIFFICULTY,
+            default=4 - (Conf.Meteor.PERIOD - Conf.Game.DIFFICULTY[-1][1][0]) // 100,
+            font_color=(0, 0, 0),
+            onchange=lambda _, value: Spawner.change_difficulty(value)
+        )
+        self.menu["settings"].add_label(
             "Volume"
         )
         self.menu["settings"].add_selector(
