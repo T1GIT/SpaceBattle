@@ -28,7 +28,7 @@ class Menu:
                  'Ideas and suggestions: SpaceBattle@ya.com']
 
         # Theme
-        about_theme = pygame_menu.themes.THEME_DEFAULT.copy()
+        about_theme = pygame_menu.themes.THEME_DARK.copy()
         about_theme.title_font_size = 56
 
         # Initialisation
@@ -59,7 +59,7 @@ class Menu:
         """
 
         # Theme
-        theme = pygame_menu.themes.THEME_SOLARIZED.copy()
+        theme = pygame_menu.themes.THEME_DARK.copy()
         theme.title_font_size = 56
 
         # Initialisation
