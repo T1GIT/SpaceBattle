@@ -10,8 +10,8 @@ from utils.sound import Sound as Snd
 
 class Ship(pg.sprite.Sprite):
     """
-    Class of the player's mob
-    Can shooting rockets
+    Class of the player's ship
+    Can shoot rockets
     Can by destroyed by meteors
     """
     accuracy = 50 / Conf.Ship.ACCURACY

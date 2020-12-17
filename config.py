@@ -79,6 +79,10 @@ class Configuration:
         MAX_DISTANCE = 300  # px  (needs Rocket.UNLIMITED = False)
         UNLIMITED = True
 
+    class Enemy:
+        class Fighter:
+            SHOOT_PERIOD = 500  # ms
+
     class Animation:
         DEFAULT_SIZE = 200
         FPS = 30

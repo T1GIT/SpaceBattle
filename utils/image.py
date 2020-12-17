@@ -12,6 +12,7 @@ class Image:
     """
     _ROOT = "./resources/images"
     _SHIP = [None, None]
+    _FIGHTER = None
     _ROCKET = None
     _METEORS = None
     _BACKGROUND = None
@@ -52,6 +53,13 @@ class Image:
             Image._ROCKET = pg.image.load(
                 f"{Image._ROOT}/rocket/{Conf.Image.ROCKET}.{Conf.Image.SPRITE_FORMAT}").convert_alpha()
         return Image._ROCKET
+
+    @staticmethod
+    def get_fighter() -> pg.image:
+        if Image._FIGHTER is None:
+            Image._FIGHTER = pg.image.load(
+                f"{Image._ROOT}/enemy/fighter.{Conf.Image.SPRITE_FORMAT}").convert_alpha()
+        return Image._FIGHTER
 
     @staticmethod
     def get_background() -> pg.image:
