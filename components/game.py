@@ -27,6 +27,7 @@ class Game:
         # Environment
         self.window = window
         self.running = False
+        self.over = False
         self.clock = pg.time.Clock()
         # Components
         self.comp_overlay = Overlay(self)
@@ -92,9 +93,7 @@ class Game:
         # Shooting
         if shoot and self.rocket_timer == 0:
             self.rocket_timer = self.rocket_period
-            rocket = self.ship.shoot()
-            Group.ALL.add(rocket)
-            Group.ROCKETS.add(rocket)
+            self.ship.shoot()
         # Moving
         if (x, y) == (0, 0):    self.ship.brake()
         else:                   self.ship.accelerate(x, y)
@@ -106,15 +105,14 @@ class Game:
             Group.ALL.update()
             Group.ALL.draw(self.window.screen)
             pg.display.flip()
-            # Decrementing timers
-            self.meteor_timer = max(0, self.meteor_timer - 1)
-            self.rocket_timer = max(0, self.rocket_timer - 1)
-            self.losing_timer = max(0, self.losing_timer - 1)
-            if self.losing_timer == 0:
+            if self.over:
+                if self.losing_timer == 0:
+                    self.window.reset()
+                    self.window.open_menu()
+                else:
+                    self.losing_timer -= 1
+            else:
                 self.preparation()
-            elif self.losing_timer == 1:
-                self.window.reset()
-                self.window.open_menu()
             self.clock.tick(Conf.System.FPS)
 
     def preparation(self):
@@ -131,6 +129,7 @@ class Game:
             Snd.ex_ship()
             Animation.on_sprite("ship", self.ship, max(self.ship.rect.size) * Conf.Ship.ANIM_SCALE)
             self.losing_timer = Conf.System.FPS * Conf.Game.LOSE_DELAY
+            self.over = True
         # Spawning
         if Conf.Meteor.BY_TIME:
             if self.meteor_timer == 0:
@@ -138,3 +137,6 @@ class Game:
                 Spawner.meteor()
         else: Spawner.all_meteors()
         Spawner.all_pieces(False)
+        # Decrementing timers
+        self.meteor_timer = max(0, self.meteor_timer - 1)
+        self.rocket_timer = max(0, self.rocket_timer - 1)

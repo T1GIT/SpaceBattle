@@ -13,8 +13,7 @@ class Spawner:
                 piece.locate(*Piece.GetCoord().get_on_field())
             else:
                 piece.locate(*Piece.GetCoord().get_out_field())
-            Group.ALL.add(piece)
-            Group.PIECES.add(piece)
+            piece.add(Group.PIECES, Group.ALL)
 
     @staticmethod
     def all_meteors():
@@ -34,5 +33,4 @@ class Spawner:
             meteor.locate(*Meteor.GetCoord().get_on_field())
         else:
             meteor.locate(*Meteor.GetCoord().get_out_field())
-        Group.ALL.add(meteor)
-        Group.METEORS.add(meteor)
+        meteor.add(Group.METEORS, Group.ALL)

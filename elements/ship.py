@@ -4,6 +4,7 @@ import pygame as pg
 
 from config import Configuration as Conf
 from elements.rocket import Rocket
+from utils.group import Group
 from utils.image import Image as Img
 from utils.sound import Sound as Snd
 
@@ -111,7 +112,7 @@ class Ship(pg.sprite.Sprite):
         y = ctr[1] + self.half_height * sin(rad)
         rocket.locate(x, y, -self.angle)
         Snd.shoot()
-        return rocket
+        rocket.add(Group.ROCKETS, Group.ALL)
 
     def _wear_fire(self, with_fire: bool):
         if with_fire != self.with_fire:

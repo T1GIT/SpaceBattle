@@ -40,7 +40,7 @@ class Collider:
                     Snd.ex_meteor()
                     if meteor.is_alive():
                         meteor.wound()
-                        Animation.on_sprite("meteor", meteor, max(meteor.rect.size) / 2)
+                        Animation.on_sprite("meteor", rocket, max(meteor.rect.size) / 2)
                     else:
                         Animation.on_sprite("meteor", meteor, max(meteor.rect.size))
                         meteor.kill()

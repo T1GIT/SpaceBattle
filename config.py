@@ -86,7 +86,7 @@ class Configuration:
     class Image:
         SHIP = 0
         LIFE = 0
-        ROCKET = 1
+        ROCKET = 0
         MENU_BG = 0
         STATIC_BG = 0
         ANIM_FORMAT = "gif"
