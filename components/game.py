@@ -4,14 +4,13 @@ from components.overlay import Overlay
 from config import Configuration as Conf
 from elements.animation import Animation
 from elements.ship import Ship
-from utils.collider import Collider
-from utils.debugger import Debugger
-from utils.events import Keyboard as Kb, Gamepad as Gp, Mouse as Ms, Device as Dvs, System as Sys, Event
+from utils.mechanics.collider import Collider
+from utils.listener.events import Keyboard as Kb, Gamepad as Gp, Mouse as Ms, Device as Dvs, System as Sys, Event
 from utils.group import Group
-from utils.image import Image as Img
-from utils.listener import EventListener
-from utils.sound import Sound as Snd
-from utils.spawner import Spawner
+from utils.resources.image import Image as Img
+from utils.listener.listener import EventListener
+from utils.resources.sound import Sound as Snd
+from utils.mechanics.spawner import Spawner
 
 
 class Game:
@@ -27,7 +26,7 @@ class Game:
         # Environment
         self.window = window
         self.running = False
-        self.over = False
+        self.game_over = False
         self.clock = pg.time.Clock()
         # Components
         self.comp_overlay = Overlay(self)
@@ -91,7 +90,7 @@ class Game:
             if event.get_type() == Gp.Events.KEY and event.get_data() == Gp.Keys.RT: shoot = True
             if event.get_type() == Gp.Events.KEY and event.get_data() == Gp.Keys.START: self.window.pause()
         # Shooting
-        if shoot and self.rocket_timer == 0:
+        if shoot and not self.game_over and self.rocket_timer == 0:
             self.rocket_timer = self.rocket_period
             self.ship.shoot()
         # Moving
@@ -105,7 +104,7 @@ class Game:
             Group.ALL.update()
             Group.ALL.draw(self.window.screen)
             pg.display.flip()
-            if self.over:
+            if self.game_over:
                 if self.losing_timer == 0:
                     self.window.reset()
                     self.window.open_menu()
@@ -129,7 +128,8 @@ class Game:
             Snd.ex_ship()
             Animation.on_sprite("ship", self.ship, max(self.ship.rect.size) * Conf.Ship.ANIM_SCALE)
             self.losing_timer = Conf.System.FPS * Conf.Game.LOSE_DELAY
-            self.over = True
+            self.game_over = True
+            Snd.game_over()
         # Spawning
         if Conf.Meteor.BY_TIME:
             if self.meteor_timer == 0:

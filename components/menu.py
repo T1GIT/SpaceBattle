@@ -1,11 +1,10 @@
-import pygame as pg
 import pygame_menu
 
 from config import Configuration as Conf
-from utils.events import Event, Device as Dvs, Keyboard as Kb, Gamepad as Gp
-from utils.image import Image as Img
-from utils.listener import EventListener
-from utils.sound import Sound as Snd
+from utils.listener.events import Event, Device as Dvs, Keyboard as Kb, Gamepad as Gp
+from utils.resources.image import Image as Img
+from utils.listener.listener import EventListener
+from utils.resources.sound import Sound as Snd
 
 
 class Menu:

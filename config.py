@@ -11,7 +11,7 @@ class Configuration:
         FONT = "./resources/fonts/opensans.ttf"
 
     class Game:
-        LOSE_DELAY = 3
+        LOSE_DELAY = 9
 
     class Overlay:
         OPACITY = 70

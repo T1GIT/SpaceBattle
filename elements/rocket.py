@@ -3,7 +3,7 @@ from math import cos, sin, radians, sqrt
 import pygame as pg
 
 from config import Configuration as Conf
-from utils.image import Image as Img
+from utils.resources.image import Image as Img
 
 
 class Rocket(pg.sprite.Sprite):

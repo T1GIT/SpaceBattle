@@ -3,9 +3,7 @@ import random as rnd
 import pygame as pg
 
 from config import Configuration as Conf
-from elements.rocket import Rocket
-from utils.image import Image as Img
-from utils.sound import Sound as Snd
+from utils.resources.image import Image as Img
 
 
 class Meteor(pg.sprite.Sprite):

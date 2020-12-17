@@ -3,9 +3,8 @@ from collections import deque
 import pygame as pg
 
 from config import Configuration as Conf
-from elements.ship import Ship
 from utils.group import Group
-from utils.image import Image as Img
+from utils.resources.image import Image as Img
 
 
 class Animation(pg.sprite.Sprite):

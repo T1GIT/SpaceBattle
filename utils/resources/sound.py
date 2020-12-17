@@ -14,6 +14,7 @@ class Sound:
     _EX_METEOR = None
     _WOUND = None
     _ENGINE = None
+    _GAME_OVER = None
 
     @staticmethod
     def get_volume(volume: float) -> float:
@@ -28,7 +29,7 @@ class Sound:
             f'{Sound._ROOT}/background/menu/{Conf.Sound.BG_MENU}.{Conf.Sound.FORMAT}')
         pg.mixer.music.set_volume(Sound.get_volume(Sound._VOLUME.BG))
         pg.mixer.music.play(-1)
-        pg.mixer.music.set_pos(6)
+        pg.mixer.music.set_pos(10)
 
     @staticmethod
     def bg_game():
@@ -36,6 +37,12 @@ class Sound:
             f'{Sound._ROOT}/background/game/{Conf.Sound.BG_GAME}.{Conf.Sound.FORMAT}')
         pg.mixer.music.set_volume(Sound.get_volume(Sound._VOLUME.BG))
         pg.mixer.music.play(-1)
+
+    @staticmethod
+    def game_over():
+        pg.mixer.music.load(f'{Sound._ROOT}/sfx/game_over.{Conf.Sound.FORMAT}')
+        pg.mixer.music.set_volume(Sound.get_volume(Sound._VOLUME.BG))
+        pg.mixer.music.play()
 
     """
     SFX

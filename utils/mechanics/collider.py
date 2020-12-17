@@ -5,7 +5,7 @@ from elements.animation import Animation
 from elements.meteor import Meteor
 from elements.ship import Ship
 from utils.group import Group
-from utils.sound import Sound as Snd
+from utils.resources.sound import Sound as Snd
 
 
 class Collider:

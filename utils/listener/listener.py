@@ -3,7 +3,7 @@ from math import pow
 import pygame as pg
 
 from config import Configuration as Conf
-from utils.events import Event, Mouse, Keyboard, Gamepad, Device
+from utils.listener.events import Event, Mouse, Keyboard, Gamepad, Device
 
 
 class EventListener:

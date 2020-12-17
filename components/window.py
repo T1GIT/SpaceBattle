@@ -7,14 +7,14 @@ from components.game import Game
 from components.menu import Menu
 from config import Configuration as Conf
 from utils.group import Group
-from utils.sound import Sound as Snd
+from utils.resources.sound import Sound as Snd
 
 
 class Window:
     """
     Class for show the main window.
     Initials the Game.
-    Start event_listener
+    Start listener
     """
 
     def __init__(self):
@@ -52,12 +52,14 @@ class Window:
             self.close_menu()
 
     def open_menu(self):
+        pg.mixer.stop()
         Snd.bg_menu()
         pg.event.set_grab(False)
         self.comp_menu.open()
         pg.mouse.set_visible(False)
 
     def close_menu(self):
+        pg.mixer.stop()
         Snd.bg_game()
         self.comp_menu.close()
         pg.mouse.set_visible(False)
