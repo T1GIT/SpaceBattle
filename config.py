@@ -14,14 +14,14 @@ class Configuration:
         LOSE_DELAY = 3
 
     class Overlay:
-        OPACITY = 100
+        OPACITY = 70
 
         class Score:
             SIZE = 64
             COLOR = (100, 255, 100)
             X_OFFSET = 30
             Y_OFFSET = 5
-            DELTA = 300
+            DELTA = 100
 
         class Health:
             SIZE = 50
@@ -49,32 +49,33 @@ class Configuration:
         QUANTITY = 10
 
     class Ship:
-        SIZE = 100
+        SIZE = 150
         WEIGHT = 2
         POWER = 5
-        RESIST = 0.05  # (0; 1)
+        RESIST = 0.05  # >= 0
         SMOOTH = 10  # >= 1
         ACCURACY = 10  # [1; 10]
-        DEAD_SPEED = 0.2
-        ANIM_SCALE = 3
+        DEAD_SPEED = 0.2  # [0, 1)
+        ANIM_SCALE = 2
 
     class Meteor:
-        MAX_SIZE = 100
+        MAX_SIZE = 200
         MIN_SIZE = 70
+        MAX_LIFES = 5  # (Need Rocket.DESTROYABLE = True)
         MAX_SPEED = 3
         TOR = True
         ROTATING = True
         MAX_ROTATE_SPEED = 4
         QUANTITY = 20
         BY_TIME = True
-        PERIOD = 500
+        PERIOD = 400
         ON_FIELD = False
 
     class Rocket:
         SIZE = 10  # px
         SPEED = 20  # > 0
         PERIOD = 200  # ms
-        DESTROYABLE = False
+        DESTROYABLE = True
         MAX_DISTANCE = 300  # px  (needs Rocket.UNLIMITED = False)
         UNLIMITED = True
 
@@ -100,15 +101,15 @@ class Configuration:
         FORMAT = "mp3"
 
         class Volume:
-            GENERAL = 5  # [0; 10]
+            GENERAL = 2  # [0; 10]
             BG = 7  # [0; 10]
             SFX = 3  # [0; 10]
 
     class Control:
         MOUSE_BUTTONS = 3
         STICK_SENSITIVITY = 2  # [1; 10]
-        STICK_DEAD_ZONE = 0.2
-        TRIGGER_DEAD_ZONE = 0.5
+        STICK_DEAD_ZONE = 0.2  # [0; 1)
+        TRIGGER_DEAD_ZONE = 0.5  # [0; 1)
         ESC_PERIOD = 500  # ms
 
     class Rules:
@@ -120,12 +121,15 @@ class Configuration:
         SCALE = GAME_SPEED / FPS
 
     # Checking parameters
-    assert 0 <= Control.STICK_SENSITIVITY <= 10
-    assert 1 <= Ship.ACCURACY <= 10
-    assert 0 < Ship.RESIST < 1
+    assert 0 <= Ship.RESIST
+    assert 0 < Ship.DEAD_SPEED < 1
     assert Ship.SMOOTH >= 1
+    assert 1 <= Ship.ACCURACY <= 10
     assert Meteor.MAX_SIZE >= Meteor.MIN_SIZE
     assert Rocket.SPEED > 0
+    assert 0 <= Control.STICK_SENSITIVITY <= 10
+    assert 0 <= Control.STICK_DEAD_ZONE < 1
+    assert 0 <= Control.TRIGGER_DEAD_ZONE < 1
     assert 0 <= Piece.MIN_OPACITY <= 100
     assert 0 <= Piece.MAX_OPACITY <= 100
     assert 1 <= Sound.Volume.GENERAL <= 10

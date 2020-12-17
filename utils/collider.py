@@ -2,6 +2,7 @@ import pygame as pg
 
 from config import Configuration as Conf
 from elements.animation import Animation
+from elements.meteor import Meteor
 from elements.ship import Ship
 from utils.group import Group
 from utils.sound import Sound as Snd
@@ -32,15 +33,20 @@ class Collider:
         """
         touched = pg.sprite.groupcollide(Group.METEORS, Group.ROCKETS, False, False)
         result = 0
+        meteor: Meteor
         for meteor, rockets in touched.items():
             for rocket in rockets:
                 if Collider.collide_by_mask(meteor, rocket):
                     Snd.ex_meteor()
-                    Animation.on_sprite("meteor", meteor, max(meteor.rect.size))
-                    meteor.kill()
+                    if meteor.is_alive():
+                        meteor.wound()
+                        Animation.on_sprite("meteor", meteor, max(meteor.rect.size) / 2)
+                    else:
+                        Animation.on_sprite("meteor", meteor, max(meteor.rect.size))
+                        meteor.kill()
+                        result += 1
                     if Conf.Rocket.DESTROYABLE:
                         rocket.kill()
-                    result += 1
         return result
 
     @staticmethod

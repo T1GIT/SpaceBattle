@@ -129,7 +129,7 @@ class Game:
         if self.comp_overlay.health.is_dead():
             self.ship.kill()
             Snd.ex_ship()
-            Animation.on_sprite("meteor", self.ship, max(self.ship.rect.size) * Conf.Ship.ANIM_SCALE)
+            Animation.on_sprite("ship", self.ship, max(self.ship.rect.size) * Conf.Ship.ANIM_SCALE)
             self.losing_timer = Conf.System.FPS * Conf.Game.LOSE_DELAY
         # Spawning
         if Conf.Meteor.BY_TIME:

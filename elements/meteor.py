@@ -3,6 +3,7 @@ import random as rnd
 import pygame as pg
 
 from config import Configuration as Conf
+from elements.rocket import Rocket
 from utils.image import Image as Img
 from utils.sound import Sound as Snd
 
@@ -13,19 +14,23 @@ class Meteor(pg.sprite.Sprite):
     Can destroy ship
     Can be destroyed by rockets
     """
+
     def __init__(self):
         super().__init__()
         # Variables
-        self.speed_x = rnd.uniform(-Conf.Meteor.MAX_SPEED, Conf.Meteor.MAX_SPEED) * Conf.System.SCALE
-        self.speed_y = rnd.uniform(-Conf.Meteor.MAX_SPEED, Conf.Meteor.MAX_SPEED) * Conf.System.SCALE
-        self.angle_speed = rnd.uniform(-Conf.Meteor.MAX_ROTATE_SPEED, Conf.Meteor.MAX_ROTATE_SPEED) * Conf.System.SCALE
+        cnf = Conf.Meteor
+        self.speed_x = rnd.uniform(-cnf.MAX_SPEED, cnf.MAX_SPEED) * Conf.System.SCALE
+        self.speed_y = rnd.uniform(-cnf.MAX_SPEED, cnf.MAX_SPEED) * Conf.System.SCALE
+        self.angle_speed = rnd.uniform(-cnf.MAX_ROTATE_SPEED, cnf.MAX_ROTATE_SPEED) * Conf.System.SCALE
         self.pos_x, self.pos_y = 0, 0
         # Initialising
         pg.sprite.Sprite.__init__(self)
         raw_image = Img.get_meteors()
         self.amount = rnd.randint(0, len(raw_image) - 1)
         w0, h0 = raw_image[self.amount].get_size()
-        scale = rnd.randint(Conf.Meteor.MIN_SIZE, Conf.Meteor.MAX_SIZE) / max(w0, h0)
+        size = rnd.randint(cnf.MIN_SIZE, cnf.MAX_SIZE)
+        self.lifes = ((size - cnf.MIN_SIZE) // ((cnf.MAX_SIZE - cnf.MIN_SIZE) / cnf.MAX_LIFES))
+        scale = size / max(w0, h0)
         w1, h1 = map(lambda x: round(x * scale), [w0, h0])
         self.texture = pg.transform.scale(raw_image[self.amount], (w1, h1))
         self.image = self.texture
@@ -80,6 +85,12 @@ class Meteor(pg.sprite.Sprite):
         elif self.rect.bottom > height + max_size:
             self.rect.bottom = 0
             self.pos_y = self.rect.y
+
+    def wound(self):
+        self.lifes -= 1
+
+    def is_alive(self) -> bool:
+        return self.lifes > 0
 
     class GetCoord:
         @staticmethod

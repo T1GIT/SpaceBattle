@@ -39,6 +39,9 @@ class Overlay:
         def reset(self) -> None:
             self.__init__()
 
+        def get_score(self) -> int:
+            return self.score
+
         def show(self) -> None:
             self.rect = self.image.get_rect(topright=(
                 Conf.Window.WIDTH - Conf.Overlay.Score.X_OFFSET, Conf.Overlay.Score.Y_OFFSET))
@@ -71,6 +74,9 @@ class Overlay:
 
         def reset(self) -> None:
             self.__init__()
+
+        def get_lifes(self) -> int:
+            return len(self.points)
 
         def show(self) -> None:
             cnf = Conf.Overlay.Health
