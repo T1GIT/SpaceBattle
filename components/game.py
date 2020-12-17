@@ -100,12 +100,11 @@ class Game:
 
     def mainloop(self):
         while self.running:
-            Debugger.start()
             self.window.screen.blit(self.image, self.image.get_rect())
             self.event_handler(EventListener.get_events())
             Group.ALL.update()
             Group.ALL.draw(self.window.screen)
-            pg.display.flip()
+            pg.display.update(Group.ALL.sprites())
             if self.game_over:
                 if self.losing_timer == 0:
                     self.window.reset()
@@ -114,7 +113,6 @@ class Game:
                     self.losing_timer -= 1
             else:
                 self.preparation()
-            Debugger.print("ALL")
             self.clock.tick(Conf.System.FPS)
 
     def preparation(self):
