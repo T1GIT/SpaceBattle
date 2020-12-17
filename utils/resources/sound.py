@@ -92,7 +92,7 @@ class Sound:
 
     class Volume:
         @staticmethod
-        def set_general(level: float):
+        def set_general(level: int):
             Conf.Sound.Volume.GENERAL = level
             if Sound._SHOOT is not None:
                 Sound._SHOOT.set_volume(Sound.get_volume(Conf.Sound.Volume.SFX))
@@ -103,9 +103,9 @@ class Sound:
             pg.mixer.music.set_volume(Sound.get_volume(Conf.Sound.Volume.BG))
 
         @staticmethod
-        def set_sfx(level: float):
+        def set_sfx(level: int):
             Conf.Sound.Volume.SFX = level
-            if Sound._EX_SHIP is not None:
+            if Sound._SHOOT is not None:
                 Sound._SHOOT.set_volume(Sound.get_volume(level))
             if Sound._EX_SHIP is not None:
                 Sound._EX_SHIP.set_volume(Sound.get_volume(level))
@@ -113,6 +113,6 @@ class Sound:
                 Sound._EX_METEOR.set_volume(Sound.get_volume(level))
 
         @staticmethod
-        def set_bg(level: float):
+        def set_bg(level: int):
             Conf.Sound.Volume.BG = level
             pg.mixer.music.set_volume(Sound.get_volume(level))

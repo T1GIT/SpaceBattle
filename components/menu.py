@@ -72,29 +72,32 @@ class Menu:
         )
 
         # Layout
-        self.menu["settings"].add_text_input(
+        self.menu["settings"].add_selector(
             f'General volume: ',
+            items=[(str(i), i) for i in range(0, 11)],
             font_color=(0, 0, 0),
             input_type=pygame_menu.locals.INPUT_FLOAT,
             default=Conf.Sound.Volume.GENERAL,
             maxchar=2,
-            onreturn=Snd.Volume.set_general
+            onchange=lambda value, *_, **__: Snd.Volume.set_general(value[1])
         )
-        self.menu["settings"].add_text_input(
+        self.menu["settings"].add_selector(
             f'Background music volume: ',
+            items=[(str(i), i) for i in range(0, 11)],
             font_color=(0, 0, 0),
             input_type=pygame_menu.locals.INPUT_FLOAT,
             default=Conf.Sound.Volume.BG,
             maxchar=2,
-            onreturn=Snd.Volume.set_bg
+            onchange=lambda value, *_, **__: Snd.Volume.set_bg(value[1])
         )
-        self.menu["settings"].add_text_input(
+        self.menu["settings"].add_selector(
             f'SFX volume: ',
+            items=[(str(i), i) for i in range(0, 11)],
             font_color=(0, 0, 0),
             input_type=pygame_menu.locals.INPUT_FLOAT,
             default=Conf.Sound.Volume.SFX,
             maxchar=2,
-            onreturn=Snd.Volume.set_sfx
+            onchange=lambda value, *_, **__: Snd.Volume.set_sfx(value[1])
         )
         self.menu["settings"].add_vertical_margin(100)
         self.menu["settings"].add_button(
