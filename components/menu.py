@@ -2,6 +2,8 @@ import pygame_menu
 
 from components.game import Game
 from config import Configuration as Conf
+from elements.rocket import Rocket
+from elements.ship import Ship
 from utils.listener.events import Event, Device as Dvs, Keyboard as Kb, Gamepad as Gp
 from utils.mechanics.spawner import Spawner
 from utils.resources.image import Image as Img
@@ -99,17 +101,17 @@ class Menu:
         )
         self.menu["settings"].add_selector(
             f'Ship:  ',
-            items=[(str(i), i) for i in range(Img.SHIPS)],
+            items=[(str(i), i) for i in range(Img.SHIPS_AMOUNT)],
             font_color=(0, 0, 0),
-            default=1 if Conf.Meteor.BY_TIME else 0,
-            onchange=lambda _, value: Spawner.change_spawn_mode(value)
+            default=Conf.Image.SHIP,
+            onchange=lambda _, value: Ship.set_texture(value)
         )
         self.menu["settings"].add_selector(
-            f'Difficulty:  ',
-            items=Conf.Game.DIFFICULTY,
-            default=4 - (Conf.Meteor.PERIOD - Conf.Game.DIFFICULTY[-1][1][0]) // 100,
+            f'Rocket:  ',
+            items=[(str(i), i) for i in range(Img.ROCKETS_AMOUNT)],
+            default=Conf.Image.ROCKET,
             font_color=(0, 0, 0),
-            onchange=lambda _, value: Spawner.change_difficulty(value)
+            onchange=lambda _, value: Rocket.set_texture(value)
         )
         self.menu["settings"].add_label(
             "Volume"

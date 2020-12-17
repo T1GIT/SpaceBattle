@@ -8,6 +8,7 @@ from components.menu import Menu
 from config import Configuration as Conf
 from utils.group import Group
 from utils.resources.sound import Sound as Snd
+from utils.resources.image import Image as Img
 
 
 class Window:
@@ -73,5 +74,6 @@ class Window:
         self.comp_game.start()
 
     def show(self):
+        Img.cache()
         Snd.bg_menu()
         self.comp_menu.open()

@@ -56,9 +56,9 @@ class Configuration:
         QUANTITY = 10
 
     class Ship:
-        SIZE = 150
-        WEIGHT = 2
-        POWER = 5
+        SIZE = 100
+        WEIGHT = 10
+        POWER = 10
         RESIST = 0.05  # >= 0
         SMOOTH = 10  # >= 1
         ACCURACY = 10  # [1; 10]

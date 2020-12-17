@@ -11,14 +11,20 @@ class Image:
     Class containing objects' images, already prepared for using
     """
     _ROOT = "./resources/images"
-    SHIPS = None
-    ROCKETS = None
+    _SHIPS = None
+    _ROCKETS = None
     _METEORS = None
     _BACKGROUND = None
     _PIECES = None
     _MENU = None
     _LIFE = None
     _ANIMATIONS = dict()
+
+    SHIPS_AMOUNT = len([f for f in os.listdir("./resources/images/ship") if "raw" not in f])
+    ROCKETS_AMOUNT = len([f for f in os.listdir("./resources/images/rocket")
+                          if "raw" not in f and os.path.isfile(os.path.join("./resources/images/rocket", f))])
+    _METEORS_AMOUNT = len([f for f in os.listdir("./resources/images/meteor")
+                           if "raw" not in f and os.path.isfile(os.path.join("./resources/images/meteor", f))])
 
     @staticmethod
     def get_menu() -> pygame_menu.baseimage.BaseImage:
@@ -29,25 +35,23 @@ class Image:
 
     @staticmethod
     def get_ship(with_fire: bool) -> pg.image:
-        if Image.SHIPS is None:
-            Image.SHIPS = []
-            path = f"{Image._ROOT}/ship"
-            for x in range(len([f for f in os.listdir(path) if os.path.isfile(os.path.join(path, f))])):
-                Image.SHIPS.append([
+        if Image._SHIPS is None:
+            Image._SHIPS = []
+            for x in range(Image.SHIPS_AMOUNT):
+                Image._SHIPS.append([
                     pg.image.load(f"{Image._ROOT}/ship/{x}/normal.{Conf.Image.SPRITE_FORMAT}").convert_alpha(),
                     pg.image.load(f"{Image._ROOT}/ship/{x}/fire.{Conf.Image.SPRITE_FORMAT}").convert_alpha()
                 ])
-        return Image.SHIPS[Conf.Image.SHIP][1 if with_fire else 0]
+        return Image._SHIPS[Conf.Image.SHIP][1 if with_fire else 0]
 
     @staticmethod
     def get_rocket() -> pg.image:
-        if Image.ROCKETS is None:
-            Image.ROCKETS = []
-            path = f"{Image._ROOT}/rocket"
-            for x in range(len([f for f in os.listdir(path) if os.path.isfile(os.path.join(path, f))])):
-                Image.ROCKETS.append(pg.image.load(
-                    f"{Image._ROOT}/ship/{x}.{Conf.Image.SPRITE_FORMAT}").convert_alpha())
-        return Image.ROCKETS[Conf.Image.SHIP]
+        if Image._ROCKETS is None:
+            Image._ROCKETS = []
+            for x in range(Image.ROCKETS_AMOUNT):
+                Image._ROCKETS.append(pg.image.load(
+                    f"{Image._ROOT}/rocket/{x}.{Conf.Image.SPRITE_FORMAT}").convert_alpha())
+        return Image._ROCKETS[Conf.Image.SHIP]
 
     @staticmethod
     def get_life() -> pg.image:
@@ -68,7 +72,7 @@ class Image:
         if Image._METEORS is None:
             Image._METEORS = []
             path = f"{Image._ROOT}/meteor"
-            for x in range(len([f for f in os.listdir(path) if os.path.isfile(os.path.join(path, f))])):
+            for x in range(Image._METEORS_AMOUNT):
                 Image._METEORS.append(pg.image.load(f"{path}/{x}.{Conf.Image.SPRITE_FORMAT}").convert_alpha())
         return Image._METEORS
 
@@ -88,6 +92,16 @@ class Image:
             Image._PIECES = []
             path = f"{Image._ROOT}/piece"
             for x in range(len([f for f in os.listdir(path) if os.path.isfile(os.path.join(path, f))])):
-                print()
                 Image._PIECES.append(pg.image.load(f"{path}/{x}.{Conf.Image.SPRITE_FORMAT}").convert_alpha())
         return Image._PIECES
+
+    @staticmethod
+    def cache():
+        Image.get_menu()
+        Image.get_ship(True)
+        Image.get_rocket()
+        Image.get_life()
+        Image.get_background()
+        Image.get_meteors()
+        Image.get_animation("ship")
+        Image.get_pieces()

@@ -25,6 +25,7 @@ class Ship(pg.sprite.Sprite):
         w0, h0 = normal.get_size()
         scale = Conf.Ship.SIZE / max((w0, h0))
         w1, h1 = map(lambda x: round(x * scale), [w0, h0])
+        self.texture_num = Conf.Image.SHIP
         self.texture_normal = pg.transform.scale(normal, (w1, h1))
         self.texture_fire = pg.transform.scale(fire, (w1, h1))
         # Variables
@@ -52,6 +53,9 @@ class Ship(pg.sprite.Sprite):
         period to it's coordinates
         Called every frame.
         """
+        if self.texture_num != Conf.Image.SHIP:
+            self.texture_num = Conf.Image.SHIP
+            self.update_texture()
         if abs(self.speed_x) < Conf.Ship.DEAD_SPEED and abs(self.speed_y) < Conf.Ship.DEAD_SPEED:
             self.speed_x, self.speed_y = 0, 0
         else:
@@ -140,11 +144,16 @@ class Ship(pg.sprite.Sprite):
         a_y = f * sin(rad) * pow(y, 2)
         return a_x, a_y
 
-    def change_texture(self, number: int):
-        Conf.Image.SHIP = number
-        raw_image = Img.get_ship(self.with_fire)
-        w0, h0 = raw_image.get_size()
-        scale = Conf.Ship.SIZE / h0
+    def update_texture(self):
+        normal = Img.get_ship(False)
+        fire = Img.get_ship(True)
+        w0, h0 = normal.get_size()
+        scale = Conf.Ship.SIZE / max((w0, h0))
         w1, h1 = map(lambda x: round(x * scale), [w0, h0])
-        self.texture = pg.transform.scale(raw_image, (w1, h1))
-        self.image = pg.transform.rotate(self.texture, -self.angle)
+        self.texture_num = Conf.Image.SHIP
+        self.texture_normal = pg.transform.scale(normal, (w1, h1))
+        self.texture_fire = pg.transform.scale(fire, (w1, h1))
+
+    @staticmethod
+    def set_texture(num: int):
+        Conf.Image.SHIP = num

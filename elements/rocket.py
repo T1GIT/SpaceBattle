@@ -24,6 +24,7 @@ class Rocket(pg.sprite.Sprite):
         w0, h0 = raw_image.get_size()
         scale = Conf.Rocket.SIZE / h0
         w1, h1 = map(lambda x: round(x * scale), [w0, h0])
+        self.texture_num = Conf.Image.ROCKET
         self.texture = pg.transform.scale(raw_image, (w1, h1))
         self.image = self.texture
         self.start_x, self.start_y = 0, 0
@@ -48,6 +49,9 @@ class Rocket(pg.sprite.Sprite):
         self.pos_x, self.pos_y = self.rect.x, self.rect.y
 
     def update(self):
+        if self.texture_num != Conf.Image.SHIP:
+            self.texture_num = Conf.Image.SHIP
+            self.update_texture()
         c_x, c_y = self.rect.center
         if Conf.Rocket.UNLIMITED:
             if 0 < c_x < Conf.Window.WIDTH and 0 < c_y < Conf.Window.HEIGHT:
@@ -63,11 +67,15 @@ class Rocket(pg.sprite.Sprite):
                 self.kill()
         self.rect.x, self.rect.y = self.pos_x, self.pos_y
 
-    def change_texture(self, number: int):
-        Conf.Image.ROCKET = number
+    def update_texture(self):
+        pg.sprite.Sprite.__init__(self)
         raw_image = Img.get_rocket()
         w0, h0 = raw_image.get_size()
         scale = Conf.Rocket.SIZE / h0
         w1, h1 = map(lambda x: round(x * scale), [w0, h0])
         self.texture = pg.transform.scale(raw_image, (w1, h1))
-        self.image = pg.transform.rotate(self.texture, -self.angle)
+        self.image = self.texture
+
+    @staticmethod
+    def set_texture(num: int):
+        Conf.Image.ROCKET = num
