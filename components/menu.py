@@ -1,7 +1,9 @@
 import pygame_menu
 
+from components.game import Game
 from config import Configuration as Conf
 from utils.listener.events import Event, Device as Dvs, Keyboard as Kb, Gamepad as Gp
+from utils.mechanics.spawner import Spawner
 from utils.resources.image import Image as Img
 from utils.listener.listener import EventListener
 from utils.resources.sound import Sound as Snd
@@ -72,38 +74,49 @@ class Menu:
         )
 
         # Layout
+        self.menu["settings"].add_label(
+            "Game settings"
+        )
         self.menu["settings"].add_selector(
-            f'General volume: ',
+            f'Meteor spawn:  ',
+            items=[
+                ("static", False),
+                ("dynamic", True)
+            ],
+            font_color=(0, 0, 0),
+            default=1 if Conf.Meteor.BY_TIME else 0,
+            onchange=lambda _, value: Spawner.change_spawn_mode(value)
+        )
+        self.menu["settings"].add_selector(
+            f'Difficulty:  ',
+            items=Conf.Game.DIFFICULTY,
+            default=4 - (Conf.Meteor.PERIOD - 400) // 100,
+            font_color=(0, 0, 0),
+            onchange=lambda _, value: Spawner.change_difficulty(value)
+        )
+        self.menu["settings"].add_label(
+            "Volume"
+        )
+        self.menu["settings"].add_selector(
+            f'General:  ',
             items=[(str(i), i) for i in range(0, 11)],
             font_color=(0, 0, 0),
-            input_type=pygame_menu.locals.INPUT_FLOAT,
             default=Conf.Sound.Volume.GENERAL,
-            maxchar=2,
-            onchange=lambda value, *_, **__: Snd.Volume.set_general(value[1])
+            onchange=lambda _, value: Snd.Volume.set_general(value)
         )
         self.menu["settings"].add_selector(
-            f'Background music volume: ',
+            f'Background:  ',
             items=[(str(i), i) for i in range(0, 11)],
             font_color=(0, 0, 0),
-            input_type=pygame_menu.locals.INPUT_FLOAT,
             default=Conf.Sound.Volume.BG,
-            maxchar=2,
-            onchange=lambda value, *_, **__: Snd.Volume.set_bg(value[1])
+            onchange=lambda _, value: Snd.Volume.set_bg(value)
         )
         self.menu["settings"].add_selector(
-            f'SFX volume: ',
+            f'SFX:  ',
             items=[(str(i), i) for i in range(0, 11)],
             font_color=(0, 0, 0),
-            input_type=pygame_menu.locals.INPUT_FLOAT,
             default=Conf.Sound.Volume.SFX,
-            maxchar=2,
-            onchange=lambda value, *_, **__: Snd.Volume.set_sfx(value[1])
-        )
-        self.menu["settings"].add_vertical_margin(100)
-        self.menu["settings"].add_button(
-            'Return to menu',
-            pygame_menu.events.BACK,
-            selection_color=(0, 0, 0),
+            onchange=lambda _, value: Snd.Volume.set_sfx(value)
         )
 
     def create_menu(self):

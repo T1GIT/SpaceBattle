@@ -5,13 +5,20 @@ class Configuration:
     """
     class Window:
         TITLE = "Space Battle"
-        FULLSCREEN = True
+        FULLSCREEN = False
         WIDTH = 1000
         HEIGHT = 1000
         FONT = "./resources/fonts/opensans.ttf"
 
     class Game:
         LOSE_DELAY = 9
+        DIFFICULTY = [
+                    ("novice", (1000, 10)),
+                    ("easy", (900, 17)),
+                    ("normal", (800, 25)),
+                    ("hard", (700, 30)),
+                    ("DEATH", (500, 40)),
+                ]
 
     class Overlay:
         OPACITY = 70
@@ -66,9 +73,9 @@ class Configuration:
         TOR = True
         ROTATING = True
         MAX_ROTATE_SPEED = 4
-        QUANTITY = 20
+        QUANTITY = 25
         BY_TIME = True
-        PERIOD = 400
+        PERIOD = 600
         ON_FIELD = False
 
     class Rocket:

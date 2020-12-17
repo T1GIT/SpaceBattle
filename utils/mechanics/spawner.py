@@ -20,6 +20,7 @@ class Spawner:
         """
         Spawn all meteors by time or quantity configurations
         """
+        print(Conf.Meteor.QUANTITY)
         while len(Group.METEORS) < Conf.Meteor.QUANTITY:
             Spawner.meteor()
 
@@ -34,3 +35,12 @@ class Spawner:
         else:
             meteor.locate(*Meteor.GetCoord().get_out_field())
         meteor.add(Group.METEORS, Group.ALL)
+
+    @staticmethod
+    def change_difficulty(value):
+        Conf.Meteor.PERIOD = value[0]
+        Conf.Meteor.QUANTITY = value[1]
+
+    @staticmethod
+    def change_spawn_mode(value: bool):
+        Conf.Meteor.BY_TIME = bool(value)

@@ -57,6 +57,7 @@ class Sound:
             Sound._SHOOT = pg.mixer.Sound(
                 f'{Sound._ROOT}/sfx/shoot/{Conf.Sound.SHOOT}.{Conf.Sound.FORMAT}')
             Sound._SHOOT.set_volume(Sound.get_volume(Sound._VOLUME.SFX))
+        Sound._SHOOT.stop()
         Sound._SHOOT.play()
 
     @staticmethod
@@ -64,6 +65,7 @@ class Sound:
         if Sound._WOUND is None:
             Sound._WOUND = pg.mixer.Sound(f'{Sound._ROOT}/sfx/wound.{Conf.Sound.FORMAT}')
             Sound._WOUND.set_volume(Sound.get_volume(Sound._VOLUME.SFX))
+        Sound._WOUND.stop()
         Sound._WOUND.play()
 
     @staticmethod
@@ -71,16 +73,15 @@ class Sound:
         if Sound._ENGINE is None:
             Sound._ENGINE = pg.mixer.Sound(f'{Sound._ROOT}/sfx/engine.{Conf.Sound.FORMAT}')
             Sound._ENGINE.set_volume(Sound.get_volume(Sound._VOLUME.SFX))
+        Sound._ENGINE.stop()
         Sound._ENGINE.play()
 
-    """
-    EXPLODE
-    """
     @staticmethod
     def ex_ship():
         if Sound._EX_SHIP is None:
             Sound._EX_SHIP = pg.mixer.Sound(f'{Sound._ROOT}/sfx/explode/ship.{Conf.Sound.FORMAT}')
             Sound._EX_SHIP.set_volume(Sound.get_volume(Sound._VOLUME.SFX))
+        Sound._EX_SHIP.stop()
         Sound._EX_SHIP.play()
 
     @staticmethod
@@ -88,6 +89,7 @@ class Sound:
         if Sound._EX_METEOR is None:
             Sound._EX_METEOR = pg.mixer.Sound(f'{Sound._ROOT}/sfx/explode/meteor.{Conf.Sound.FORMAT}')
             Sound._EX_METEOR.set_volume(Sound.get_volume(Sound._VOLUME.SFX))
+        Sound._EX_METEOR.stop()
         Sound._EX_METEOR.play()
 
     class Volume:

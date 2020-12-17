@@ -19,8 +19,6 @@ class Game:
     Spawns meteors.
     Catches events and redirect to the ship
     """
-    rocket_period = (Conf.System.FPS * Conf.Rocket.PERIOD) // 1000
-    meteor_period = (Conf.System.FPS * Conf.Meteor.PERIOD) // 1000
 
     def __init__(self, window):
         # Environment
@@ -91,7 +89,7 @@ class Game:
             if event.get_type() == Gp.Events.KEY and event.get_data() == Gp.Keys.START: self.window.pause()
         # Shooting
         if shoot and not self.game_over and self.rocket_timer == 0:
-            self.rocket_timer = self.rocket_period
+            self.rocket_timer = (Conf.System.FPS * Conf.Rocket.PERIOD) // 1000
             self.ship.shoot()
         # Moving
         if (x, y) == (0, 0):    self.ship.brake()
@@ -133,10 +131,11 @@ class Game:
         # Spawning
         if Conf.Meteor.BY_TIME:
             if self.meteor_timer == 0:
-                self.meteor_timer = self.meteor_period
+                self.meteor_timer = (Conf.System.FPS * Conf.Meteor.PERIOD) // 1000
                 Spawner.meteor()
         else: Spawner.all_meteors()
         Spawner.all_pieces(False)
         # Decrementing timers
         self.meteor_timer = max(0, self.meteor_timer - 1)
         self.rocket_timer = max(0, self.rocket_timer - 1)
+
