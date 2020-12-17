@@ -20,7 +20,6 @@ class Spawner:
         """
         Spawn all meteors by time or quantity configurations
         """
-        print(Conf.Meteor.QUANTITY)
         while len(Group.METEORS) < Conf.Meteor.QUANTITY:
             Spawner.meteor()
 

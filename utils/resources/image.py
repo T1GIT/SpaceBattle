@@ -1,4 +1,5 @@
 import os
+import numpy as np
 
 import pygame as pg
 import pygame_menu
@@ -51,7 +52,7 @@ class Image:
             for x in range(Image.ROCKETS_AMOUNT):
                 Image._ROCKETS.append(pg.image.load(
                     f"{Image._ROOT}/rocket/{x}.{Conf.Image.SPRITE_FORMAT}").convert_alpha())
-        return Image._ROCKETS[Conf.Image.SHIP]
+        return Image._ROCKETS[Conf.Image.ROCKET]
 
     @staticmethod
     def get_life() -> pg.image:
@@ -105,3 +106,26 @@ class Image:
         Image.get_meteors()
         Image.get_animation("ship")
         Image.get_pieces()
+
+    @staticmethod
+    def get_rotate_cache(raw_images: list[pg.image]) -> np.array:
+        result = np.reshape(len(raw_images), 91, dtype=pg.image)
+        # for i, img in enumerate(raw_images):
+        #     for angle in range(90)
+
+    @staticmethod
+    def get_by_angle(cache, angle):
+        pass
+
+
+    # __cache = __ca
+    # for raw_image in Img.get_meteors():
+    #     cnf = Conf.Meteor
+    #     w0, h0 = raw_image.get_size()
+    #     size = rnd.randint(cnf.MIN_SIZE, cnf.MAX_SIZE)
+    #     scale = size / max(w0, h0)
+    #     w1, h1 = map(lambda x: round(x * Meteor.scale), [w0, h0])
+    #     scaled = pg.transform.scale(raw_image, (w1, h1))
+    #     __cache.append(
+    #         [pg.transform.flip(raw_image)]
+    #     )

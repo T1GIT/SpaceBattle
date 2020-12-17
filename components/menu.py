@@ -92,7 +92,7 @@ class Menu:
         self.menu["settings"].add_selector(
             f'Difficulty:  ',
             items=Conf.Game.DIFFICULTY,
-            default=4 - (Conf.Meteor.PERIOD - Conf.Game.DIFFICULTY[-1][1][0]) // 100,
+            default=2,
             font_color=(0, 0, 0),
             onchange=lambda _, value: Spawner.change_difficulty(value)
         )

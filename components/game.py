@@ -1,9 +1,12 @@
+from time import time_ns
+
 import pygame as pg
 
 from components.overlay import Overlay
 from config import Configuration as Conf
 from elements.animation import Animation
 from elements.ship import Ship
+from utils.debugger import Debugger
 from utils.mechanics.collider import Collider
 from utils.listener.events import Keyboard as Kb, Gamepad as Gp, Mouse as Ms, Device as Dvs, System as Sys, Event
 from utils.group import Group
@@ -97,8 +100,9 @@ class Game:
 
     def mainloop(self):
         while self.running:
-            self.event_handler(EventListener.get_events())
+            Debugger.start()
             self.window.screen.blit(self.image, self.image.get_rect())
+            self.event_handler(EventListener.get_events())
             Group.ALL.update()
             Group.ALL.draw(self.window.screen)
             pg.display.flip()
@@ -110,6 +114,7 @@ class Game:
                     self.losing_timer -= 1
             else:
                 self.preparation()
+            Debugger.print("ALL")
             self.clock.tick(Conf.System.FPS)
 
     def preparation(self):

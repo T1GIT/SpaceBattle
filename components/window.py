@@ -1,4 +1,5 @@
 from ctypes import windll
+from threading import Thread
 from time import time_ns
 
 import pygame as pg
@@ -74,6 +75,6 @@ class Window:
         self.comp_game.start()
 
     def show(self):
-        Img.cache()
+        Thread(target=lambda: (pg.time.delay(100), Img.cache())).start()
         Snd.bg_menu()
         self.comp_menu.open()

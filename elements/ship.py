@@ -59,13 +59,12 @@ class Ship(pg.sprite.Sprite):
         if abs(self.speed_x) < Conf.Ship.DEAD_SPEED and abs(self.speed_y) < Conf.Ship.DEAD_SPEED:
             self.speed_x, self.speed_y = 0, 0
         else:
-            c_x, c_y = self.rect.center
-            next_x, next_y = c_x + self.speed_x, c_y - self.speed_y
+            next_x, next_y = self.rect.centerx + self.speed_x, self.rect.centery - self.speed_y
             if self.half_width > next_x or next_x > Conf.Window.WIDTH - self.half_width:
                 self.speed_x = 0
             else:
                 self.pos_x += self.speed_x * Conf.System.SCALE
-            if self.half_width > next_y or next_y > Conf.Window.WIDTH - self.half_width:
+            if self.half_width > next_y or next_y > Conf.Window.HEIGHT - self.half_width:
                 self.speed_y = 0
             else:
                 self.pos_y -= self.speed_y * Conf.System.SCALE

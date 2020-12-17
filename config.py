@@ -5,7 +5,7 @@ class Configuration:
     """
     class Window:
         TITLE = "Space Battle"
-        FULLSCREEN = False
+        FULLSCREEN = True
         WIDTH = 1000
         HEIGHT = 1000
         FONT = "./resources/fonts/opensans.ttf"
@@ -13,11 +13,11 @@ class Configuration:
     class Game:
         LOSE_DELAY = 9
         DIFFICULTY = [
-                    ("novice", (1000, 10)),
+                    ("novice", (1100, 10)),
                     ("easy", (900, 17)),
-                    ("normal", (800, 25)),
-                    ("hard", (700, 30)),
-                    ("DEATH", (500, 40)),
+                    ("normal", (700, 25)),
+                    ("hard", (650, 30)),
+                    ("DEATH", (400, 40)),
                 ]
 
     class Overlay:
@@ -53,12 +53,12 @@ class Configuration:
         MIN_SIZE = 100  # px
         MAX_SIZE = 300  # px
         MAX_SPEED = 1
-        QUANTITY = 10
+        QUANTITY = 0
 
     class Ship:
         SIZE = 100
-        WEIGHT = 10
-        POWER = 10
+        WEIGHT = 5
+        POWER = 5
         RESIST = 0.05  # >= 0
         SMOOTH = 10  # >= 1
         ACCURACY = 10  # [1; 10]
@@ -68,14 +68,15 @@ class Configuration:
     class Meteor:
         MAX_SIZE = 200
         MIN_SIZE = 70
+        SIZES = 3
         MAX_LIFES = 5  # (Need Rocket.DESTROYABLE = True)
         MAX_SPEED = 3
-        TOR = True
+        TELEPORT = True
         ROTATING = True
         MAX_ROTATE_SPEED = 4
         QUANTITY = 25
         BY_TIME = True
-        PERIOD = 600
+        PERIOD = 700
         ON_FIELD = False
 
     class Rocket:

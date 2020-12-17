@@ -49,8 +49,8 @@ class Rocket(pg.sprite.Sprite):
         self.pos_x, self.pos_y = self.rect.x, self.rect.y
 
     def update(self):
-        if self.texture_num != Conf.Image.SHIP:
-            self.texture_num = Conf.Image.SHIP
+        if self.texture_num != Conf.Image.ROCKET:
+            self.texture_num = Conf.Image.ROCKET
             self.update_texture()
         c_x, c_y = self.rect.center
         if Conf.Rocket.UNLIMITED:
@@ -68,7 +68,6 @@ class Rocket(pg.sprite.Sprite):
         self.rect.x, self.rect.y = self.pos_x, self.pos_y
 
     def update_texture(self):
-        pg.sprite.Sprite.__init__(self)
         raw_image = Img.get_rocket()
         w0, h0 = raw_image.get_size()
         scale = Conf.Rocket.SIZE / h0

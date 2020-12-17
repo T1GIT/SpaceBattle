@@ -1,8 +1,8 @@
 import random as rnd
-
 import pygame as pg
 
 from config import Configuration as Conf
+from utils.debugger import Debugger
 from utils.resources.image import Image as Img
 
 
@@ -25,11 +25,10 @@ class Meteor(pg.sprite.Sprite):
         pg.sprite.Sprite.__init__(self)
         raw_image = Img.get_meteors()
         self.amount = rnd.randint(0, len(raw_image) - 1)
-        w0, h0 = raw_image[self.amount].get_size()
         size = rnd.randint(cnf.MIN_SIZE, cnf.MAX_SIZE)
         self.lifes = ((size - cnf.MIN_SIZE) // ((cnf.MAX_SIZE - cnf.MIN_SIZE) / cnf.MAX_LIFES))
-        scale = size / max(w0, h0)
-        w1, h1 = map(lambda x: round(x * scale), [w0, h0])
+        scale = size / max(raw_image[self.amount].get_size())
+        w1, h1 = map(lambda x: round(x * scale), raw_image[self.amount].get_size())
         self.texture = pg.transform.scale(raw_image[self.amount], (w1, h1))
         self.image = self.texture
         self.angle = 0
@@ -61,7 +60,7 @@ class Meteor(pg.sprite.Sprite):
         self.rect.x, self.rect.y = self.pos_x, self.pos_y
         if Conf.Meteor.ROTATING:
             self.rotate()
-        if Conf.Meteor.TOR:
+        if Conf.Meteor.TELEPORT:
             self.teleport()
         elif (self.rect.left > Conf.Window.WIDTH or self.rect.right < 0
                 or self.rect.top > Conf.Window.HEIGHT or self.rect.bottom < 0):
