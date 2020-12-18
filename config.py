@@ -13,10 +13,10 @@ class Configuration:
         LOSE_DELAY = 9
         DIFFICULTY = [
                     ("novice", (1100, 10)),
-                    ("easy", (900, 17)),
-                    ("normal", (700, 25)),
-                    ("hard", (650, 30)),
-                    ("DEATH", (500, 40)),
+                    ("easy", (900, 20)),
+                    ("normal", (700, 30)),
+                    ("hard", (650, 40)),
+                    ("DEATH", (500, 50)),
                 ]
 
     class Overlay:
@@ -42,9 +42,9 @@ class Configuration:
         THEME_COLOR = (0, 250, 0)
 
         class Title:
-            X_OFFSET = 100
+            X_OFFSET = 40
             Y_OFFSET = 40
-            SIZE = 70
+            SIZE = 60
 
     class Piece:
         MIN_OPACITY = 60  # [0, 100]

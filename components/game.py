@@ -51,6 +51,7 @@ class Game:
         """
         Starts the game
         """
+        self.game_over = False
         self.running = True
         self.comp_overlay.show()
         self.ship = Ship()

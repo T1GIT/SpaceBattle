@@ -1,4 +1,5 @@
 import pygame_menu
+import os.path
 
 from components.game import Game
 from config import Configuration as Conf
@@ -16,12 +17,13 @@ class Menu:
         # Environment
         self.window = window
         self.engine = pygame_menu.sound.Sound()
+        self.title_font = "./resources/fonts/opensans.ttf"
+        self.widget_font = "./resources/fonts/opensans-light.ttf"
         self.menu_settings = self.create_settings()
         self.menu_about = self.create_about()
         self.menu_main = self.create_menu(self.menu_settings, self.menu_about)
 
-    @staticmethod
-    def create_about():
+    def create_about(self):
         """
         Create menus: About
         This function contains an about list that displays text on the screen.
@@ -41,8 +43,8 @@ class Menu:
 
         # Theme
         theme = pygame_menu.themes.THEME_DARK.copy()
-        theme.title_font_size = pygame_menu.font.FONT_OPEN_SANS
-        theme.widget_font = pygame_menu.font.FONT_OPEN_SANS_LIGHT
+        theme.title_font = self.title_font
+        theme.widget_font = self.widget_font
         theme.title_font_size = 56
 
         # Initialisation
@@ -60,8 +62,7 @@ class Menu:
 
         return menu
 
-    @staticmethod
-    def create_settings():
+    def create_settings(self):
         """
         Create menus: Settings
         This function contains an about list that displays text on the screen.
@@ -71,8 +72,8 @@ class Menu:
 
         # Theme
         theme = pygame_menu.themes.THEME_DARK.copy()
-        theme.title_font_size = pygame_menu.font.FONT_OPEN_SANS
-        theme.widget_font = pygame_menu.font.FONT_OPEN_SANS_LIGHT
+        theme.title_font = self.title_font
+        theme.widget_font = self.widget_font
         theme.title_font_size = 56
 
         # Initialisation
@@ -161,16 +162,16 @@ class Menu:
         theme = pygame_menu.themes.Theme(
             selection_color=Conf.Menu.THEME_COLOR,
             title_bar_style=pygame_menu.widgets.MENUBAR_STYLE_NONE,  # Separating header and body
-            title_offset=(Conf.Menu.Title.X_OFFSET, Conf.Menu.Title.Y_OFFSET),
-            title_font=pygame_menu.font.FONT_OPEN_SANS,
+            title_offset=(Conf.Menu.Title.X_OFFSET, Conf.Menu.Title.Y_OFFSET - 20),
+            title_font=self.title_font,
             title_font_color=(255, 255, 255),
             title_font_size=Conf.Menu.Title.SIZE,
             background_color=Img.get_menu(),
-            widget_font=pygame_menu.font.FONT_OPEN_SANS_LIGHT,
+            widget_font=self.widget_font,
             widget_font_color=(255, 255, 255),
             widget_font_size=40,
             widget_margin=(0, 40),
-            menubar_close_button=False  # Removing the close button
+            menubar_close_button=False
         )
 
         # Initialisation
@@ -179,15 +180,15 @@ class Menu:
             Conf.Window.WIDTH,
             title='SPACE BATTLE',
             theme=theme,
-            onclose=pygame_menu.events.DISABLE_CLOSE,
+            onclose=lambda: pygame_menu.events.DISABLE_CLOSE,
             mouse_motion_selection=True
         )
 
         # Layout
         menu.add_button('     Play     ', self.window.start, font_size=60, margin=(0, 50))
         menu.add_button('   Settings   ', settings)
-        menu.add_button('     About     ', about)
-        menu.add_button('     Quit     ', exit)
+        menu.add_button('     Info     ', about)
+        menu.add_button('     Exit     ', lambda: exit(69))
 
         # Sound
         self.engine.set_sound(pygame_menu.sound.SOUND_TYPE_CLICK_MOUSE, Snd.click(),
@@ -207,8 +208,7 @@ class Menu:
                 self.window.play()
 
     def open(self):
-        pygame_menu.themes.THEME_DEFAULT.widget_font = pygame_menu.font.FONT_OPEN_SANS  # Setting the default font
-        self.menu_main.enable()
+        self.menu_main = self.create_menu(self.menu_settings, self.menu_about)
         self.menu_main.mainloop(self.window.screen, fps_limit=Conf.System.FPS,
                                 bgfun=lambda: self.event_handler(EventListener.get_events()))
 
