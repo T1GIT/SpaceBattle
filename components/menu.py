@@ -28,10 +28,16 @@ class Menu:
         A separate about theme is created by copying the standard one,
         the theme is customized - the font of the title is changed.
         """
-        ABOUT = ['Game version: {0}'.format(Conf.Menu.GAME_VERSION),
-                 f'Authors: {Conf.Menu.AUTHORS[0]}, {Conf.Menu.AUTHORS[1]}, {Conf.Menu.AUTHORS[2]}',
-                 '',
-                 'Ideas and suggestions: SpaceBattle@ya.com']
+        ABOUT = [
+            'INFO',
+            '',
+            'Game about violent fighting of the',
+            'alone ship and hundreds of asteroids',
+            '',
+            '',
+            f'Authors: {Conf.Menu.AUTHORS[0]}, {Conf.Menu.AUTHORS[1]}, {Conf.Menu.AUTHORS[2]}',
+            f'Game version: {Conf.Menu.GAME_VERSION}',
+        ]
 
         # Theme
         theme = pygame_menu.themes.THEME_DARK.copy()
@@ -204,7 +210,7 @@ class Menu:
         pygame_menu.themes.THEME_DEFAULT.widget_font = pygame_menu.font.FONT_OPEN_SANS  # Setting the default font
         self.menu_main.enable()
         self.menu_main.mainloop(self.window.screen, fps_limit=Conf.System.FPS,
-                                   bgfun=lambda: self.event_handler(EventListener.get_events()))
+                                bgfun=lambda: self.event_handler(EventListener.get_events()))
 
     def close(self):
         self.menu_main.disable()

@@ -36,7 +36,7 @@ class Configuration:
             Y_OFFSET = 5
 
     class Menu:
-        GAME_VERSION = "v0.1"
+        GAME_VERSION = "1.0"
         AUTHORS = "Damir", "Artem", "Dmitriy"
         CONTACTS = ""
         THEME_COLOR = (0, 250, 0)
@@ -68,7 +68,7 @@ class Configuration:
         MAX_SIZE = 200
         MIN_SIZE = 70
         SIZES = 3
-        MAX_LIFES = 5  # (Need Rocket.DESTROYABLE = True)
+        MAX_LIFES = 3  # (Need Rocket.DESTROYABLE = True)
         MAX_SPEED = 3
         TELEPORT = True
         ROTATING = True
