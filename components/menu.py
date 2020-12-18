@@ -2,8 +2,8 @@ import pygame_menu
 
 from components.game import Game
 from config import Configuration as Conf
-from elements.rocket import Rocket
-from elements.ship import Ship
+from sprites.rocket import Rocket
+from sprites.ship import Ship
 from utils.listener.events import Event, Device as Dvs, Keyboard as Kb, Gamepad as Gp
 from utils.mechanics.spawner import Spawner
 from utils.resources.image import Image as Img
@@ -16,10 +16,12 @@ class Menu:
         # Environment
         self.window = window
         self.engine = pygame_menu.sound.Sound()
-        self.menu: dict[str, pygame_menu.Menu] = dict()
-        self.time = 0
+        self.menu_settings = self.create_settings()
+        self.menu_about = self.create_about()
+        self.menu_main = self.create_menu(self.menu_settings, self.menu_about)
 
-    def create_about(self):
+    @staticmethod
+    def create_about():
         """
         Create menus: About
         This function contains an about list that displays text on the screen.
@@ -32,29 +34,28 @@ class Menu:
                  'Ideas and suggestions: SpaceBattle@ya.com']
 
         # Theme
-        about_theme = pygame_menu.themes.THEME_DARK.copy()
-        about_theme.title_font_size = 56
+        theme = pygame_menu.themes.THEME_DARK.copy()
+        theme.title_font_size = pygame_menu.font.FONT_OPEN_SANS
+        theme.widget_font = pygame_menu.font.FONT_OPEN_SANS_LIGHT
+        theme.title_font_size = 56
 
         # Initialisation
-        self.menu["about"] = pygame_menu.Menu(
+        menu = pygame_menu.Menu(
             height=Conf.Window.HEIGHT,
             width=Conf.Window.WIDTH,
             onclose=pygame_menu.events.DISABLE_CLOSE,  # Action on closing
-            theme=about_theme,  # Setting theme
+            theme=theme,  # Setting theme
             title='About'
         )
 
         # Layout
-        for m in ABOUT:
-            self.menu["about"].add_label(m, align=pygame_menu.locals.ALIGN_LEFT, font_size=30)
-        self.menu["about"].add_vertical_margin(Conf.Window.WIDTH / 4)
-        self.menu["about"].add_button(
-            'Return to menu',
-            pygame_menu.events.BACK,
-            selection_color=(0, 0, 0),
-        )
+        for item in ABOUT:
+            menu.add_label(item, font_size=40)
 
-    def create_settings(self):
+        return menu
+
+    @staticmethod
+    def create_settings():
         """
         Create menus: Settings
         This function contains an about list that displays text on the screen.
@@ -64,10 +65,12 @@ class Menu:
 
         # Theme
         theme = pygame_menu.themes.THEME_DARK.copy()
+        theme.title_font_size = pygame_menu.font.FONT_OPEN_SANS
+        theme.widget_font = pygame_menu.font.FONT_OPEN_SANS_LIGHT
         theme.title_font_size = 56
 
         # Initialisation
-        self.menu["settings"] = pygame_menu.Menu(
+        menu = pygame_menu.Menu(
             height=Conf.Window.HEIGHT,
             width=Conf.Window.WIDTH,
             onclose=pygame_menu.events.DISABLE_CLOSE,  # Action on closing
@@ -76,10 +79,10 @@ class Menu:
         )
 
         # Layout
-        self.menu["settings"].add_label(
+        menu.add_label(
             "Game settings"
         )
-        self.menu["settings"].add_selector(
+        menu.add_selector(
             f'Meteor spawn:  ',
             items=[
                 ("static", False),
@@ -89,48 +92,48 @@ class Menu:
             default=1 if Conf.Meteor.BY_TIME else 0,
             onchange=lambda _, value: Spawner.change_spawn_mode(value)
         )
-        self.menu["settings"].add_selector(
+        menu.add_selector(
             f'Difficulty:  ',
             items=Conf.Game.DIFFICULTY,
             default=2,
             font_color=(0, 0, 0),
             onchange=lambda _, value: Spawner.change_difficulty(value)
         )
-        self.menu["settings"].add_label(
+        menu.add_label(
             "Textures"
         )
-        self.menu["settings"].add_selector(
+        menu.add_selector(
             f'Ship:  ',
             items=[(str(i), i) for i in range(Img.SHIPS_AMOUNT)],
             font_color=(0, 0, 0),
             default=Conf.Image.SHIP,
             onchange=lambda _, value: Ship.set_texture(value)
         )
-        self.menu["settings"].add_selector(
+        menu.add_selector(
             f'Rocket:  ',
             items=[(str(i), i) for i in range(Img.ROCKETS_AMOUNT)],
             default=Conf.Image.ROCKET,
             font_color=(0, 0, 0),
             onchange=lambda _, value: Rocket.set_texture(value)
         )
-        self.menu["settings"].add_label(
+        menu.add_label(
             "Volume"
         )
-        self.menu["settings"].add_selector(
+        menu.add_selector(
             f'General:  ',
             items=[(str(i), i) for i in range(0, 11)],
             font_color=(0, 0, 0),
             default=Conf.Sound.Volume.GENERAL,
             onchange=lambda _, value: Snd.Volume.set_general(value)
         )
-        self.menu["settings"].add_selector(
+        menu.add_selector(
             f'Background:  ',
             items=[(str(i), i) for i in range(0, 11)],
             font_color=(0, 0, 0),
             default=Conf.Sound.Volume.BG,
             onchange=lambda _, value: Snd.Volume.set_bg(value)
         )
-        self.menu["settings"].add_selector(
+        menu.add_selector(
             f'SFX:  ',
             items=[(str(i), i) for i in range(0, 11)],
             font_color=(0, 0, 0),
@@ -138,7 +141,9 @@ class Menu:
             onchange=lambda _, value: Snd.Volume.set_sfx(value)
         )
 
-    def create_menu(self):
+        return menu
+
+    def create_menu(self, settings, about):
         """
         Create menus: Main. Responsible for setting up the main menu.
         A picture is selected for the background. Customizable theme, colors, font size, etc.
@@ -151,9 +156,11 @@ class Menu:
             selection_color=Conf.Menu.THEME_COLOR,
             title_bar_style=pygame_menu.widgets.MENUBAR_STYLE_NONE,  # Separating header and body
             title_offset=(Conf.Menu.Title.X_OFFSET, Conf.Menu.Title.Y_OFFSET),
+            title_font=pygame_menu.font.FONT_OPEN_SANS,
             title_font_color=(255, 255, 255),
             title_font_size=Conf.Menu.Title.SIZE,
             background_color=Img.get_menu(),
+            widget_font=pygame_menu.font.FONT_OPEN_SANS_LIGHT,
             widget_font_color=(255, 255, 255),
             widget_font_size=40,
             widget_margin=(0, 40),
@@ -161,7 +168,7 @@ class Menu:
         )
 
         # Initialisation
-        self.menu["main"] = pygame_menu.Menu(
+        menu = pygame_menu.Menu(
             Conf.Window.HEIGHT,
             Conf.Window.WIDTH,
             title='SPACE BATTLE',
@@ -171,15 +178,17 @@ class Menu:
         )
 
         # Layout
-        self.menu["main"].add_button('     Play     ', self.window.start, font_size=60, margin=(0, 50))
-        self.menu["main"].add_button('   Settings   ', self.menu["settings"])
-        self.menu["main"].add_button('     About     ', self.menu["about"])
-        self.menu["main"].add_button('     Quit     ', exit)
+        menu.add_button('     Play     ', self.window.start, font_size=60, margin=(0, 50))
+        menu.add_button('   Settings   ', settings)
+        menu.add_button('     About     ', about)
+        menu.add_button('     Quit     ', exit)
 
         # Sound
         self.engine.set_sound(pygame_menu.sound.SOUND_TYPE_CLICK_MOUSE, Snd.click(),
                               volume=Snd.get_volume(Conf.Sound.Volume.SFX))
-        self.menu["main"].set_sound(self.engine, recursive=True)
+        menu.set_sound(self.engine, recursive=True)
+
+        return menu
 
     def start(self):
         self.window.start()
@@ -193,11 +202,9 @@ class Menu:
 
     def open(self):
         pygame_menu.themes.THEME_DEFAULT.widget_font = pygame_menu.font.FONT_OPEN_SANS  # Setting the default font
-        self.create_about()
-        self.create_settings()
-        self.create_menu()
-        self.menu["main"].mainloop(self.window.screen, fps_limit=Conf.System.FPS,
+        self.menu_main.enable()
+        self.menu_main.mainloop(self.window.screen, fps_limit=Conf.System.FPS,
                                    bgfun=lambda: self.event_handler(EventListener.get_events()))
 
     def close(self):
-        self.menu["main"].disable()
+        self.menu_main.disable()

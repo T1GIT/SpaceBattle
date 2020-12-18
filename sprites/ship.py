@@ -3,8 +3,8 @@ from math import cos, sin, atan2, sqrt, degrees, radians
 import pygame as pg
 
 from config import Configuration as Conf
-from elements.rocket import Rocket
-from utils.group import Group
+from sprites.rocket import Rocket
+from utils.tools.group import Group
 from utils.resources.image import Image as Img
 from utils.resources.sound import Sound as Snd
 

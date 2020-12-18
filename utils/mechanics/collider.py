@@ -1,10 +1,10 @@
 import pygame as pg
 
 from config import Configuration as Conf
-from elements.animation import Animation
-from elements.meteor import Meteor
-from elements.ship import Ship
-from utils.group import Group
+from sprites.animation import Animation
+from sprites.meteor import Meteor
+from sprites.ship import Ship
+from utils.tools.group import Group
 from utils.resources.sound import Sound as Snd
 
 

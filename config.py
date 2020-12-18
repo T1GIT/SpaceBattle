@@ -8,7 +8,6 @@ class Configuration:
         FULLSCREEN = True
         WIDTH = 1000
         HEIGHT = 1000
-        FONT = "./resources/fonts/opensans.ttf"
 
     class Game:
         LOSE_DELAY = 9
@@ -17,16 +16,16 @@ class Configuration:
                     ("easy", (900, 17)),
                     ("normal", (700, 25)),
                     ("hard", (650, 30)),
-                    ("DEATH", (400, 40)),
+                    ("DEATH", (500, 40)),
                 ]
 
     class Overlay:
-        OPACITY = 70
+        OPACITY = 90
 
         class Score:
             SIZE = 64
             COLOR = (100, 255, 100)
-            X_OFFSET = 30
+            X_OFFSET = 10
             Y_OFFSET = 5
             DELTA = 100
 

@@ -3,7 +3,7 @@ from collections import deque
 import pygame as pg
 
 from config import Configuration as Conf
-from utils.group import Group
+from utils.tools.group import Group
 from utils.resources.image import Image as Img
 
 

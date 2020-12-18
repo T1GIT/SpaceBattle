@@ -1,7 +1,7 @@
 from config import Configuration as Conf
-from elements.meteor import Meteor
-from elements.piece import Piece
-from utils.group import Group
+from sprites.meteor import Meteor
+from sprites.piece import Piece
+from utils.tools.group import Group
 
 
 class Spawner:

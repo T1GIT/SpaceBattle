@@ -7,7 +7,7 @@ import pygame as pg
 from components.game import Game
 from components.menu import Menu
 from config import Configuration as Conf
-from utils.group import Group
+from utils.tools.group import Group
 from utils.resources.sound import Sound as Snd
 from utils.resources.image import Image as Img
 

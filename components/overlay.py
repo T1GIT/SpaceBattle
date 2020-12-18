@@ -2,7 +2,7 @@ import pygame as pg
 from collections import deque
 
 from config import Configuration as Conf
-from utils.group import Group
+from utils.tools.group import Group
 from utils.resources.image import Image as Img
 
 
@@ -30,7 +30,7 @@ class Overlay:
     class Score(pg.sprite.Sprite):
         def __init__(self):
             super().__init__()
-            self.font = pg.font.Font(Conf.Window.FONT, Conf.Overlay.Score.SIZE)
+            self.font = pg.font.Font("resources/fonts/opensans.ttf", Conf.Overlay.Score.SIZE)
             self.need_update = False
             self.score = 0
             self.image = self.font.render(str(self.score), True, Conf.Overlay.Score.COLOR)
@@ -44,7 +44,7 @@ class Overlay:
 
         def show(self) -> None:
             self.rect = self.image.get_rect(topright=(
-                Conf.Window.WIDTH - Conf.Overlay.Score.X_OFFSET, Conf.Overlay.Score.Y_OFFSET))
+                Conf.Window.WIDTH - Conf.Overlay.Score.X_OFFSET, Conf.Overlay.Score.Y_OFFSET - 20))
 
         def update(self) -> None:
             if self.need_update:

@@ -109,7 +109,7 @@ class Image:
 
     @staticmethod
     def get_rotate_cache(raw_images: list[pg.image]) -> np.array:
-        result = np.reshape(len(raw_images), 91, dtype=pg.image)
+        result = np.reshape(len(raw_images), Conf.Meteor.SIZES, 181, dtype=pg.image)
         # for i, img in enumerate(raw_images):
         #     for angle in range(90)
 

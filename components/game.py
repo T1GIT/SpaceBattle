@@ -1,15 +1,12 @@
-from time import time_ns
-
 import pygame as pg
 
 from components.overlay import Overlay
 from config import Configuration as Conf
-from elements.animation import Animation
-from elements.ship import Ship
-from utils.debugger import Debugger
+from sprites.animation import Animation
+from sprites.ship import Ship
 from utils.mechanics.collider import Collider
 from utils.listener.events import Keyboard as Kb, Gamepad as Gp, Mouse as Ms, Device as Dvs, System as Sys, Event
-from utils.group import Group
+from utils.tools.group import Group
 from utils.resources.image import Image as Img
 from utils.listener.listener import EventListener
 from utils.resources.sound import Sound as Snd

@@ -2,7 +2,6 @@ import random as rnd
 import pygame as pg
 
 from config import Configuration as Conf
-from utils.debugger import Debugger
 from utils.resources.image import Image as Img
 
 
